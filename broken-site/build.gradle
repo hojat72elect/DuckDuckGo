@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'com.google.devtools.ksp' version "$ksp_version"
+    id 'com.squareup.anvil'
+}
+
+apply from: "$rootProject.projectDir/gradle/android-library.gradle"
+
+dependencies {
+    ksp AndroidX.room.compiler
+    anvil project(path: ':anvil-compiler')
+
+
+    implementation AndroidX.core.ktx
+    implementation Square.moshi
+    implementation "com.squareup.moshi:moshi-kotlin:_"
+    implementation "com.squareup.moshi:moshi-adapters:_"
+    implementation AndroidX.room.runtime
+    implementation AndroidX.room.ktx
+
+    implementation project(path: ':anvil-annotations')
+    implementation project(path: ':browser-api')
+    implementation project(path: ':di')
+    implementation project(path: ':common-utils')
+    implementation project(path: ':statistics')
+    implementation project(path: ':app-build-config-api')
+
+    implementation AndroidX.appCompat
+    implementation Google.android.material
+    implementation AndroidX.constraintLayout
+
+    implementation AndroidX.lifecycle.viewModelKtx
+    implementation AndroidX.lifecycle.runtime.ktx
+    implementation AndroidX.lifecycle.commonJava8
+    implementation AndroidX.lifecycle.liveDataKtx
+    implementation AndroidX.work.runtimeKtx
+    testImplementation AndroidX.work.testing
+
+    implementation KotlinX.coroutines.core
+    testImplementation (KotlinX.coroutines.test) {
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
+        // conflicts with mockito due to direct inclusion of byte buddy
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+
+    implementation Google.dagger
+    implementation JakeWharton.timber
+
+    // Room
+    implementation AndroidX.room.runtime
+    implementation AndroidX.room.rxJava2
+    implementation AndroidX.room.ktx
+
+    implementation Square.retrofit2.converter.moshi
+    implementation Square.okHttp3.okHttp
+
+
+
+    // Testing dependencies
+    testImplementation "org.mockito.kotlin:mockito-kotlin:_"
+    testImplementation Testing.junit4
+    testImplementation AndroidX.test.ext.junit
+    testImplementation AndroidX.archCore.testing
+    testImplementation AndroidX.core
+    testImplementation CashApp.turbine
+    testImplementation project(path: ':common-test')
+
+
+    coreLibraryDesugaring Android.tools.desugarJdkLibs
+}
+android {
+    anvil {
+        generateDaggerFactories = true // default is false
+    }
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    sourceSets {
+        test.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+    namespace 'com.duckduckgo.brokensite'
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+    }
+}

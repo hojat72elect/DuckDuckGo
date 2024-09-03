@@ -41,7 +41,7 @@ dependencies {
     implementation project(':navigation-api')
     implementation project(':feature-toggles-api')
     implementation project(':privacy-protections-popup-api')
-    implementation project(':broken-site-api')
+    implementation project(':broken-site')
 
     implementation Google.dagger
     implementation AndroidX.appCompat
