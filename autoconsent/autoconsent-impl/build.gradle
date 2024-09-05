@@ -44,7 +44,7 @@ dependencies {
     implementation project(path: ':autoconsent-api')
     implementation project(path: ':statistics')
     implementation project(path: ':browser-api')
-    implementation project(path: ':navigation-api')
+    implementation project(path: ':navigation')
 
     implementation AndroidX.appCompat
     implementation JakeWharton.timber

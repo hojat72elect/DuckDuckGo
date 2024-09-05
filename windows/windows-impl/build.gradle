@@ -38,7 +38,7 @@ dependencies {
     implementation project(':macos-api')
     implementation project(':app-build-config-api')
     implementation project(':privacy-config-api')
-    implementation project(':navigation-api')
+    implementation project(':navigation')
     implementation project(':feature-toggles-api')
 
     implementation AndroidX.appCompat

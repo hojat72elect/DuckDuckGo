@@ -26,5 +26,5 @@ android {
 }
 
 dependencies {
-    implementation project(':navigation-api')
+    implementation project(':navigation')
 }

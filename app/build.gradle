@@ -193,8 +193,7 @@ dependencies {
 	implementation project(":verified-installation-impl")
 	implementation project(":verified-installation-api")
 
-    implementation project(':navigation-api')
-    implementation project(':navigation-impl')
+    implementation project(':navigation')
 
     implementation project(path: ':vpn-network-api')
     implementation project(path: ':vpn-network-impl')

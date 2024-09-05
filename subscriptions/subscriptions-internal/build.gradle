@@ -38,7 +38,7 @@ dependencies {
     implementation project(':common-ui')
     implementation project(':app-build-config-api')
     implementation project(':internal-features-api')
-    implementation project(':navigation-api')
+    implementation project(':navigation')
 
     implementation Square.moshi
     implementation Square.okHttp3.okHttp

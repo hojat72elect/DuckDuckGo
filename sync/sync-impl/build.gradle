@@ -40,7 +40,7 @@ dependencies {
     implementation project(path: ':sync-lib')
     implementation project(path: ':saved-sites-api')
     implementation project(':feature-toggles-api')
-    implementation project(':navigation-api')
+    implementation project(':navigation')
     implementation project(':remote-messaging-api')
 
     implementation project(path: ':app-build-config-api')

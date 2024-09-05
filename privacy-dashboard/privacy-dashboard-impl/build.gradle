@@ -38,7 +38,7 @@ dependencies {
     implementation project(':browser-api')
     implementation project(':autoconsent-api')
     implementation project(':app-build-config-api')
-    implementation project(':navigation-api')
+    implementation project(':navigation')
     implementation project(':feature-toggles-api')
     implementation project(':privacy-protections-popup-api')
     implementation project(':broken-site')

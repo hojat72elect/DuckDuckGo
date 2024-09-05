@@ -33,7 +33,7 @@ dependencies {
     implementation project(':di')
     implementation project(':common-ui')
     implementation project(':common-utils')
-    implementation project(':navigation-api')
+    implementation project(':navigation')
     implementation project(':statistics')
     implementation project(':internal-features-api')
     implementation project(':feature-toggles-api')

@@ -143,7 +143,6 @@ subprojects {
                         if (projectPath.endsWith("api")
                                 && dependencyPath.endsWith("api")
                                 && dependencyPath != ":feature-toggles-api"
-                                && dependencyPath != ":navigation-api"
                         ) {
                             if (projectPath.endsWith(":feature-toggles-api") && dependencyPath == ":experiments-api") {
                                 // noop
