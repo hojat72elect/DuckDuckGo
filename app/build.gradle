@@ -265,8 +265,7 @@ dependencies {
     implementation project(':site-permissions-api')
     implementation project(':site-permissions-impl')
 
-    implementation project(':ad-click-api')
-    implementation project(':ad-click-impl')
+    implementation project(':ad-click')
 
     implementation project(':autoconsent-api')
     implementation project(':autoconsent-impl')
