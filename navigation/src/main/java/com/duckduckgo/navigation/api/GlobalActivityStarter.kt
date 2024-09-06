@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2023 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.navigation.api
 
 import android.app.Activity
@@ -21,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.duckduckgo.navigation.api.GlobalActivityStarter.ActivityParams
 import java.io.Serializable
-import kotlin.jvm.Throws
 
 /**
  * This is the Activity Starter.
@@ -65,7 +49,11 @@ interface GlobalActivityStarter {
      * @throws IllegalArgumentException when the Activity can't be found, or when the [deeplinkActivityParams] can't be mapped into [ActivityParams]
      */
     @Throws(IllegalArgumentException::class)
-    fun start(context: Context, deeplinkActivityParams: DeeplinkActivityParams, options: Bundle? = null)
+    fun start(
+        context: Context,
+        deeplinkActivityParams: DeeplinkActivityParams,
+        options: Bundle? = null
+    )
 
     /**
      * Returns  the [Intent] that can be used to start the [Activity], given the [ActivityParams].

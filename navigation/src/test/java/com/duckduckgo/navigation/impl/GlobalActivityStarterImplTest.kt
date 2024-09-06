@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2023 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.navigation.impl
 
 import android.content.Context
@@ -27,7 +11,9 @@ import com.duckduckgo.navigation.api.getActivityParams
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -39,7 +25,12 @@ import org.mockito.kotlin.verify
 class GlobalActivityStarterImplTest {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
-    private val globalActivityStarter = GlobalActivityStarterImpl(setOf(TestActivityWithParamsMapper(), TestActivityNoParamsMapper()))
+    private val globalActivityStarter = GlobalActivityStarterImpl(
+        setOf(
+            TestActivityWithParamsMapper(),
+            TestActivityNoParamsMapper()
+        )
+    )
 
     @Test
     fun whenStartIntentNotFoundActivityThenReturnNull() {
@@ -61,7 +52,8 @@ class GlobalActivityStarterImplTest {
 
     @Test
     fun whenStartIntentWithDeeplinkNoParamsFindsActivityThenReturnIntent() {
-        val intent = globalActivityStarter.startIntent(context, DeeplinkActivityParams("screenTest"))
+        val intent =
+            globalActivityStarter.startIntent(context, DeeplinkActivityParams("screenTest"))
 
         assertNotNull(intent)
         assertNotNull(intent?.getActivityParams(TestNoParams::class.java))
@@ -69,7 +61,10 @@ class GlobalActivityStarterImplTest {
 
     @Test
     fun whenStartIntentWithDeeplinkParamsFindsActivityThenReturnIntent() {
-        val intent = globalActivityStarter.startIntent(context, DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}"))
+        val intent = globalActivityStarter.startIntent(
+            context,
+            DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}")
+        )
 
         assertNotNull(intent)
         assertEquals("test", intent?.getActivityParams(TestParams::class.java)?.value)
@@ -96,7 +91,10 @@ class GlobalActivityStarterImplTest {
     @Test
     fun whenStartWithDeeplinkParamsArgumentsFindsActivityThenSucceeds() {
         val context: Context = mock()
-        globalActivityStarter.start(context, DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}"))
+        globalActivityStarter.start(
+            context,
+            DeeplinkActivityParams("screenTest", jsonArguments = "{\"value\": \"test\"}")
+        )
 
         verify(context).startActivity(any(), anyOrNull())
     }
@@ -115,6 +113,7 @@ private data class TestParams(val value: String) : ActivityParams
 private object NotFoundParams : ActivityParams
 
 private val notFoundDeeplinkParams = DeeplinkActivityParams("notFoundScreen")
+
 private object TestNoParams : ActivityParams
 
 private class TestActivityNoParamsMapper : GlobalActivityStarter.ParamToActivityMapper {
@@ -127,7 +126,8 @@ private class TestActivityNoParamsMapper : GlobalActivityStarter.ParamToActivity
     }
 
     override fun map(deeplinkActivityParams: DeeplinkActivityParams): ActivityParams? {
-        val screenName = deeplinkActivityParams.screenName.takeUnless { it.isEmpty() } ?: return null
+        val screenName =
+            deeplinkActivityParams.screenName.takeUnless { it.isEmpty() } ?: return null
         return if (screenName == "screenTest") {
             TestNoParams
         } else {
@@ -148,7 +148,8 @@ private class TestActivityWithParamsMapper : GlobalActivityStarter.ParamToActivi
     }
 
     override fun map(deeplinkActivityParams: DeeplinkActivityParams): ActivityParams? {
-        val screenName = deeplinkActivityParams.screenName.takeUnless { it.isEmpty() } ?: return null
+        val screenName =
+            deeplinkActivityParams.screenName.takeUnless { it.isEmpty() } ?: return null
         return if (screenName == "screenTest") {
             if (deeplinkActivityParams.jsonArguments.isEmpty()) {
                 val instance = tryCreateObjectInstance(TestParams::class.java)
