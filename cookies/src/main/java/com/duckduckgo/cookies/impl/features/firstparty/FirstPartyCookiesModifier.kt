@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.cookies.impl.features.firstparty
 
 import android.database.DatabaseErrorHandler
@@ -73,12 +57,16 @@ class RealFirstPartyCookiesModifier @Inject constructor(
     // More info in https://duckduckgo.com/privacy
     private fun excludedSites(): List<String> =
         cookiesRepository.exceptions.map { it.domain } +
-            userAllowListRepository.domainsInUserAllowList() +
-            unprotectedTemporary.unprotectedTemporaryExceptions.map { it.domain } +
-            fireproofRepository.fireproofWebsites() +
-            DDG_COOKIE_DOMAINS.map { it.toUri().host!! }
+                userAllowListRepository.domainsInUserAllowList() +
+                unprotectedTemporary.unprotectedTemporaryExceptions.map { it.domain } +
+                fireproofRepository.fireproofWebsites() +
+                DDG_COOKIE_DOMAINS.map { it.toUri().host!! }
 
-    private fun buildSQLWhereClause(timestampThreshold: Long, isOldDb: Boolean, excludedSites: List<String>): String {
+    private fun buildSQLWhereClause(
+        timestampThreshold: Long,
+        isOldDb: Boolean,
+        excludedSites: List<String>
+    ): String {
         val httpOnly = if (isOldDb) "httponly" else "is_httponly"
         if (excludedSites.isEmpty()) {
             return "expires_utc > $timestampThreshold AND $httpOnly = 0"
@@ -93,6 +81,7 @@ class RealFirstPartyCookiesModifier @Inject constructor(
             }
         }
     }
+
     private fun expireFirstPartyCookies(
         databasePath: String,
     ) {
@@ -102,13 +91,18 @@ class RealFirstPartyCookiesModifier @Inject constructor(
                 val threshold = cookiesRepository.firstPartyCookiePolicy.threshold // in seconds
 
                 // both timestamps in micro seconds from 1601
-                val timestampThreshold = (System.currentTimeMillis() + TIME_1601_IN_MICRO + (threshold * MULTIPLIER)) * MULTIPLIER
-                val timestampMaxAge = (System.currentTimeMillis() + TIME_1601_IN_MICRO + (maxAge * MULTIPLIER)) * MULTIPLIER
+                val timestampThreshold =
+                    (System.currentTimeMillis() + TIME_1601_IN_MICRO + (threshold * MULTIPLIER)) * MULTIPLIER
+                val timestampMaxAge =
+                    (System.currentTimeMillis() + TIME_1601_IN_MICRO + (maxAge * MULTIPLIER)) * MULTIPLIER
 
                 // check table and column exist before executing query
                 // old WebView versions use httponly, newer use is_httponly
                 val columnExists =
-                    rawQuery("PRAGMA table_info('${SQLCookieRemover.COOKIES_TABLE_NAME}')", null).use {
+                    rawQuery(
+                        "PRAGMA table_info('${SQLCookieRemover.COOKIES_TABLE_NAME}')",
+                        null
+                    ).use {
                         while (it.moveToNext()) {
                             val index = it.getColumnIndex("name")
                             if (it.getString(index).equals("is_httponly")) {
@@ -148,7 +142,12 @@ class RealFirstPartyCookiesModifier @Inject constructor(
 
     private fun openReadableDatabase(databasePath: String): SQLiteDatabase? {
         return try {
-            SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE, databaseErrorHandler)
+            SQLiteDatabase.openDatabase(
+                databasePath,
+                null,
+                SQLiteDatabase.OPEN_READWRITE,
+                databaseErrorHandler
+            )
         } catch (exception: Exception) {
             null
         }
@@ -157,7 +156,8 @@ class RealFirstPartyCookiesModifier @Inject constructor(
     companion object {
         private const val TIME_1601_IN_MICRO = 11644473600000
         private const val MULTIPLIER = 1000
-        private const val CHUNKS = 450 // Max depth is 1000, each filter happens twice plus hardcoded filters, we use 450 to give some wiggle room
+        private const val CHUNKS =
+            450 // Max depth is 1000, each filter happens twice plus hardcoded filters, we use 450 to give some wiggle room
     }
 }
 

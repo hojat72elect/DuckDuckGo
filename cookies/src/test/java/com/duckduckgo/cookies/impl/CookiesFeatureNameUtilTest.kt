@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2023 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.cookies.impl
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -55,14 +39,17 @@ class CookiesFeatureNameUtilTest {
             This is a test error
         """
 
-        const val WITHOUT_NEW_LINE = "Error on line 1 UPDATE test SET test=1 WHERE test=0 This is a test error "
+        const val WITHOUT_NEW_LINE =
+            "Error on line 1 UPDATE test SET test=1 WHERE test=0 This is a test error "
 
         const val WITH_WHEN_BASE634 =
             "CiAgICAgICAgICAgIEVycm9yIG9uIGxpbmUgMQogICAgICAgICAgICBVUERBVEUgdGVzdAogICAgICAgICAgICBTRVQgdGVzdD0xCiAgICAgICAgICAgIAogICAgICAg" +
-                "ICAgICBUaGlzIGlzIGEgdGVzdCBlcnJvcgogICAgICAgIA"
+                    "ICAgICBUaGlzIGlzIGEgdGVzdCBlcnJvcgogICAgICAgIA"
 
-        const val WITHOUT_WHEN_BASE64 = "CiAgICAgICAgICAgIEVycm9yIG9uIGxpbmUgMQogICAgICAgICAgICBUaGlzIGlzIGEgdGVzdCBlcnJvcgogICAgICAgIA"
+        const val WITHOUT_WHEN_BASE64 =
+            "CiAgICAgICAgICAgIEVycm9yIG9uIGxpbmUgMQogICAgICAgICAgICBUaGlzIGlzIGEgdGVzdCBlcnJvcgogICAgICAgIA"
 
-        const val WITHOUT_NEW_LINE_BASE64 = "RXJyb3Igb24gbGluZSAxIFVQREFURSB0ZXN0IFNFVCB0ZXN0PTEgV0hFUkUgdGVzdD0wIFRoaXMgaXMgYSB0ZXN0IGVycm9yIA"
+        const val WITHOUT_NEW_LINE_BASE64 =
+            "RXJyb3Igb24gbGluZSAxIFVQREFURSB0ZXN0IFNFVCB0ZXN0PTEgV0hFUkUgdGVzdD0wIFRoaXMgaXMgYSB0ZXN0IGVycm9yIA"
     }
 }

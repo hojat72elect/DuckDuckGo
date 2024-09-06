@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.cookies.store
 
 import com.duckduckgo.common.test.CoroutineTestRule
@@ -21,7 +5,7 @@ import com.duckduckgo.cookies.store.RealCookieRepository.Companion.DEFAULT_MAX_A
 import com.duckduckgo.cookies.store.RealCookieRepository.Companion.DEFAULT_THRESHOLD
 import com.duckduckgo.cookies.store.thirdpartycookienames.ThirdPartyCookieNamesDao
 import kotlinx.coroutines.test.TestScope
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,10 +19,10 @@ class RealCookieRepositoryTest {
     @get:Rule
     var coroutineRule = CoroutineTestRule()
 
-    lateinit var testee: com.duckduckgo.cookies.store.RealCookieRepository
+    lateinit var testee: RealCookieRepository
 
-    private val mockDatabase: com.duckduckgo.cookies.store.CookiesDatabase = mock()
-    private val mockCookiesDao: com.duckduckgo.cookies.store.CookiesDao = mock()
+    private val mockDatabase: CookiesDatabase = mock()
+    private val mockCookiesDao: CookiesDao = mock()
     private val mockCookieNamesDao: ThirdPartyCookieNamesDao = mock()
 
     @Before
@@ -51,7 +35,7 @@ class RealCookieRepositoryTest {
     fun whenRepositoryIsCreatedThenValuesLoadedIntoMemory() {
         givenCookiesDbHasContent()
 
-        testee = com.duckduckgo.cookies.store.RealCookieRepository(
+        testee = RealCookieRepository(
             mockDatabase,
             TestScope(),
             coroutineRule.testDispatcherProvider,
@@ -68,7 +52,7 @@ class RealCookieRepositoryTest {
     fun whenLoadToMemoryAndNoPolicyThenSetDefaultValues() {
         whenever(mockCookiesDao.getFirstPartyCookiePolicy()).thenReturn(null)
 
-        testee = com.duckduckgo.cookies.store.RealCookieRepository(
+        testee = RealCookieRepository(
             mockDatabase,
             TestScope(),
             coroutineRule.testDispatcherProvider,
@@ -81,9 +65,9 @@ class RealCookieRepositoryTest {
 
     @Test
     fun whenUpdateAllThenUpdateAllCalled() {
-        val policy = com.duckduckgo.cookies.store.FirstPartyCookiePolicyEntity(5, 6, 7)
+        val policy = FirstPartyCookiePolicyEntity(5, 6, 7)
 
-        testee = com.duckduckgo.cookies.store.RealCookieRepository(
+        testee = RealCookieRepository(
             mockDatabase,
             TestScope(),
             coroutineRule.testDispatcherProvider,
@@ -100,7 +84,7 @@ class RealCookieRepositoryTest {
     fun whenUpdateAllThenPreviousValuesAreCleared() {
         givenCookiesDbHasContent()
 
-        testee = com.duckduckgo.cookies.store.RealCookieRepository(
+        testee = RealCookieRepository(
             mockDatabase,
             TestScope(),
             coroutineRule.testDispatcherProvider,
@@ -114,8 +98,10 @@ class RealCookieRepositoryTest {
         reset(mockCookiesDao)
         reset(mockCookieNamesDao)
 
-        testee.updateAll(listOf(),
-            com.duckduckgo.cookies.store.FirstPartyCookiePolicyEntity(5, 6, 7), listOf())
+        testee.updateAll(
+            listOf(),
+            FirstPartyCookiePolicyEntity(5, 6, 7), listOf()
+        )
 
         assertEquals(0, testee.exceptions.size)
         assertEquals(0, testee.cookieNames.size)
@@ -124,7 +110,7 @@ class RealCookieRepositoryTest {
     private fun givenCookiesDbHasContent() {
         whenever(mockCookiesDao.getAllCookieExceptions()).thenReturn(listOf(cookieExceptionEntity))
         whenever(mockCookiesDao.getFirstPartyCookiePolicy()).thenReturn(
-            com.duckduckgo.cookies.store.FirstPartyCookiePolicyEntity(
+            FirstPartyCookiePolicyEntity(
                 1,
                 THRESHOLD,
                 MAX_AGE
@@ -134,12 +120,12 @@ class RealCookieRepositoryTest {
     }
 
     companion object {
-        val cookieExceptionEntity = com.duckduckgo.cookies.store.CookieExceptionEntity(
+        val cookieExceptionEntity = CookieExceptionEntity(
             domain = "https://www.example.com",
             reason = "reason",
         )
 
-        val cookieNamesEntity = com.duckduckgo.cookies.store.CookieNamesEntity(
+        val cookieNamesEntity = CookieNamesEntity(
             name = "cookieName",
         )
 

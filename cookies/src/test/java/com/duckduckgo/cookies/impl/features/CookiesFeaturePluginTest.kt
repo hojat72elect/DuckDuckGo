@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.cookies.impl.features
 
 import com.duckduckgo.common.test.FileUtilities
@@ -27,7 +11,8 @@ import com.duckduckgo.cookies.store.CookiesRepository
 import com.duckduckgo.cookies.store.FirstPartyCookiePolicyEntity
 import com.duckduckgo.cookies.store.contentscopescripts.ContentScopeScriptsCookieRepository
 import junit.framework.TestCase
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.argumentCaptor
@@ -43,7 +28,11 @@ class CookiesFeaturePluginTest {
 
     @Before
     fun before() {
-        testee = CookiesFeaturePlugin(mockCookiesRepository, mockContentScopeCookieRepository, mockFeatureTogglesRepository)
+        testee = CookiesFeaturePlugin(
+            mockCookiesRepository,
+            mockContentScopeCookieRepository,
+            mockFeatureTogglesRepository
+        )
     }
 
     @Test
@@ -60,7 +49,10 @@ class CookiesFeaturePluginTest {
 
     @Test
     fun whenFeatureNameMatchesCookiesAndIsEnabledThenStoreFeatureEnabled() {
-        val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies.json")
+        val jsonString = FileUtilities.loadText(
+            CookiesFeaturePluginTest::class.java.classLoader!!,
+            "json/cookies.json"
+        )
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
 
@@ -76,12 +68,21 @@ class CookiesFeaturePluginTest {
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
 
-        verify(mockFeatureTogglesRepository).insert(CookiesFeatureToggles(FEATURE_NAME, false, null))
+        verify(mockFeatureTogglesRepository).insert(
+            CookiesFeatureToggles(
+                FEATURE_NAME,
+                false,
+                null
+            )
+        )
     }
 
     @Test
     fun whenFeatureNameMatchesCookiesAndHasMinSupportedVersionThenStoreMinSupportedVersion() {
-        val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies_min_supported_version.json")
+        val jsonString = FileUtilities.loadText(
+            CookiesFeaturePluginTest::class.java.classLoader!!,
+            "json/cookies_min_supported_version.json"
+        )
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
 
@@ -90,7 +91,10 @@ class CookiesFeaturePluginTest {
 
     @Test
     fun whenFeatureNameMatchesCookiesThenUpdateAllExistingValues() {
-        val jsonString = FileUtilities.loadText(CookiesFeaturePluginTest::class.java.classLoader!!, "json/cookies.json")
+        val jsonString = FileUtilities.loadText(
+            CookiesFeaturePluginTest::class.java.classLoader!!,
+            "json/cookies.json"
+        )
 
         testee.store(FEATURE_NAME_VALUE, jsonString)
 
