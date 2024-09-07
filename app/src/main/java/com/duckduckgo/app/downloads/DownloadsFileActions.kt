@@ -33,7 +33,8 @@ import javax.inject.Inject
 import timber.log.Timber
 
 @ContributesBinding(AppScope::class)
-class RealDownloadsFileActions @Inject constructor(private val appBuildConfig: AppBuildConfig) : DownloadsFileActions {
+class RealDownloadsFileActions @Inject constructor(private val appBuildConfig: AppBuildConfig) :
+    DownloadsFileActions {
 
     override fun openFile(applicationContext: Context, file: File): Boolean {
         val intent = createIntentToOpenFile(applicationContext, file)

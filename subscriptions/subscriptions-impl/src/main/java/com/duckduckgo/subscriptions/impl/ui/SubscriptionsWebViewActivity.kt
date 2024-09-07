@@ -125,7 +125,8 @@ data class SubscriptionsWebViewActivityWithParams(
 )
 @ContributeToActivityStarter(SubscriptionScreenNoParams::class)
 @ContributeToActivityStarter(SubscriptionsWebViewActivityWithParams::class)
-class SubscriptionsWebViewActivity : DuckDuckGoActivity(), DownloadConfirmationDialogListener {
+class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
+    com.duckduckgo.downloads.api.DownloadConfirmationDialogListener {
 
     @Inject
     @Named("Subscriptions")
@@ -148,16 +149,16 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(), DownloadConfirmationD
     lateinit var appBuildConfig: AppBuildConfig
 
     @Inject
-    lateinit var downloadConfirmation: DownloadConfirmation
+    lateinit var downloadConfirmation: com.duckduckgo.downloads.api.DownloadConfirmation
 
     @Inject
-    lateinit var fileDownloader: FileDownloader
+    lateinit var fileDownloader: com.duckduckgo.downloads.api.FileDownloader
 
     @Inject
-    lateinit var downloadCallback: DownloadStateListener
+    lateinit var downloadCallback: com.duckduckgo.downloads.api.DownloadStateListener
 
     @Inject
-    lateinit var downloadsFileActions: DownloadsFileActions
+    lateinit var downloadsFileActions: com.duckduckgo.downloads.api.DownloadsFileActions
 
     @Inject
     lateinit var pixelSender: SubscriptionPixelSender
@@ -288,25 +289,29 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(), DownloadConfirmationD
         }
     }
 
-    private fun processFileDownloadedCommand(command: DownloadCommand) {
+    private fun processFileDownloadedCommand(command: com.duckduckgo.downloads.api.DownloadCommand) {
         when (command) {
-            is DownloadCommand.ShowDownloadStartedMessage -> downloadStarted(command)
-            is DownloadCommand.ShowDownloadFailedMessage -> downloadFailed(command)
-            is DownloadCommand.ShowDownloadSuccessMessage -> downloadSucceeded(command)
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadStartedMessage -> downloadStarted(command)
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadFailedMessage -> downloadFailed(command)
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadSuccessMessage -> downloadSucceeded(command)
         }
     }
 
     @SuppressLint("WrongConstant")
-    private fun downloadStarted(command: DownloadCommand.ShowDownloadStartedMessage) {
-        binding.root.makeSnackbarWithNoBottomInset(getString(command.messageId, command.fileName), DOWNLOAD_SNACKBAR_LENGTH)?.show()
+    private fun downloadStarted(command: com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadStartedMessage) {
+        binding.root.makeSnackbarWithNoBottomInset(getString(command.messageId, command.fileName),
+            com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_LENGTH
+        )?.show()
     }
 
-    private fun downloadFailed(command: DownloadCommand.ShowDownloadFailedMessage) {
+    private fun downloadFailed(command: com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadFailedMessage) {
         val downloadFailedSnackbar = binding.root.makeSnackbarWithNoBottomInset(getString(command.messageId), Snackbar.LENGTH_LONG)
-        binding.root.postDelayed({ downloadFailedSnackbar?.show() }, DOWNLOAD_SNACKBAR_DELAY)
+        binding.root.postDelayed({ downloadFailedSnackbar?.show() },
+            com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_DELAY
+        )
     }
 
-    private fun downloadSucceeded(command: DownloadCommand.ShowDownloadSuccessMessage) {
+    private fun downloadSucceeded(command: com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadSuccessMessage) {
         val downloadSucceededSnackbar = binding.root.makeSnackbarWithNoBottomInset(
             getString(command.messageId, command.fileName),
             Snackbar.LENGTH_LONG,
@@ -319,7 +324,9 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(), DownloadConfirmationD
                     }
                 }
             }
-        binding.root.postDelayed({ downloadSucceededSnackbar.show() }, DOWNLOAD_SNACKBAR_DELAY)
+        binding.root.postDelayed({ downloadSucceededSnackbar.show() },
+            com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_DELAY
+        )
     }
 
     private fun requestFileDownload(

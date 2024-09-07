@@ -254,9 +254,7 @@ dependencies {
     implementation project(':voice-search-impl')
     implementation project(':voice-search-store')
 
-    implementation project(':downloads-api')
-    implementation project(':downloads-impl')
-    implementation project(':downloads-store')
+    implementation project(':downloads')
 
     internalImplementation project(':traces-api')
     internalImplementation project(':traces-impl')
