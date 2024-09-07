@@ -26,8 +26,6 @@ import com.duckduckgo.data.store.api.SharedPreferencesProvider
 import com.duckduckgo.di.scopes.AppScope
 import com.duckduckgo.feature.toggles.api.RemoteFeatureStoreNamed
 import com.duckduckgo.feature.toggles.api.Toggle
-import com.duckduckgo.feature.toggles.api.Toggle.Experiment
-import com.duckduckgo.feature.toggles.api.Toggle.InternalAlwaysEnabled
 import com.squareup.moshi.Moshi
 import kotlin.reflect.KClass
 import kotlin.reflect.full.functions
@@ -44,7 +42,8 @@ class ContributesActivePluginPointCodeGeneratorTest {
 
     @get:Rule var coroutineRule = CoroutineTestRule()
 
-    private val sharedPreferencesProvider = FakeSharedPreferencesProvider()
+    private val sharedPreferencesProvider =
+        com.duckduckgo.data.store.api.FakeSharedPreferencesProvider()
     private val moshi = Moshi.Builder().build()
 
     @Test
@@ -359,7 +358,7 @@ class ContributesActivePluginPointCodeGeneratorTest {
             .getConstructor(
                 CoroutineScope::class.java,
                 DispatcherProvider::class.java,
-                SharedPreferencesProvider::class.java,
+                com.duckduckgo.data.store.api.SharedPreferencesProvider::class.java,
                 Moshi::class.java,
             ).newInstance(
                 coroutineRule.testScope,

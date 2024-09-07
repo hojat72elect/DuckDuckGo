@@ -27,7 +27,7 @@ import org.mockito.kotlin.*
 class RealDeviceShieldPixelsTest {
 
     private val pixel = mock<Pixel>()
-    private val sharedPreferencesProvider = mock<SharedPreferencesProvider>()
+    private val sharedPreferencesProvider = mock<com.duckduckgo.data.store.api.SharedPreferencesProvider>()
 
     lateinit var deviceShieldPixels: DeviceShieldPixels
 

@@ -36,7 +36,7 @@ dependencies {
     implementation project(path: ':browser-api')
     implementation project(path: ':navigation')
     implementation project(path: ':new-tab-page-api')
-    implementation project(path: ':data-store-api')
+    implementation project(path: ':data-store')
     implementation project(path: ':saved-sites-store')
 
     anvil project(path: ':anvil-compiler')

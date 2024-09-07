@@ -28,7 +28,7 @@ interface NetpDataStore {
 }
 
 class NetpDataStoreSharedPreferences constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : NetpDataStore {
 
     private val preferences: SharedPreferences by lazy {

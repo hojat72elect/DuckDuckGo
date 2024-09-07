@@ -49,7 +49,7 @@ dependencies {
     implementation project(path: ':downloads-api')
     implementation project(path: ':statistics')
     implementation project(':privacy-config-api') // remote feature flag
-    implementation project(':data-store-api')
+    implementation project(':data-store')
     implementation project(':remote-messaging-api') // remote feature flag
     implementation project(':survey-api')
     implementation project(':vpn-api')

@@ -60,7 +60,7 @@ class WgTunnelTest {
             whenever(wgServerApi.registerPublicKey(eq(keys.publicKey.toBase64()), isNull()))
                 .thenReturn(serverData.copy(publicKey = keys.publicKey.toBase64()))
         }
-        wgTunnelStore = WgTunnelStore(FakeSharedPreferencesProvider())
+        wgTunnelStore = WgTunnelStore(com.duckduckgo.data.store.api.FakeSharedPreferencesProvider())
         wgTunnel = RealWgTunnel(wgServerApi, netPDefaultConfigProvider, wgTunnelStore)
     }
 

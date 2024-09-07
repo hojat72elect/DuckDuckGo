@@ -29,7 +29,7 @@ interface VpnNotificationStore {
 
 @ContributesBinding(AppScope::class)
 class RealVpnNotificationStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : VpnNotificationStore {
     private val prefs: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(FILENAME, multiprocess = true, migrate = false)

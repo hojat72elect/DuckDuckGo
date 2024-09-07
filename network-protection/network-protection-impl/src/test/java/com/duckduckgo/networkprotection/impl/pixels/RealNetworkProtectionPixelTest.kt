@@ -37,7 +37,7 @@ class RealNetworkProtectionPixelTest {
     private lateinit var pixel: Pixel
 
     @Mock
-    private lateinit var sharedPreferencesProvider: SharedPreferencesProvider
+    private lateinit var sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider
 
     private lateinit var fakeNetpCohortStore: FakeNetpCohortStore
 

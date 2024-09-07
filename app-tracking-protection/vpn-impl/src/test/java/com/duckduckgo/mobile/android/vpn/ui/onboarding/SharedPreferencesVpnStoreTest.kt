@@ -31,7 +31,7 @@ import org.mockito.kotlin.whenever
 
 class SharedPreferencesVpnStoreTest {
 
-    private val sharedPreferencesProvider = mock<SharedPreferencesProvider>()
+    private val sharedPreferencesProvider = mock<com.duckduckgo.data.store.api.SharedPreferencesProvider>()
 
     private lateinit var sharedPreferencesVpnStore: SharedPreferencesVpnStore
     private lateinit var preferences: SharedPreferences

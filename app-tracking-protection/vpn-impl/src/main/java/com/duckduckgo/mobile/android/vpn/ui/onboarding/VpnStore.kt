@@ -42,7 +42,7 @@ interface VpnStore {
 @ContributesBinding(AppScope::class)
 @SingleInstanceIn(AppScope::class)
 class SharedPreferencesVpnStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : VpnStore {
 
     private val preferences: SharedPreferences by lazy {

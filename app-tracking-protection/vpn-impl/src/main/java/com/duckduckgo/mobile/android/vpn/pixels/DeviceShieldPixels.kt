@@ -372,7 +372,7 @@ interface DeviceShieldPixels {
 @SingleInstanceIn(AppScope::class)
 class RealDeviceShieldPixels @Inject constructor(
     private val pixel: Pixel,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : DeviceShieldPixels {
 
     private val preferences: SharedPreferences by lazy {

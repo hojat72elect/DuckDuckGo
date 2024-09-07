@@ -21,7 +21,7 @@ import com.duckduckgo.data.store.api.SharedPreferencesProvider
 import javax.inject.Inject
 
 class NetPInternalMtuProvider @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) {
     private val preferences: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(

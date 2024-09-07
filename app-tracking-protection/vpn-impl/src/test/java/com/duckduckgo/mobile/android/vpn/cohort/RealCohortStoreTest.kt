@@ -47,7 +47,7 @@ class RealCohortStoreTest {
     @Mock
     private lateinit var appBuildConfig: AppBuildConfig
 
-    private val sharedPreferencesProvider = mock<SharedPreferencesProvider>()
+    private val sharedPreferencesProvider = mock<com.duckduckgo.data.store.api.SharedPreferencesProvider>()
 
     private lateinit var cohortStore: CohortStore
 

@@ -27,7 +27,7 @@ import javax.inject.Inject
 class NetPInternalExclusionListProvider @Inject constructor(
     private val packageManager: PackageManager,
     private val netPInternalFeatureToggles: NetPInternalFeatureToggles,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) {
     private val preferences: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(

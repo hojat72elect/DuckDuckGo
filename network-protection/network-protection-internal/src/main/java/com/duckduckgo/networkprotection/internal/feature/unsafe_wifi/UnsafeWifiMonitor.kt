@@ -55,7 +55,7 @@ class UnsafeWifiMonitor @Inject constructor(
     private val netPDisabledNotificationBuilder: NetPDisabledNotificationBuilder,
     private val notificationManager: NotificationManagerCompat,
     private val dispatcherProvider: DispatcherProvider,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val appBuildConfig: AppBuildConfig,
 ) : MainProcessLifecycleObserver {
 

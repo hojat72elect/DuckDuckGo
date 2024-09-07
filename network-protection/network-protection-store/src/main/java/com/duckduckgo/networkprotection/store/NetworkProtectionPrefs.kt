@@ -78,7 +78,7 @@ interface NetworkProtectionPrefs {
 }
 
 class RealNetworkProtectionPrefs constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : NetworkProtectionPrefs {
     private val prefs: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(FILENAME, multiprocess = true, migrate = false)

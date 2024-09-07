@@ -36,7 +36,7 @@ class VpnFeaturesRegistryImplTest {
     @get:Rule
     val coroutineTestRule: CoroutineTestRule = CoroutineTestRule()
 
-    private val sharedPreferencesProvider: SharedPreferencesProvider = mock()
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider = mock()
     private lateinit var vpnServiceWrapper: TestVpnServiceWrapper
 
     private lateinit var vpnFeaturesRegistry: VpnFeaturesRegistry

@@ -246,7 +246,7 @@ class RealWgTunnel @Inject constructor(
 private annotation class InternalApi
 
 class WgTunnelStore constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) {
     private val prefs: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(FILENAME, multiprocess = true, migrate = false)
@@ -292,7 +292,7 @@ class WgTunnelStore constructor(
 object WgTunnelStoreModule {
     @Provides
     @InternalApi
-    fun provideWgTunnelStore(preferencesProvider: SharedPreferencesProvider): WgTunnelStore {
+    fun provideWgTunnelStore(preferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider): WgTunnelStore {
         return WgTunnelStore(preferencesProvider)
     }
 }

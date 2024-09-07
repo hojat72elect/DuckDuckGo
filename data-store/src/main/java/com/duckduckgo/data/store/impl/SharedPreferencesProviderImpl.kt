@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.data.store.impl
 
 import android.content.Context
@@ -38,7 +22,11 @@ private const val MIGRATED_TO_HARMONY = "migrated_to_harmony"
 class SharedPreferencesProviderImpl @Inject constructor(
     private val context: Context,
 ) : SharedPreferencesProvider {
-    override fun getSharedPreferences(name: String, multiprocess: Boolean, migrate: Boolean): SharedPreferences {
+    override fun getSharedPreferences(
+        name: String,
+        multiprocess: Boolean,
+        migrate: Boolean
+    ): SharedPreferences {
         return if (multiprocess) {
             if (migrate) {
                 logcat { "Migrate and return preferences to Harmony" }
@@ -97,18 +85,23 @@ class SharedPreferencesProviderImpl @Inject constructor(
                 is Boolean -> {
                     destination.edit { putBoolean(key, originalValue) }
                 }
+
                 is Long -> {
                     destination.edit { putLong(key, originalValue) }
                 }
+
                 is Int -> {
                     destination.edit { putInt(key, originalValue) }
                 }
+
                 is Float -> {
                     destination.edit { putFloat(key, originalValue) }
                 }
+
                 is String -> {
                     destination.edit { putString(key, originalValue) }
                 }
+
                 else -> logcat(LogPriority.WARN) { "Could not migrate $key from $name preferences" }
             }
         }

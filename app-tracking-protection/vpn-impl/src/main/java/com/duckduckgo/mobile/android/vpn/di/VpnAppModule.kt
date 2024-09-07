@@ -92,7 +92,7 @@ object VpnAppModule {
     @SingleInstanceIn(AppScope::class)
     fun provideVpnFeaturesRegistry(
         context: Context,
-        sharedPreferencesProvider: SharedPreferencesProvider,
+        sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
         dispatcherProvider: DispatcherProvider,
     ): VpnFeaturesRegistry {
         return VpnFeaturesRegistryImpl(VpnServiceWrapper(context, dispatcherProvider), sharedPreferencesProvider, dispatcherProvider)

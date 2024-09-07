@@ -61,7 +61,7 @@ interface CohortStore {
     boundType = VpnServiceCallbacks::class,
 )
 class RealCohortStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val vpnFeaturesRegistry: VpnFeaturesRegistry,
     private val dispatcherProvider: DispatcherProvider,
     private val appBuildConfig: AppBuildConfig,

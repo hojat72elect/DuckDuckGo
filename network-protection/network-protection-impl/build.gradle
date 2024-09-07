@@ -43,7 +43,7 @@ dependencies {
     implementation project(':subscriptions-api')
     implementation project(':settings-api')
     implementation project(':remote-messaging-api')
-    implementation project(':data-store-api')
+    implementation project(':data-store')
     implementation project(':new-tab-page-api')
     implementation project(':survey-api')
 
@@ -65,7 +65,7 @@ dependencies {
 
     testImplementation project(':common-test')
     testImplementation project(':vpn-api-test')
-    testImplementation project(':data-store-test')
+    testImplementation project(':data-store')
     testImplementation CashApp.turbine
     testImplementation Testing.junit4
     testImplementation AndroidX.archCore.testing

@@ -32,7 +32,7 @@ private const val IS_INITIALIZED = "IS_INITIALIZED"
 
 internal class VpnFeaturesRegistryImpl(
     private val vpnServiceWrapper: VpnServiceWrapper,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val dispatcherProvider: DispatcherProvider,
 ) : VpnFeaturesRegistry {
 

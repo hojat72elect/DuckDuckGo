@@ -63,7 +63,7 @@ interface AppTpRemoteFeatures {
 class AppTpRemoteFeaturesStore @Inject constructor(
     @AppCoroutineScope private val coroutineScope: CoroutineScope,
     private val dispatcherProvider: DispatcherProvider,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     moshi: Moshi,
 ) : Toggle.Store {
 

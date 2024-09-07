@@ -39,7 +39,7 @@ class NetPWaitlistEndedChecker @Inject constructor(
     private val netpSubscriptionManager: NetpSubscriptionManager,
     private val dispatcherProvider: DispatcherProvider,
     private val networkProtectionState: NetworkProtectionState,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val networkProtectionPixels: NetworkProtectionPixels,
 ) : VpnServiceCallbacks {
 

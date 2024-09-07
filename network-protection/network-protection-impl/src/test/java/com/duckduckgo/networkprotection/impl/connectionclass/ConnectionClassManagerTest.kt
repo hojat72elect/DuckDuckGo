@@ -21,7 +21,7 @@ class ConnectionClassManagerTest {
             ExponentialGeometricAverage(),
             coroutineRule.testScope,
             ConnectionQualityStore(
-                FakeSharedPreferencesProvider(),
+                com.duckduckgo.data.store.api.FakeSharedPreferencesProvider(),
                 coroutineRule.testDispatcherProvider,
             ),
         )

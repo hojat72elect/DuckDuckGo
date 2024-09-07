@@ -44,7 +44,7 @@ object DataModule {
     @Provides
     @SingleInstanceIn(AppScope::class)
     fun provideNetworkProtectionRepository(
-        sharedPreferencesProvider: SharedPreferencesProvider,
+        sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     ): NetworkProtectionPrefs = RealNetworkProtectionPrefs(sharedPreferencesProvider)
 
     @SingleInstanceIn(AppScope::class)
@@ -109,6 +109,6 @@ object NetPBreakageCategoriesModule {
 object NetPDataStoreModule {
     @Provides
     fun provideNetPDataStore(
-        sharedPreferencesProvider: SharedPreferencesProvider,
+        sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     ): NetpDataStore = NetpDataStoreSharedPreferences(sharedPreferencesProvider)
 }

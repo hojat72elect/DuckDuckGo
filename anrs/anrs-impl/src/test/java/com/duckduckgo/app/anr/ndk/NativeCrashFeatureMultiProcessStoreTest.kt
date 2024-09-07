@@ -16,7 +16,7 @@ class NativeCrashFeatureMultiProcessStoreTest {
     private val store = NativeCrashFeatureMultiProcessStore(
         coroutineRule.testScope,
         coroutineRule.testDispatcherProvider,
-        FakeSharedPreferencesProvider(),
+        com.duckduckgo.data.store.api.FakeSharedPreferencesProvider(),
         Moshi.Builder().build(),
     )
 

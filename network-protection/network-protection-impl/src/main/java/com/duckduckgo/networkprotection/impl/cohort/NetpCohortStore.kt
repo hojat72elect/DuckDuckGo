@@ -40,7 +40,7 @@ interface NetpCohortStore {
     boundType = NetPFeatureRemover.NetPStoreRemovalPlugin::class,
 )
 class RealNetpCohortStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : NetpCohortStore, NetPFeatureRemover.NetPStoreRemovalPlugin {
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 

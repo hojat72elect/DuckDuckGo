@@ -53,7 +53,7 @@ class RealNetworkProtectionRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        networkProtectionPrefs = RealNetworkProtectionPrefs(FakeSharedPreferencesProvider())
+        networkProtectionPrefs = RealNetworkProtectionPrefs(com.duckduckgo.data.store.api.FakeSharedPreferencesProvider())
         testee = RealNetworkProtectionRepository(networkProtectionPrefs)
     }
 

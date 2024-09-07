@@ -49,7 +49,7 @@ dependencies {
     implementation project(':vpn-api')
     implementation project(':internal-features-api')
     implementation project(':navigation')
-    implementation project(':data-store-api')
+    implementation project(':data-store')
 
     implementation Square.moshi
     implementation Square.okHttp3.okHttp

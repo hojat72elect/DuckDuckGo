@@ -296,7 +296,7 @@ interface NetworkProtectionPixels {
 @SingleInstanceIn(AppScope::class)
 class RealNetworkProtectionPixel @Inject constructor(
     private val pixel: Pixel,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val cohortStore: NetpCohortStore,
     private val etTimestamp: ETTimestamp,
 ) : NetworkProtectionPixels {

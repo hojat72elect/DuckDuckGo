@@ -28,7 +28,7 @@ interface NetpVpnSettingsDataStore {
 }
 
 @ContributesBinding(AppScope::class)
-class RealNetpVpnSettingsDataStore @Inject constructor(sharedPreferencesProvider: SharedPreferencesProvider) : NetpVpnSettingsDataStore {
+class RealNetpVpnSettingsDataStore @Inject constructor(sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider) : NetpVpnSettingsDataStore {
 
     private val preferences: SharedPreferences by lazy {
         sharedPreferencesProvider.getSharedPreferences(FILENAME, multiprocess = true, migrate = false)

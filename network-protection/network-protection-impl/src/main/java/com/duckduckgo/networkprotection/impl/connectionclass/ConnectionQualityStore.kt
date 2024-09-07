@@ -24,7 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.withContext
 
 class ConnectionQualityStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val dispatcherProvider: DispatcherProvider,
 ) {
 

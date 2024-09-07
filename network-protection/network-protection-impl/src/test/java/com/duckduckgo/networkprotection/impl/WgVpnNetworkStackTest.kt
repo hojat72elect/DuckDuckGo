@@ -104,7 +104,7 @@ class WgVpnNetworkStackTest {
 
         privateDnsProvider = FakeDnsProvider()
         networkProtectionRepository = RealNetworkProtectionRepository(
-            RealNetworkProtectionPrefs(FakeSharedPreferencesProvider()),
+            RealNetworkProtectionPrefs(com.duckduckgo.data.store.api.FakeSharedPreferencesProvider()),
         )
 
         wgConfig = Config.parse(BufferedReader(StringReader(wgQuickConfig)))

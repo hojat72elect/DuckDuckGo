@@ -46,7 +46,7 @@ interface SubscriptionsDataStore {
 @ContributesBinding(AppScope::class)
 @SingleInstanceIn(AppScope::class)
 class SubscriptionsEncryptedDataStore @Inject constructor(
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : SubscriptionsDataStore {
     private val encryptedPreferences: SharedPreferences? by lazy { encryptedPreferences() }
     private fun encryptedPreferences(): SharedPreferences? {

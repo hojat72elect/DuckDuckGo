@@ -64,7 +64,7 @@ interface SystemAppsExclusionRepository {
 @SingleInstanceIn(AppScope::class)
 class RealSystemAppsExclusionRepository @Inject constructor(
     private val netPSettingsLocalConfig: NetPSettingsLocalConfig,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
     private val packageManager: PackageManager,
     private val systemAppOverridesProvider: SystemAppOverridesProvider,
     private val dispatcherProvider: DispatcherProvider,

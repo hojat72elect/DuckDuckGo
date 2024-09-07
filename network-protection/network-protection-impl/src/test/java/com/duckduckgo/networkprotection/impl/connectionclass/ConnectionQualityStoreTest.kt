@@ -16,7 +16,7 @@ class ConnectionQualityStoreTest {
 
     @Before
     fun setup() {
-        connectionQualityStore = ConnectionQualityStore(FakeSharedPreferencesProvider(), coroutineRule.testDispatcherProvider)
+        connectionQualityStore = ConnectionQualityStore(com.duckduckgo.data.store.api.FakeSharedPreferencesProvider(), coroutineRule.testDispatcherProvider)
     }
 
     @Test

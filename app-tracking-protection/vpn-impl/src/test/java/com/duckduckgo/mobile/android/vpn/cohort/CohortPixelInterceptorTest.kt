@@ -49,7 +49,7 @@ class CohortPixelInterceptorTest {
     private lateinit var cohortStore: CohortStore
     private lateinit var cohortCalculator: CohortCalculator
 
-    private val sharedPreferencesProvider = mock<SharedPreferencesProvider>()
+    private val sharedPreferencesProvider = mock<com.duckduckgo.data.store.api.SharedPreferencesProvider>()
 
     @Before
     fun setup() {

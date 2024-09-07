@@ -31,7 +31,7 @@ class AppTpRemoteFeaturesStoreTest {
         appTpRemoteFeaturesStore = AppTpRemoteFeaturesStore(
             coroutineRule.testScope,
             coroutineRule.testDispatcherProvider,
-            object : SharedPreferencesProvider {
+            object : com.duckduckgo.data.store.api.SharedPreferencesProvider {
                 override fun getSharedPreferences(
                     name: String,
                     multiprocess: Boolean,
@@ -82,7 +82,7 @@ class AppTpRemoteFeaturesStoreTest {
         val store = AppTpRemoteFeaturesStore(
             coroutineRule.testScope,
             coroutineRule.testDispatcherProvider,
-            object : SharedPreferencesProvider {
+            object : com.duckduckgo.data.store.api.SharedPreferencesProvider {
                 override fun getSharedPreferences(
                     name: String,
                     multiprocess: Boolean,
@@ -122,7 +122,7 @@ class AppTpRemoteFeaturesStoreTest {
         val appTpRemoteFeaturesStore = AppTpRemoteFeaturesStore(
             coroutineRule.testScope,
             coroutineRule.testDispatcherProvider,
-            object : SharedPreferencesProvider {
+            object : com.duckduckgo.data.store.api.SharedPreferencesProvider {
                 override fun getSharedPreferences(
                     name: String,
                     multiprocess: Boolean,

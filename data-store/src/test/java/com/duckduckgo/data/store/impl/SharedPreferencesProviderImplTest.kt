@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.data.store.impl
 
 import android.content.Context
@@ -33,7 +17,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class SharedPreferencesProviderImplTest {
 
-    private val context: Context = InstrumentationRegistry.getInstrumentation().context.applicationContext
+    private val context: Context =
+        InstrumentationRegistry.getInstrumentation().context.applicationContext
     private lateinit var prefs: SharedPreferences
     private lateinit var vpnPreferencesProvider: SharedPreferencesProvider
     private lateinit var NAME: String
@@ -53,7 +38,8 @@ class SharedPreferencesProviderImplTest {
         prefs.edit(commit = true) { putFloat("float", 1f) }
         prefs.edit(commit = true) { putLong("long", 1L) }
 
-        val harmony = vpnPreferencesProvider.getSharedPreferences(NAME, multiprocess = true, migrate = true)
+        val harmony =
+            vpnPreferencesProvider.getSharedPreferences(NAME, multiprocess = true, migrate = true)
 
         assertEquals(true, harmony.getBoolean("bool", false))
         assertEquals("true", harmony.getString("string", "false"))
@@ -81,7 +67,9 @@ class SharedPreferencesProviderImplTest {
 
     @Test
     fun testSafeSharedPreferences() {
-        val prefs = com.duckduckgo.data.store.impl.SafeSharedPreferences(vpnPreferencesProvider.getSharedPreferences(NAME))
+        val prefs = com.duckduckgo.data.store.impl.SafeSharedPreferences(
+            vpnPreferencesProvider.getSharedPreferences(NAME)
+        )
 
         prefs.edit(commit = true) { putBoolean("bool", true) }
         prefs.edit(commit = true) { putString("string", "true") }

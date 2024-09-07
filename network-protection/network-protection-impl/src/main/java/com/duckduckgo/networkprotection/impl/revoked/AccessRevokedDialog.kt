@@ -59,7 +59,7 @@ class RealAccessRevokedDialog @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val globalActivityStarter: GlobalActivityStarter,
     private val networkProtectionPixels: NetworkProtectionPixels,
-    private val sharedPreferencesProvider: SharedPreferencesProvider,
+    private val sharedPreferencesProvider: com.duckduckgo.data.store.api.SharedPreferencesProvider,
 ) : AccessRevokedDialog {
 
     private val preferences: SharedPreferences by lazy {
