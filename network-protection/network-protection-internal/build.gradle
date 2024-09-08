@@ -47,7 +47,7 @@ dependencies {
     implementation project(':privacy-config-api')
     implementation project(':feature-toggles-api')
     implementation project(':vpn-api')
-    implementation project(':internal-features-api')
+    implementation project(':internal-features')
     implementation project(':navigation')
     implementation project(':data-store')
 

@@ -37,7 +37,7 @@ dependencies {
     implementation project(':common-utils')
     implementation project(':common-ui')
     implementation project(':app-build-config-api')
-    implementation project(':internal-features-api')
+    implementation project(':internal-features')
     implementation project(':navigation')
 
     implementation Square.moshi

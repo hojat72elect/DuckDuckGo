@@ -311,7 +311,7 @@ dependencies {
 
     implementation project(':installation-impl')
 
-    implementation project(':internal-features-api')
+    implementation project(':internal-features')
 
     implementation project(':web-compat-impl')
     implementation project(':web-compat-store')

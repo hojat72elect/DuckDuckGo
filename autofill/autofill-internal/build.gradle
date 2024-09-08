@@ -33,7 +33,7 @@ dependencies {
     implementation project(path: ':autofill-api')
     implementation project(':autofill-impl')
     implementation project(':autofill-store')
-    implementation project(':internal-features-api')
+    implementation project(':internal-features')
     implementation project(path: ':browser-api')
     implementation project(path: ':navigation')
 
