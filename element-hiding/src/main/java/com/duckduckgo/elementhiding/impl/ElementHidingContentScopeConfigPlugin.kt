@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 DuckDuckGo
+ * Copyright (c) 2024 DuckDuckGo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,24 @@
 
 package com.duckduckgo.elementhiding.impl
 
+import com.duckduckgo.contentscopescripts.api.ContentScopeConfigPlugin
 import com.duckduckgo.di.scopes.AppScope
-import com.duckduckgo.elementhiding.store.ElementHidingEntity
 import com.duckduckgo.elementhiding.store.ElementHidingRepository
-import com.duckduckgo.privacy.config.api.PrivacyFeaturePlugin
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
 @ContributesMultibinding(AppScope::class)
-class ElementHidingFeaturePlugin @Inject constructor(
+class ElementHidingContentScopeConfigPlugin @Inject constructor(
     private val elementHidingRepository: ElementHidingRepository,
-) : PrivacyFeaturePlugin {
+) : ContentScopeConfigPlugin {
 
-    override fun store(featureName: String, jsonString: String): Boolean {
-        val elementHidingFeatureName = elementHidingFeatureValueOf(featureName) ?: return false
-        if (elementHidingFeatureName.value == this.featureName) {
-            val entity = ElementHidingEntity(json = jsonString)
-            elementHidingRepository.updateAll(elementHidingEntity = entity)
-            return true
-        }
-        return false
+    override fun config(): String {
+        val featureName = ElementHidingFeatureName.ElementHiding.value
+        val config = elementHidingRepository.elementHidingEntity.json
+        return "\"$featureName\":$config"
     }
 
-    override val featureName: String = ElementHidingFeatureName.ElementHiding.value
+    override fun preferences(): String? {
+        return null
+    }
 }

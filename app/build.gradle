@@ -281,8 +281,7 @@ dependencies {
     implementation project(':fingerprint-protection-impl')
     implementation project(':fingerprint-protection-store')
 
-    implementation project(':element-hiding-impl')
-    implementation project(':element-hiding-store')
+    implementation project(':element-hiding')
 
     implementation project(':httpsupgrade-api')
     implementation project(':httpsupgrade-impl')
