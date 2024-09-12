@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.subscriptions.impl.repository
 
 import com.duckduckgo.common.utils.DispatcherProvider
@@ -47,7 +31,12 @@ interface AuthRepository {
     suspend fun getAuthToken(): String?
     suspend fun saveAccountData(authToken: String, externalId: String)
     suspend fun getAccount(): Account?
-    suspend fun saveSubscriptionData(subscriptionResponse: SubscriptionResponse, entitlements: List<Entitlement>, email: String?): Subscription?
+    suspend fun saveSubscriptionData(
+        subscriptionResponse: SubscriptionResponse,
+        entitlements: List<Entitlement>,
+        email: String?
+    ): Subscription?
+
     suspend fun saveExternalId(externalId: String)
     suspend fun getSubscription(): Subscription?
     suspend fun clearSubscription()
@@ -69,32 +58,43 @@ class RealAuthRepository @Inject constructor(
     private val moshi = Builder().build()
 
     private inline fun <reified T> Moshi.listToJson(list: List<T>): String {
-        return adapter<List<T>>(Types.newParameterizedType(List::class.java, T::class.java)).toJson(list)
+        return adapter<List<T>>(Types.newParameterizedType(List::class.java, T::class.java)).toJson(
+            list
+        )
     }
+
     private inline fun <reified T> Moshi.parseList(jsonString: String): List<T>? {
-        return adapter<List<T>>(Types.newParameterizedType(List::class.java, T::class.java)).fromJson(jsonString)
+        return adapter<List<T>>(
+            Types.newParameterizedType(
+                List::class.java,
+                T::class.java
+            )
+        ).fromJson(jsonString)
     }
 
     override suspend fun setEmail(email: String?) = withContext(dispatcherProvider.io()) {
         subscriptionsDataStore.email = email
     }
 
-    override suspend fun setEntitlements(entitlements: List<Entitlement>) = withContext(dispatcherProvider.io()) {
-        subscriptionsDataStore.entitlements = moshi.listToJson(entitlements)
-    }
+    override suspend fun setEntitlements(entitlements: List<Entitlement>) =
+        withContext(dispatcherProvider.io()) {
+            subscriptionsDataStore.entitlements = moshi.listToJson(entitlements)
+        }
 
     override suspend fun isUserAuthenticated(): Boolean = withContext(dispatcherProvider.io()) {
         !subscriptionsDataStore.accessToken.isNullOrBlank() && !subscriptionsDataStore.authToken.isNullOrBlank()
     }
 
-    override suspend fun saveAccountData(authToken: String, externalId: String) = withContext(dispatcherProvider.io()) {
-        subscriptionsDataStore.authToken = authToken
-        subscriptionsDataStore.externalId = externalId
-    }
+    override suspend fun saveAccountData(authToken: String, externalId: String) =
+        withContext(dispatcherProvider.io()) {
+            subscriptionsDataStore.authToken = authToken
+            subscriptionsDataStore.externalId = externalId
+        }
 
-    override suspend fun setAccessToken(accessToken: String) = withContext(dispatcherProvider.io()) {
-        subscriptionsDataStore.accessToken = accessToken
-    }
+    override suspend fun setAccessToken(accessToken: String) =
+        withContext(dispatcherProvider.io()) {
+            subscriptionsDataStore.accessToken = accessToken
+        }
 
     override suspend fun saveAuthToken(authToken: String) = withContext(dispatcherProvider.io()) {
         subscriptionsDataStore.authToken = authToken

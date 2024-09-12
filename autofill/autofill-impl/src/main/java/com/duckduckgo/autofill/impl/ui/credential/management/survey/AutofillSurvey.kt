@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.autofill.impl.ui.credential.management.survey
 
 import androidx.core.net.toUri
@@ -30,7 +14,7 @@ import com.duckduckgo.browser.api.UserBrowserProperties
 import com.duckduckgo.common.utils.DispatcherProvider
 import com.duckduckgo.di.scopes.AppScope
 import com.squareup.anvil.annotations.ContributesBinding
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
@@ -54,7 +38,9 @@ class AutofillSurveyImpl @Inject constructor(
     override suspend fun firstUnusedSurvey(): SurveyDetails? {
         return withContext(dispatchers.io()) {
             if (!canShowSurvey()) return@withContext null
-            val survey = autofillSurveyStore.availableSurveys().firstOrNull { !surveyTakenPreviously(it.id) } ?: return@withContext null
+            val survey =
+                autofillSurveyStore.availableSurveys().firstOrNull { !surveyTakenPreviously(it.id) }
+                    ?: return@withContext null
             return@withContext survey.copy(url = survey.url.addSurveyParameters())
         }
     }
@@ -81,14 +67,23 @@ class AutofillSurveyImpl @Inject constructor(
                 .buildUpon()
                 .appendQueryParameter(SurveyParams.ATB, statisticsStore.atb?.version ?: "")
                 .appendQueryParameter(SurveyParams.ATB_VARIANT, statisticsStore.variant)
-                .appendQueryParameter(SurveyParams.DAYS_INSTALLED, "${userBrowserProperties.daysSinceInstalled()}")
+                .appendQueryParameter(
+                    SurveyParams.DAYS_INSTALLED,
+                    "${userBrowserProperties.daysSinceInstalled()}"
+                )
                 .appendQueryParameter(SurveyParams.ANDROID_VERSION, "${appBuildConfig.sdkInt}")
                 .appendQueryParameter(SurveyParams.APP_VERSION, appBuildConfig.versionName)
                 .appendQueryParameter(SurveyParams.MANUFACTURER, appBuildConfig.manufacturer)
                 .appendQueryParameter(SurveyParams.MODEL, appBuildConfig.model)
                 .appendQueryParameter(SurveyParams.SOURCE, IN_APP)
-                .appendQueryParameter(SurveyParams.LAST_ACTIVE_DATE, appDaysUsedRepository.getLastActiveDay())
-                .appendQueryParameter(SurveyParams.NUMBER_PASSWORDS, bucketSavedPasswords(internalAutofillStore.getCredentialCount().firstOrNull()))
+                .appendQueryParameter(
+                    SurveyParams.LAST_ACTIVE_DATE,
+                    appDaysUsedRepository.getLastActiveDay()
+                )
+                .appendQueryParameter(
+                    SurveyParams.NUMBER_PASSWORDS,
+                    bucketSavedPasswords(internalAutofillStore.getCredentialCount().firstOrNull())
+                )
 
             urlBuilder.build().toString()
         }

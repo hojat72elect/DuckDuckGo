@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.anr.ndk
 
 import android.content.Context
@@ -56,7 +40,12 @@ class NativeCrashInit @Inject constructor(
     private val isCustomTab: Boolean by lazy { customTabDetector.isCustomTab() }
     private val processName: String by lazy { if (isMainProcess) "main" else "vpn" }
 
-    private external fun jni_register_sighandler(logLevel: Int, appVersion: String, processName: String, isCustomTab: Boolean)
+    private external fun jni_register_sighandler(
+        logLevel: Int,
+        appVersion: String,
+        processName: String,
+        isCustomTab: Boolean
+    )
 
     override fun onCreate(owner: LifecycleOwner) {
         if (isMainProcess) {
@@ -82,7 +71,9 @@ class NativeCrashInit @Inject constructor(
             logcat(ERROR) { "ndk-crash: Library loaded in process $processName" }
 
             if (isMainProcess && !nativeCrashFeature.nativeCrashHandling().isEnabled()) return
-            if (!isMainProcess && !nativeCrashFeature.nativeCrashHandlingSecondaryProcess().isEnabled()) return
+            if (!isMainProcess && !nativeCrashFeature.nativeCrashHandlingSecondaryProcess()
+                    .isEnabled()
+            ) return
 
             val logLevel = if (appBuildConfig.isDebug || appBuildConfig.isInternalBuild()) {
                 Log.VERBOSE

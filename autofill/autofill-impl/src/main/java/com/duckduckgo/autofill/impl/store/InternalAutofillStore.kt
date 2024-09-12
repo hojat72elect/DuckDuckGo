@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.autofill.impl.store
 
 import com.duckduckgo.autofill.api.CredentialUpdateExistingCredentialsDialog
@@ -95,7 +79,10 @@ interface InternalAutofillStore : AutofillStore {
      * Defaults to true. Set to false if you don't want the last-updated timestamp modified.
      * @return The saved credential if it saved successfully, otherwise null
      */
-    suspend fun updateCredentials(credentials: LoginCredentials, refreshLastUpdatedTimestamp: Boolean = true): LoginCredentials?
+    suspend fun updateCredentials(
+        credentials: LoginCredentials,
+        refreshLastUpdatedTimestamp: Boolean = true
+    ): LoginCredentials?
 
     /**
      * Used to reinsert a credential that was previously deleted
@@ -119,5 +106,9 @@ interface InternalAutofillStore : AutofillStore {
      *
      * @return The match type, which might indicate there was an exact match, a partial match etc...
      */
-    suspend fun containsCredentials(rawUrl: String, username: String?, password: String?): ContainsCredentialsResult
+    suspend fun containsCredentials(
+        rawUrl: String,
+        username: String?,
+        password: String?
+    ): ContainsCredentialsResult
 }

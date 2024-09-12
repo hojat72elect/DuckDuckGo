@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.httperrors
 
 import android.content.Context
@@ -65,14 +49,20 @@ class HttpErrorDailyReportingWorkerScheduler @Inject constructor(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         Timber.v("Scheduling http error daily reporting worker")
-        val workerRequest = PeriodicWorkRequestBuilder<HttpErrorDailyReportingWorker>(24, TimeUnit.HOURS)
-            .addTag(DAILY_REPORTING_HTTP_ERROR_WORKER_TAG)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.MINUTES)
-            .build()
-        workManager.enqueueUniquePeriodicWork(DAILY_REPORTING_HTTP_ERROR_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, workerRequest)
+        val workerRequest =
+            PeriodicWorkRequestBuilder<HttpErrorDailyReportingWorker>(24, TimeUnit.HOURS)
+                .addTag(DAILY_REPORTING_HTTP_ERROR_WORKER_TAG)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.MINUTES)
+                .build()
+        workManager.enqueueUniquePeriodicWork(
+            DAILY_REPORTING_HTTP_ERROR_WORKER_TAG,
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workerRequest
+        )
     }
 
     companion object {
-        private const val DAILY_REPORTING_HTTP_ERROR_WORKER_TAG = "DAILY_REPORTING_HTTP_ERROR_WORKER_TAG"
+        private const val DAILY_REPORTING_HTTP_ERROR_WORKER_TAG =
+            "DAILY_REPORTING_HTTP_ERROR_WORKER_TAG"
     }
 }

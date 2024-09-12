@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl
 
 import com.duckduckgo.anvil.annotations.ContributesActivePluginPoint
@@ -41,7 +25,8 @@ class RealNewTabPageSectionProvider @Inject constructor(
 ) : NewTabPageSectionProvider {
     override fun provideSections(): Flow<List<NewTabPageSectionPlugin>> = flow {
         // store can be empty the first time we check it, so we make sure the content is initialised
-        val sectionSettingsPlugins = newTabSectionsSettingsPlugins.getPlugins().filter { it.isActive() }
+        val sectionSettingsPlugins =
+            newTabSectionsSettingsPlugins.getPlugins().filter { it.isActive() }
         if (sectionSettingsPlugins.isNotEmpty()) {
             if (newTabSettingsStore.sectionSettings.isEmpty()) {
                 val userSections = sectionSettingsPlugins.map { it.name }
@@ -72,7 +57,8 @@ class RealNewTabPageSectionProvider @Inject constructor(
         val sections = mutableListOf<NewTabPageSectionPlugin>()
         val enabledPlugins = newTabPageSections.getPlugins().filter { it.isUserEnabled() }
 
-        val rmfSection = enabledPlugins.find { it.name == NewTabPageSection.REMOTE_MESSAGING_FRAMEWORK.name }
+        val rmfSection =
+            enabledPlugins.find { it.name == NewTabPageSection.REMOTE_MESSAGING_FRAMEWORK.name }
         if (rmfSection != null) {
             sections.add(rmfSection)
         }

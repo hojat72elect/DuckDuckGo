@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.user.agent.impl.remoteconfig
 
 import com.duckduckgo.app.di.AppCoroutineScope
@@ -58,7 +42,12 @@ class RealClientBrandHintFeatureSettingsRepository @Inject constructor(
 
     override fun updateAllSettings(settings: ClientBrandHintSettings) {
         Timber.i("ClientBrandHintProvider: update domains to ${settings.domains}")
-        dao.updateAllDomains(settings.domains.map { ClientHintBrandDomainEntity(it.domain, it.brand.name) })
+        dao.updateAllDomains(settings.domains.map {
+            ClientHintBrandDomainEntity(
+                it.domain,
+                it.brand.name
+            )
+        })
         loadToMemory()
     }
 
@@ -66,6 +55,11 @@ class RealClientBrandHintFeatureSettingsRepository @Inject constructor(
         clientBrandHints.clear()
         val clientBrandHintsDomainList = dao.getAllDomains()
         Timber.i("ClientBrandHintProvider: loading domains to memory $clientBrandHintsDomainList")
-        clientBrandHints.addAll(clientBrandHintsDomainList.map { ClientBrandHintDomain(it.url, ClientBrandsHints.from(it.brand)) })
+        clientBrandHints.addAll(clientBrandHintsDomainList.map {
+            ClientBrandHintDomain(
+                it.url,
+                ClientBrandsHints.from(it.brand)
+            )
+        })
     }
 }

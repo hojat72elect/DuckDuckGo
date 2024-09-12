@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.newtab
 
 import androidx.lifecycle.LifecycleOwner
@@ -136,7 +120,13 @@ class NewTabLegacyPageViewModelTest {
 
     @Test
     fun whenFavoriteEditedThenRepositoryUpdated() = runTest {
-        val favorite = Favorite(UUID.randomUUID().toString(), "A title", "www.example.com", lastModified = "timestamp", 1)
+        val favorite = Favorite(
+            UUID.randomUUID().toString(),
+            "A title",
+            "www.example.com",
+            lastModified = "timestamp",
+            1
+        )
         testee.onFavouriteEdited(favorite)
         verify(mockSavedSitesRepository).updateFavourite(favorite)
     }
@@ -145,7 +135,13 @@ class NewTabLegacyPageViewModelTest {
     fun whenBookmarkEditedThenRepositoryIsUpdated() = runTest {
         val folderId = "folder1"
         val bookmark =
-            Bookmark(id = UUID.randomUUID().toString(), title = "A title", url = "www.example.com", parentId = folderId, lastModified = "timestamp")
+            Bookmark(
+                id = UUID.randomUUID().toString(),
+                title = "A title",
+                url = "www.example.com",
+                parentId = folderId,
+                lastModified = "timestamp"
+            )
         testee.onBookmarkEdited(bookmark, folderId, false)
         verify(mockSavedSitesRepository).updateBookmark(bookmark, folderId)
     }
@@ -181,7 +177,9 @@ class NewTabLegacyPageViewModelTest {
 
         val action = Action.Dismiss
         whenever(mockRemoteMessageModel.onPrimaryActionClicked(remoteMessage)).thenReturn(Action.Dismiss)
-        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(NewTabLegacyPageViewModel.Command.DismissMessage)
+        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(
+            NewTabLegacyPageViewModel.Command.DismissMessage
+        )
 
         testee.onStart(mockLifecycleOwner)
 
@@ -201,7 +199,9 @@ class NewTabLegacyPageViewModelTest {
 
         val action = Action.Dismiss
         whenever(mockRemoteMessageModel.onSecondaryActionClicked(remoteMessage)).thenReturn(Action.Dismiss)
-        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(NewTabLegacyPageViewModel.Command.DismissMessage)
+        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(
+            NewTabLegacyPageViewModel.Command.DismissMessage
+        )
 
         testee.onStart(mockLifecycleOwner)
 
@@ -221,7 +221,9 @@ class NewTabLegacyPageViewModelTest {
 
         val action = Action.Dismiss
         whenever(mockRemoteMessageModel.onActionClicked(remoteMessage)).thenReturn(Action.Dismiss)
-        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(NewTabLegacyPageViewModel.Command.DismissMessage)
+        whenever(mockCommandActionMapper.asNewTabCommand(action)).thenReturn(
+            NewTabLegacyPageViewModel.Command.DismissMessage
+        )
 
         testee.onStart(mockLifecycleOwner)
 

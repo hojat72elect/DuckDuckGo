@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.subscriptions.impl.rmf
 
 import com.duckduckgo.common.utils.CurrentTimeProvider
@@ -53,7 +37,7 @@ class RMFPProDaysSinceSubscribedMatchingAttribute @Inject constructor(
                         matchingAttribute.value == daysSinceSubscribed
                     } else {
                         (matchingAttribute.min.isDefaultValue() || daysSinceSubscribed >= matchingAttribute.min) &&
-                            (matchingAttribute.max.isDefaultValue() || daysSinceSubscribed <= matchingAttribute.max)
+                                (matchingAttribute.max.isDefaultValue() || daysSinceSubscribed <= matchingAttribute.max)
                     }
                 }
             }
@@ -67,7 +51,8 @@ class RMFPProDaysSinceSubscribedMatchingAttribute @Inject constructor(
     }
 
     private fun daysSinceSubscribed(startedAt: Long): Int {
-        return TimeUnit.MILLISECONDS.toDays(currentTimeProvider.currentTimeMillis() - startedAt).toInt()
+        return TimeUnit.MILLISECONDS.toDays(currentTimeProvider.currentTimeMillis() - startedAt)
+            .toInt()
     }
 
     override fun map(

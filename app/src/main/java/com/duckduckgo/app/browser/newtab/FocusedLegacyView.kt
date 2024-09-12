@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.newtab
 
 import android.annotation.SuppressLint
@@ -102,7 +86,10 @@ class FocusedLegacyView @JvmOverloads constructor(
     private lateinit var quickAccessItemTouchHelper: ItemTouchHelper
 
     private val viewModel: FocusedLegacyViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[FocusedLegacyViewModel::class.java]
+        ViewModelProvider(
+            findViewTreeViewModelStoreOwner()!!,
+            viewModelFactory
+        )[FocusedLegacyViewModel::class.java]
     }
 
     override fun onAttachedToWindow() {
@@ -140,11 +127,15 @@ class FocusedLegacyView @JvmOverloads constructor(
 
     private fun configureHomeTabQuickAccessGrid() {
         configureQuickAccessGridLayout(binding.quickAccessSuggestionsRecyclerView)
-        quickAccessAdapter = createQuickAccessAdapter(originPixel = AppPixelName.FAVORITE_OMNIBAR_ITEM_PRESSED) { viewHolder ->
-            binding.quickAccessSuggestionsRecyclerView.enableAnimation()
-            quickAccessItemTouchHelper.startDrag(viewHolder)
-        }
-        quickAccessItemTouchHelper = createQuickAccessItemHolder(binding.quickAccessSuggestionsRecyclerView, quickAccessAdapter)
+        quickAccessAdapter =
+            createQuickAccessAdapter(originPixel = AppPixelName.FAVORITE_OMNIBAR_ITEM_PRESSED) { viewHolder ->
+                binding.quickAccessSuggestionsRecyclerView.enableAnimation()
+                quickAccessItemTouchHelper.startDrag(viewHolder)
+            }
+        quickAccessItemTouchHelper = createQuickAccessItemHolder(
+            binding.quickAccessSuggestionsRecyclerView,
+            quickAccessAdapter
+        )
         binding.quickAccessSuggestionsRecyclerView.adapter = quickAccessAdapter
         binding.quickAccessSuggestionsRecyclerView.disableAnimation()
     }
@@ -191,11 +182,22 @@ class FocusedLegacyView @JvmOverloads constructor(
     }
 
     private fun configureQuickAccessGridLayout(recyclerView: RecyclerView) {
-        val numOfColumns = gridViewColumnCalculator.calculateNumberOfColumns(QUICK_ACCESS_ITEM_MAX_SIZE_DP, QUICK_ACCESS_GRID_MAX_COLUMNS)
+        val numOfColumns = gridViewColumnCalculator.calculateNumberOfColumns(
+            QUICK_ACCESS_ITEM_MAX_SIZE_DP,
+            QUICK_ACCESS_GRID_MAX_COLUMNS
+        )
         val layoutManager = GridLayoutManager(context, numOfColumns)
         recyclerView.layoutManager = layoutManager
-        val sidePadding = gridViewColumnCalculator.calculateSidePadding(QUICK_ACCESS_ITEM_MAX_SIZE_DP, numOfColumns)
-        recyclerView.setPadding(sidePadding, recyclerView.paddingTop, sidePadding, recyclerView.paddingBottom)
+        val sidePadding = gridViewColumnCalculator.calculateSidePadding(
+            QUICK_ACCESS_ITEM_MAX_SIZE_DP,
+            numOfColumns
+        )
+        recyclerView.setPadding(
+            sidePadding,
+            recyclerView.paddingTop,
+            sidePadding,
+            recyclerView.paddingBottom
+        )
     }
 
     private fun render(viewState: ViewState) {
@@ -216,9 +218,13 @@ class FocusedLegacyView @JvmOverloads constructor(
             ) {
                 viewModel.onDeleteFavoriteSnackbarDismissed(command.savedSite)
             }
+
             is DeleteSavedSiteConfirmation -> confirmDeleteSavedSite(
                 command.savedSite,
-                context.getString(com.duckduckgo.saved.sites.impl.R.string.bookmarkDeleteConfirmationMessage, command.savedSite.title).html(context),
+                context.getString(
+                    com.duckduckgo.saved.sites.impl.R.string.bookmarkDeleteConfirmationMessage,
+                    command.savedSite.title
+                ).html(context),
             ) {
                 viewModel.onDeleteSavedSiteSnackbarDismissed(command.savedSite)
             }

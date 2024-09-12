@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.sync.impl.error
 
 import com.duckduckgo.common.utils.formatters.time.DatabaseDateFormatter
@@ -39,7 +23,8 @@ data class SyncApiErrorPixelData(
     val count: String,
 )
 
-class RealSyncApiErrorRepository @Inject constructor(private val apiErrorDao: SyncApiErrorDao) : SyncApiErrorRepository {
+class RealSyncApiErrorRepository @Inject constructor(private val apiErrorDao: SyncApiErrorDao) :
+    SyncApiErrorRepository {
     override fun addError(
         feature: SyncableType,
         apiError: SyncApiErrorType,
@@ -47,7 +32,14 @@ class RealSyncApiErrorRepository @Inject constructor(private val apiErrorDao: Sy
         val today = DatabaseDateFormatter.getUtcIsoLocalDate()
         val todaysError = apiErrorDao.featureErrorByDate(feature.field, apiError.name, today)
         if (todaysError == null) {
-            apiErrorDao.insert(SyncApiError(feature = feature.field, errorType = apiError, count = 1, date = today))
+            apiErrorDao.insert(
+                SyncApiError(
+                    feature = feature.field,
+                    errorType = apiError,
+                    count = 1,
+                    date = today
+                )
+            )
         } else {
             apiErrorDao.incrementCount(feature.field, apiError.name, today)
         }

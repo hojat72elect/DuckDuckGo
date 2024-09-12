@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.onboarding.ui.page
 
 import android.annotation.SuppressLint
@@ -110,7 +94,10 @@ class WelcomePageViewModel @Inject constructor(
     fun onDefaultBrowserSet() {
         defaultRoleBrowserDialog.dialogShown()
         appInstallStore.defaultBrowser = true
-        pixel.fire(AppPixelName.DEFAULT_BROWSER_SET, mapOf(PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString()))
+        pixel.fire(
+            AppPixelName.DEFAULT_BROWSER_SET,
+            mapOf(PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString())
+        )
 
         viewModelScope.launch {
             _commands.send(ShowSuccessDialog)
@@ -120,7 +107,10 @@ class WelcomePageViewModel @Inject constructor(
     fun onDefaultBrowserNotSet() {
         defaultRoleBrowserDialog.dialogShown()
         appInstallStore.defaultBrowser = false
-        pixel.fire(AppPixelName.DEFAULT_BROWSER_NOT_SET, mapOf(PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString()))
+        pixel.fire(
+            AppPixelName.DEFAULT_BROWSER_NOT_SET,
+            mapOf(PixelParameter.DEFAULT_BROWSER_SET_FROM_ONBOARDING to true.toString())
+        )
 
         viewModelScope.launch {
             _commands.send(Finish)
@@ -141,7 +131,11 @@ class WelcomePageViewModel @Inject constructor(
     fun onDialogShown(onboardingDialogType: PreOnboardingDialogType) {
         when (onboardingDialogType) {
             INITIAL -> pixel.fire(PREONBOARDING_INTRO_SHOWN_UNIQUE, type = UNIQUE)
-            COMPARISON_CHART -> pixel.fire(PREONBOARDING_COMPARISON_CHART_SHOWN_UNIQUE, type = UNIQUE)
+            COMPARISON_CHART -> pixel.fire(
+                PREONBOARDING_COMPARISON_CHART_SHOWN_UNIQUE,
+                type = UNIQUE
+            )
+
             CELEBRATION -> pixel.fire(PREONBOARDING_AFFIRMATION_SHOWN_UNIQUE, type = UNIQUE)
         }
     }

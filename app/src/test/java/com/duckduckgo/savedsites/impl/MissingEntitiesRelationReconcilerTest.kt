@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl
 
 import androidx.room.Room
@@ -31,7 +15,10 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MissingEntitiesRelationReconcilerTest {
 
-    private val db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().targetContext, AppDatabase::class.java)
+    private val db = Room.inMemoryDatabaseBuilder(
+        InstrumentationRegistry.getInstrumentation().targetContext,
+        AppDatabase::class.java
+    )
         .allowMainThreadQueries()
         .build()
     private val savedSitesEntitiesDao = db.syncEntitiesDao()
@@ -48,7 +35,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 
@@ -63,7 +58,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 
@@ -73,19 +76,29 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesBetweenMultipleValidEntitiesThenResultListKeepsCorrectPositions() = runTest {
-        val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
+    fun whenInvalidEntitiesBetweenMultipleValidEntitiesThenResultListKeepsCorrectPositions() =
+        runTest {
+            val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
-        initialEntities.forEachIndexed { index, entityId ->
-            if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+            initialEntities.forEachIndexed { index, entityId ->
+                if (!entityId.startsWith("Inv")) {
+                    savedSitesEntitiesDao.insert(
+                        Entity(
+                            entityId,
+                            "title",
+                            "www.example.com",
+                            type = BOOKMARK,
+                            lastModified = "timestamp"
+                        )
+                    )
+                }
             }
+
+            val list =
+                testee.reconcileRelations(initialEntities, listOf("A", "C", "E", "F", "B", "D"))
+
+            TestCase.assertEquals(listOf("A", "Inv1", "C", "Inv2", "E", "F", "B", "D"), list)
         }
-
-        val list = testee.reconcileRelations(initialEntities, listOf("A", "C", "E", "F", "B", "D"))
-
-        TestCase.assertEquals(listOf("A", "Inv1", "C", "Inv2", "E", "F", "B", "D"), list)
-    }
 
     @Test
     fun whenInvalidEntitiesAndValidItemRemovedThenResultListKeepsCorrectPositions() = runTest {
@@ -93,7 +106,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 
@@ -103,34 +124,54 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesAndValidItemAddedAtTheEndOfListThenResultListKeepsCorrectPositions() = runTest {
-        val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
+    fun whenInvalidEntitiesAndValidItemAddedAtTheEndOfListThenResultListKeepsCorrectPositions() =
+        runTest {
+            val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
-        initialEntities.forEachIndexed { index, entityId ->
-            if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+            initialEntities.forEachIndexed { index, entityId ->
+                if (!entityId.startsWith("Inv")) {
+                    savedSitesEntitiesDao.insert(
+                        Entity(
+                            entityId,
+                            "title",
+                            "www.example.com",
+                            type = BOOKMARK,
+                            lastModified = "timestamp"
+                        )
+                    )
+                }
             }
+
+            val list =
+                testee.reconcileRelations(initialEntities, listOf("A", "B", "C", "E", "F", "G"))
+
+            TestCase.assertEquals(listOf("A", "B", "Inv1", "C", "Inv2", "E", "F", "G"), list)
         }
-
-        val list = testee.reconcileRelations(initialEntities, listOf("A", "B", "C", "E", "F", "G"))
-
-        TestCase.assertEquals(listOf("A", "B", "Inv1", "C", "Inv2", "E", "F", "G"), list)
-    }
 
     @Test
-    fun whenInvalidEntitiesAndValidItemAddedInTheMiddleOfListThenResultListKeepsCorrectPositions() = runTest {
-        val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
+    fun whenInvalidEntitiesAndValidItemAddedInTheMiddleOfListThenResultListKeepsCorrectPositions() =
+        runTest {
+            val initialEntities = listOf("A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
-        initialEntities.forEachIndexed { index, entityId ->
-            if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+            initialEntities.forEachIndexed { index, entityId ->
+                if (!entityId.startsWith("Inv")) {
+                    savedSitesEntitiesDao.insert(
+                        Entity(
+                            entityId,
+                            "title",
+                            "www.example.com",
+                            type = BOOKMARK,
+                            lastModified = "timestamp"
+                        )
+                    )
+                }
             }
+
+            val list =
+                testee.reconcileRelations(initialEntities, listOf("A", "B", "C", "G", "E", "F"))
+
+            TestCase.assertEquals(listOf("A", "B", "Inv1", "C", "G", "Inv2", "E", "F"), list)
         }
-
-        val list = testee.reconcileRelations(initialEntities, listOf("A", "B", "C", "G", "E", "F"))
-
-        TestCase.assertEquals(listOf("A", "B", "Inv1", "C", "G", "Inv2", "E", "F"), list)
-    }
 
     @Test
     fun whenInvalidEntitiesIsFirstItemThenResultListKeepsCorrectPositions() = runTest {
@@ -138,7 +179,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 
@@ -148,19 +197,32 @@ class MissingEntitiesRelationReconcilerTest {
     }
 
     @Test
-    fun whenInvalidEntitiesIsFirstItemAndItemsReorderedThenResultListKeepsCorrectPositions() = runTest {
-        val initialEntities = listOf("Inv0", "A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
+    fun whenInvalidEntitiesIsFirstItemAndItemsReorderedThenResultListKeepsCorrectPositions() =
+        runTest {
+            val initialEntities = listOf("Inv0", "A", "B", "Inv1", "C", "D", "Inv2", "E", "F")
 
-        initialEntities.forEachIndexed { index, entityId ->
-            if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+            initialEntities.forEachIndexed { index, entityId ->
+                if (!entityId.startsWith("Inv")) {
+                    savedSitesEntitiesDao.insert(
+                        Entity(
+                            entityId,
+                            "title",
+                            "www.example.com",
+                            type = BOOKMARK,
+                            lastModified = "timestamp"
+                        )
+                    )
+                }
             }
+
+            val list =
+                testee.reconcileRelations(initialEntities, listOf("F", "E", "A", "B", "C", "G"))
+
+            TestCase.assertEquals(
+                listOf("Inv0", "F", "Inv1", "Inv2", "E", "A", "B", "C", "G"),
+                list
+            )
         }
-
-        val list = testee.reconcileRelations(initialEntities, listOf("F", "E", "A", "B", "C", "G"))
-
-        TestCase.assertEquals(listOf("Inv0", "F", "Inv1", "Inv2", "E", "A", "B", "C", "G"), list)
-    }
 
     @Test
     fun whenInvalidMultipleEntitiesStartListThenResultListKeepsCorrectPositions() = runTest {
@@ -168,7 +230,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 
@@ -183,7 +253,15 @@ class MissingEntitiesRelationReconcilerTest {
 
         initialEntities.forEachIndexed { index, entityId ->
             if (!entityId.startsWith("Inv")) {
-                savedSitesEntitiesDao.insert(Entity(entityId, "title", "www.example.com", type = BOOKMARK, lastModified = "timestamp"))
+                savedSitesEntitiesDao.insert(
+                    Entity(
+                        entityId,
+                        "title",
+                        "www.example.com",
+                        type = BOOKMARK,
+                        lastModified = "timestamp"
+                    )
+                )
             }
         }
 

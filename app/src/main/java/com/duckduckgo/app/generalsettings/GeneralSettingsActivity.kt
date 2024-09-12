@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.generalsettings
 
 import android.os.Bundle
@@ -43,13 +27,15 @@ class GeneralSettingsActivity : DuckDuckGoActivity() {
     private val viewModel: GeneralSettingsViewModel by bindViewModel()
     private val binding: ActivityGeneralSettingsBinding by viewBinding()
 
-    private val autocompleteToggleListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        viewModel.onAutocompleteSettingChanged(isChecked)
-    }
+    private val autocompleteToggleListener =
+        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            viewModel.onAutocompleteSettingChanged(isChecked)
+        }
 
-    private val autocompleteRecentlyVisitedSitesToggleListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        viewModel.onAutocompleteRecentlyVisitedSitesSettingChanged(isChecked)
-    }
+    private val autocompleteRecentlyVisitedSitesToggleListener =
+        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            viewModel.onAutocompleteRecentlyVisitedSitesSettingChanged(isChecked)
+        }
 
     private val voiceSearchChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         viewModel.onVoiceSearchChanged(isChecked)
@@ -67,7 +53,9 @@ class GeneralSettingsActivity : DuckDuckGoActivity() {
 
     private fun configureUiEventHandlers() {
         binding.autocompleteToggle.setOnCheckedChangeListener(autocompleteToggleListener)
-        binding.autocompleteRecentlyVisitedSitesToggle.setOnCheckedChangeListener(autocompleteRecentlyVisitedSitesToggleListener)
+        binding.autocompleteRecentlyVisitedSitesToggle.setOnCheckedChangeListener(
+            autocompleteRecentlyVisitedSitesToggleListener
+        )
         binding.voiceSearchToggle.setOnCheckedChangeListener(voiceSearchChangeListener)
     }
 
@@ -86,13 +74,17 @@ class GeneralSettingsActivity : DuckDuckGoActivity() {
                             newCheckedState = it.autoCompleteRecentlyVisitedSitesSuggestionsUserEnabled,
                             changeListener = autocompleteRecentlyVisitedSitesToggleListener,
                         )
-                        binding.autocompleteRecentlyVisitedSitesToggle.isEnabled = it.autoCompleteSuggestionsEnabled
+                        binding.autocompleteRecentlyVisitedSitesToggle.isEnabled =
+                            it.autoCompleteSuggestionsEnabled
                     } else {
                         binding.autocompleteRecentlyVisitedSitesToggle.isVisible = false
                     }
                     if (it.showVoiceSearch) {
                         binding.voiceSearchToggle.isVisible = true
-                        binding.voiceSearchToggle.quietlySetIsChecked(viewState.voiceSearchEnabled, voiceSearchChangeListener)
+                        binding.voiceSearchToggle.quietlySetIsChecked(
+                            viewState.voiceSearchEnabled,
+                            voiceSearchChangeListener
+                        )
                     }
                 }
             }.launchIn(lifecycleScope)

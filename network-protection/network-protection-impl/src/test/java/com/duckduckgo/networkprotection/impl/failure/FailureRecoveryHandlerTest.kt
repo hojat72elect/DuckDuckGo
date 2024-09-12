@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.networkprotection.impl.failure
 
 import com.duckduckgo.common.test.CoroutineTestRule
@@ -110,9 +94,16 @@ class FailureRecoveryHandlerTest {
 
     @Test
     fun whenDiffFromHandshakeIsBelowThresholdThenDoNothing() = runTest {
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(15))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(15)
+        )
 
         verifyNoInteractions(vpnFeaturesRegistry)
         verifyNoInteractions(wgTunnel)
@@ -132,12 +123,19 @@ class FailureRecoveryHandlerTest {
     @Test
     fun whenFailureRecoveryAndServerChangedThenSetConfigAndRefreshNetp() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
         whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
 
         // Only first recovery attempt should happen right away
         verify(wgTunnel).markTunnelUnhealthy()
@@ -146,18 +144,28 @@ class FailureRecoveryHandlerTest {
         verify(vpnFeaturesRegistry).refreshFeature(NetPVpnFeature.NETP_VPN)
         verify(networkProtectionPixels).reportFailureRecoveryStarted()
         verify(networkProtectionPixels).reportFailureRecoveryCompletedWithServerUnhealthy()
-        verify(networkProtectionPixels, never()).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
+        verify(
+            networkProtectionPixels,
+            never()
+        ).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
     }
 
     @Test
     fun whenFailureRecoveryAndTunnelAddressChangedThenSetConfigAndRefreshNetp() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentAddress)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
         whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
 
         // Only first recovery attempt should happen right away
         verify(wgTunnel).markTunnelUnhealthy()
@@ -171,12 +179,25 @@ class FailureRecoveryHandlerTest {
 
     @Test
     fun whenFailureRecoveryAndServerDidnotChangedThenDoNothing() = runTest {
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
-        whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(getWgConfig(defaultServerData)))
+        whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(
+            Result.success(
+                getWgConfig(
+                    defaultServerData
+                )
+            )
+        )
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
 
         // Only first recovery attempt should happen right away
         verify(wgTunnel).markTunnelUnhealthy()
@@ -190,13 +211,23 @@ class FailureRecoveryHandlerTest {
     @Test
     fun whenOnTunnelFailureCalledTwiceThenAttemptRecoveryOnceOnly() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
         whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
 
         // Only first recovery attempt should happen right away. The second call should not do anything
         verify(wgTunnel).markTunnelUnhealthy()
@@ -205,41 +236,67 @@ class FailureRecoveryHandlerTest {
         verify(vpnFeaturesRegistry).refreshFeature(NetPVpnFeature.NETP_VPN)
         verify(networkProtectionPixels).reportFailureRecoveryStarted()
         verify(networkProtectionPixels).reportFailureRecoveryCompletedWithServerUnhealthy()
-        verify(networkProtectionPixels, never()).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
+        verify(
+            networkProtectionPixels,
+            never()
+        ).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
     }
 
     @Test
-    fun whenOnTunnelFailureCalledTwiceAndDifferentTunnelAddressThenAttemptRecoveryOnceOnly() = runTest {
-        val newConfig = getWgConfig(updatedServerDataDifferentAddress)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
-        whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
-        whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
-        whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
+    fun whenOnTunnelFailureCalledTwiceAndDifferentTunnelAddressThenAttemptRecoveryOnceOnly() =
+        runTest {
+            val newConfig = getWgConfig(updatedServerDataDifferentAddress)
+            whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+                TimeUnit.MINUTES.toSeconds(
+                    20
+                )
+            )
+            whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(
+                true
+            )
+            whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
+            whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+            failureRecoveryHandler.onTunnelFailure(
+                coroutineTestRule.testScope,
+                TimeUnit.MINUTES.toSeconds(3)
+            )
+            failureRecoveryHandler.onTunnelFailure(
+                coroutineTestRule.testScope,
+                TimeUnit.MINUTES.toSeconds(3)
+            )
 
-        // Only first recovery attempt should happen right away. The second call should not do anything
-        verify(wgTunnel).markTunnelUnhealthy()
-        verify(wgTunnel).markTunnelHealthy()
-        verify(wgTunnelConfig).setWgConfig(newConfig)
-        verify(vpnFeaturesRegistry).refreshFeature(NetPVpnFeature.NETP_VPN)
-        verify(networkProtectionPixels).reportFailureRecoveryStarted()
-        verify(networkProtectionPixels).reportFailureRecoveryCompletedWithServerUnhealthy()
-        verify(networkProtectionPixels).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
-    }
+            // Only first recovery attempt should happen right away. The second call should not do anything
+            verify(wgTunnel).markTunnelUnhealthy()
+            verify(wgTunnel).markTunnelHealthy()
+            verify(wgTunnelConfig).setWgConfig(newConfig)
+            verify(vpnFeaturesRegistry).refreshFeature(NetPVpnFeature.NETP_VPN)
+            verify(networkProtectionPixels).reportFailureRecoveryStarted()
+            verify(networkProtectionPixels).reportFailureRecoveryCompletedWithServerUnhealthy()
+            verify(networkProtectionPixels).reportFailureRecoveryCompletedWithDifferentTunnelAddress()
+        }
 
     @Test
     fun whenOnTunnelFailureCalledAfterRecoveryThenAttemptRecoveryTwice() = runTest {
         val newConfig = getWgConfig(updatedServerDataDifferentServer)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
+        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+            TimeUnit.MINUTES.toSeconds(
+                20
+            )
+        )
         whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
         whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
         whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
         failureRecoveryHandler.onTunnelFailureRecovered(coroutineTestRule.testScope)
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+        failureRecoveryHandler.onTunnelFailure(
+            coroutineTestRule.testScope,
+            TimeUnit.MINUTES.toSeconds(3)
+        )
 
         // Only first recovery attempt should happen right away. Since onTunnelFailureRecovered is called,
         // calling onTunnelFailure twice here should attempt recovery 2 times.
@@ -248,30 +305,49 @@ class FailureRecoveryHandlerTest {
         verify(wgTunnelConfig, times(2)).setWgConfig(newConfig)
         verify(vpnFeaturesRegistry, times(2)).refreshFeature(NetPVpnFeature.NETP_VPN)
         verify(networkProtectionPixels, times(2)).reportFailureRecoveryStarted()
-        verify(networkProtectionPixels, times(2)).reportFailureRecoveryCompletedWithServerUnhealthy()
+        verify(
+            networkProtectionPixels,
+            times(2)
+        ).reportFailureRecoveryCompletedWithServerUnhealthy()
     }
 
     @Test
-    fun whenOnTunnelFailureCalledAfterRecoveryAndDifferentTunnelAddrThenAttemptRecoveryTwice() = runTest {
-        val newConfig = getWgConfig(updatedServerDataDifferentAddress)
-        whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(TimeUnit.MINUTES.toSeconds(20))
-        whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(true)
-        whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
-        whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
+    fun whenOnTunnelFailureCalledAfterRecoveryAndDifferentTunnelAddrThenAttemptRecoveryTwice() =
+        runTest {
+            val newConfig = getWgConfig(updatedServerDataDifferentAddress)
+            whenever(currentTimeProvider.getTimeInEpochSeconds()).thenReturn(
+                TimeUnit.MINUTES.toSeconds(
+                    20
+                )
+            )
+            whenever(vpnFeaturesRegistry.isFeatureRegistered(NetPVpnFeature.NETP_VPN)).thenReturn(
+                true
+            )
+            whenever(wgTunnelConfig.getWgConfig()).thenReturn(getWgConfig(defaultServerData))
+            whenever(wgTunnel.createWgConfig(anyOrNull())).thenReturn(Result.success(newConfig))
 
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
-        failureRecoveryHandler.onTunnelFailureRecovered(coroutineTestRule.testScope)
-        failureRecoveryHandler.onTunnelFailure(coroutineTestRule.testScope, TimeUnit.MINUTES.toSeconds(3))
+            failureRecoveryHandler.onTunnelFailure(
+                coroutineTestRule.testScope,
+                TimeUnit.MINUTES.toSeconds(3)
+            )
+            failureRecoveryHandler.onTunnelFailureRecovered(coroutineTestRule.testScope)
+            failureRecoveryHandler.onTunnelFailure(
+                coroutineTestRule.testScope,
+                TimeUnit.MINUTES.toSeconds(3)
+            )
 
-        // Only first recovery attempt should happen right away. Since onTunnelFailureRecovered is called,
-        // calling onTunnelFailure twice here should attempt recovery 2 times.
-        verify(wgTunnel, times(2)).markTunnelUnhealthy()
-        verify(wgTunnel, times(3)).markTunnelHealthy()
-        verify(wgTunnelConfig, times(2)).setWgConfig(newConfig)
-        verify(vpnFeaturesRegistry, times(2)).refreshFeature(NetPVpnFeature.NETP_VPN)
-        verify(networkProtectionPixels, times(2)).reportFailureRecoveryStarted()
-        verify(networkProtectionPixels, times(2)).reportFailureRecoveryCompletedWithServerUnhealthy()
-    }
+            // Only first recovery attempt should happen right away. Since onTunnelFailureRecovered is called,
+            // calling onTunnelFailure twice here should attempt recovery 2 times.
+            verify(wgTunnel, times(2)).markTunnelUnhealthy()
+            verify(wgTunnel, times(3)).markTunnelHealthy()
+            verify(wgTunnelConfig, times(2)).setWgConfig(newConfig)
+            verify(vpnFeaturesRegistry, times(2)).refreshFeature(NetPVpnFeature.NETP_VPN)
+            verify(networkProtectionPixels, times(2)).reportFailureRecoveryStarted()
+            verify(
+                networkProtectionPixels,
+                times(2)
+            ).reportFailureRecoveryCompletedWithServerUnhealthy()
+        }
 
     private fun getWgConfig(serverData: WgServerData): Config {
         return Config.parse(

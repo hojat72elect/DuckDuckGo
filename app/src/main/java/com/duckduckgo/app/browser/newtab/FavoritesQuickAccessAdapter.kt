@@ -1,26 +1,13 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.newtab
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
@@ -110,6 +97,7 @@ class FavoritesQuickAccessAdapter(
 
                         onMoveListener(this@QuickAccessViewHolder)
                     }
+
                     MotionEvent.ACTION_UP -> {
                         onItemReleased()
                     }
@@ -156,11 +144,16 @@ class FavoritesQuickAccessAdapter(
             anchor: View,
             item: QuickAccessFavorite,
         ) {
-            val popupMenu = PopupMenu(layoutInflater, R.layout.popup_window_edit_remove_favorite_delete_menu)
+            val popupMenu =
+                PopupMenu(layoutInflater, R.layout.popup_window_edit_remove_favorite_delete_menu)
             val view = popupMenu.contentView
             popupMenu.apply {
                 onMenuItemClicked(view.findViewById(R.id.edit)) { onEditClicked(item) }
-                onMenuItemClicked(view.findViewById(R.id.removeFromFavorites)) { onRemoveFavoriteClicked(item) }
+                onMenuItemClicked(view.findViewById(R.id.removeFromFavorites)) {
+                    onRemoveFavoriteClicked(
+                        item
+                    )
+                }
                 onMenuItemClicked(view.findViewById(R.id.delete)) { onDeleteClicked(item) }
             }
             popupMenu.showAnchoredToView(binding.root, anchor)
@@ -192,7 +185,10 @@ class FavoritesQuickAccessAdapter(
 
         private fun loadFavicon(url: String) {
             lifecycleOwner.lifecycleScope.launch {
-                faviconManager.loadToViewMaybeFromRemoteWithPlaceholder(url = url, view = binding.quickAccessFavicon)
+                faviconManager.loadToViewMaybeFromRemoteWithPlaceholder(
+                    url = url,
+                    view = binding.quickAccessFavicon
+                )
             }
         }
 
@@ -261,8 +257,8 @@ class QuickAccessAdapterDiffCallback : DiffUtil.ItemCallback<QuickAccessFavorite
         newItem: QuickAccessFavorite,
     ): Boolean {
         return oldItem.favorite.title == newItem.favorite.title &&
-            oldItem.favorite.url == newItem.favorite.url &&
-            oldItem.favorite.position == newItem.favorite.position
+                oldItem.favorite.url == newItem.favorite.url &&
+                oldItem.favorite.position == newItem.favorite.position
     }
 
     override fun getChangePayload(

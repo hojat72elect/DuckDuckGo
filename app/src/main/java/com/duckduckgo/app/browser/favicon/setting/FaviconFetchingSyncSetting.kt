@@ -1,35 +1,19 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.favicon.setting
 
 import android.annotation.SuppressLint
-import android.content.*
-import android.util.*
-import android.widget.*
-import androidx.lifecycle.*
-import com.duckduckgo.anvil.annotations.*
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.FrameLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.duckduckgo.anvil.annotations.InjectWith
 import com.duckduckgo.app.browser.databinding.ViewSyncFaviconsFetchingBinding
 import com.duckduckgo.app.browser.favicon.setting.FaviconFetchingViewModel.ViewState
 import com.duckduckgo.common.ui.viewbinding.viewBinding
 import com.duckduckgo.common.utils.ConflatedJob
-import com.duckduckgo.di.scopes.*
-import com.duckduckgo.saved.sites.impl.databinding.*
-import dagger.android.support.*
-import javax.inject.*
+import com.duckduckgo.di.scopes.ViewScope
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,7 +38,10 @@ class FaviconFetchingSyncSetting @JvmOverloads constructor(
     private val binding: ViewSyncFaviconsFetchingBinding by viewBinding()
 
     private val viewModel: FaviconFetchingViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[FaviconFetchingViewModel::class.java]
+        ViewModelProvider(
+            findViewTreeViewModelStoreOwner()!!,
+            viewModelFactory
+        )[FaviconFetchingViewModel::class.java]
     }
 
     override fun onAttachedToWindow() {

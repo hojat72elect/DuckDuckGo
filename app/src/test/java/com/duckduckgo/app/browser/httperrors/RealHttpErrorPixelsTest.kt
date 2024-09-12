@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.httperrors
 
 import android.content.Context
@@ -48,7 +32,12 @@ class RealHttpErrorPixelsTest {
     @Before
     fun setup() {
         prefs = InMemorySharedPreferences()
-        whenever(mockContext.getSharedPreferences("com.duckduckgo.app.browser.httperrors", 0)).thenReturn(prefs)
+        whenever(
+            mockContext.getSharedPreferences(
+                "com.duckduckgo.app.browser.httperrors",
+                0
+            )
+        ).thenReturn(prefs)
         testee = RealHttpErrorPixels(mockPixel, mockContext)
     }
 
@@ -97,7 +86,8 @@ class RealHttpErrorPixelsTest {
     @Test
     fun whenFireCountPixelCalledForNonZeroCountAndCurrentTimeBeforeTimestampThenPixelNotSent() {
         val key = "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_count"
-        val timestampKey = "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_timestamp"
+        val timestampKey =
+            "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_timestamp"
         val now = Instant.now().toEpochMilli()
         testee.updateCountPixel(HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY)
         assertEquals(1, prefs.getInt(key, 0))
@@ -116,7 +106,8 @@ class RealHttpErrorPixelsTest {
     @Test
     fun whenFireCountPixelCalledForNonZeroCountAndCurrentTimeAfterTimestampThenPixelSent() {
         val key = "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_count"
-        val timestampKey = "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_timestamp"
+        val timestampKey =
+            "${HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY.pixelName}_timestamp"
         val now = Instant.now().toEpochMilli()
         testee.updateCountPixel(HttpErrorPixelName.WEBVIEW_RECEIVED_HTTP_ERROR_400_DAILY)
         assertEquals(1, prefs.getInt(key, 0))

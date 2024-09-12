@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.dispatchers
 
 import android.content.Intent
@@ -59,7 +43,9 @@ class IntentDispatcherViewModelTest {
         val text = "url"
         val toolbarColor = 100
         configureHasSession(true)
-        whenever(mockIntent.getIntExtra(CustomTabsIntent.EXTRA_TOOLBAR_COLOR, 0)).thenReturn(toolbarColor)
+        whenever(mockIntent.getIntExtra(CustomTabsIntent.EXTRA_TOOLBAR_COLOR, 0)).thenReturn(
+            toolbarColor
+        )
         whenever(mockIntent.intentText).thenReturn(text)
 
         testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
@@ -89,96 +75,106 @@ class IntentDispatcherViewModelTest {
     }
 
     @Test
-    fun whenIntentReceivedWithSessionAndLinkIsEmailProtectionVerificationThenCustomTabIsNotRequested() = runTest {
-        configureHasSession(true)
-        configureIsEmailProtectionLink(true)
+    fun whenIntentReceivedWithSessionAndLinkIsEmailProtectionVerificationThenCustomTabIsNotRequested() =
+        runTest {
+            configureHasSession(true)
+            configureIsEmailProtectionLink(true)
 
-        testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
+            testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
 
-        testee.viewState.test {
-            val state = awaitItem()
-            assertFalse(state.customTabRequested)
+            testee.viewState.test {
+                val state = awaitItem()
+                assertFalse(state.customTabRequested)
+            }
         }
-    }
 
     @Test
-    fun whenIntentReceivedWithSessionAndLinkIsNotEmailProtectionVerificationThenCustomTabIsRequested() = runTest {
-        configureHasSession(true)
-        configureIsEmailProtectionLink(false)
+    fun whenIntentReceivedWithSessionAndLinkIsNotEmailProtectionVerificationThenCustomTabIsRequested() =
+        runTest {
+            configureHasSession(true)
+            configureIsEmailProtectionLink(false)
 
-        testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
+            testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
 
-        testee.viewState.test {
-            val state = awaitItem()
-            assertTrue(state.customTabRequested)
+            testee.viewState.test {
+                val state = awaitItem()
+                assertTrue(state.customTabRequested)
+            }
         }
-    }
 
     @Test
-    fun whenIntentReceivedWithSessionAndUrlContainingSpacesThenSpacesAreReplacedAndCustomTabIsRequested() = runTest {
-        val urlWithSpaces =
-            """
+    fun whenIntentReceivedWithSessionAndUrlContainingSpacesThenSpacesAreReplacedAndCustomTabIsRequested() =
+        runTest {
+            val urlWithSpaces =
+                """
                 https://mastodon.social/oauth/authorize?client_id=AcfPDZlcKUjwIatVtMt8B8cmdW-w1CSOR6_rYS_6Kxs&scope=read write push&redirect_uri=mastify://oauth&response_type=code
             """.trimIndent()
-        val expectedUrl =
-            """
+            val expectedUrl =
+                """
                 https://mastodon.social/oauth/authorize?client_id=AcfPDZlcKUjwIatVtMt8B8cmdW-w1CSOR6_rYS_6Kxs&scope=read%20write%20push&redirect_uri=mastify://oauth&response_type=code
             """.trimIndent()
-        whenever(mockIntent.intentText).thenReturn(urlWithSpaces)
-        configureHasSession(true)
+            whenever(mockIntent.intentText).thenReturn(urlWithSpaces)
+            configureHasSession(true)
 
-        testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
+            testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
 
-        testee.viewState.test {
-            val state = awaitItem()
-            assertTrue(state.customTabRequested)
-            assertEquals(expectedUrl, state.intentText)
+            testee.viewState.test {
+                val state = awaitItem()
+                assertTrue(state.customTabRequested)
+                assertEquals(expectedUrl, state.intentText)
+            }
         }
-    }
 
     @Test
-    fun whenIntentReceivedWithNoSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() = runTest {
-        val intentTextWithSpaces =
-            """
+    fun whenIntentReceivedWithNoSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() =
+        runTest {
+            val intentTextWithSpaces =
+                """
                 Voyager 1 is still bringing us surprises from the very edge of our solar system https://www.independent.co.uk/space/voyager-1-nasa-latest-solar-system-b2535462.html
             """.trimIndent()
-        whenever(mockIntent.intentText).thenReturn(intentTextWithSpaces)
-        configureHasSession(false)
-        configureIsEmailProtectionLink(false)
+            whenever(mockIntent.intentText).thenReturn(intentTextWithSpaces)
+            configureHasSession(false)
+            configureIsEmailProtectionLink(false)
 
-        testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
+            testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
 
-        testee.viewState.test {
-            val state = awaitItem()
-            assertFalse(state.customTabRequested)
-            assertEquals(intentTextWithSpaces, state.intentText)
+            testee.viewState.test {
+                val state = awaitItem()
+                assertFalse(state.customTabRequested)
+                assertEquals(intentTextWithSpaces, state.intentText)
+            }
         }
-    }
 
     @Test
-    fun whenIntentReceivedWithSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() = runTest {
-        val intentTextWithSpaces =
-            """
+    fun whenIntentReceivedWithSessionAndIntentTextContainingSpacesAndNotStartingWithHttpSchemaThenNoChangesAreMadeToTheIntent() =
+        runTest {
+            val intentTextWithSpaces =
+                """
                 Voyager 1 is still bringing us surprises from the very edge of our solar system https://www.independent.co.uk/space/voyager-1-nasa-latest-solar-system-b2535462.html
             """.trimIndent()
-        whenever(mockIntent.intentText).thenReturn(intentTextWithSpaces)
-        configureHasSession(true)
+            whenever(mockIntent.intentText).thenReturn(intentTextWithSpaces)
+            configureHasSession(true)
 
-        testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
+            testee.onIntentReceived(mockIntent, DEFAULT_COLOR, isExternal = false)
 
-        testee.viewState.test {
-            val state = awaitItem()
-            assertTrue(state.customTabRequested)
-            assertEquals(intentTextWithSpaces, state.intentText)
+            testee.viewState.test {
+                val state = awaitItem()
+                assertTrue(state.customTabRequested)
+                assertEquals(intentTextWithSpaces, state.intentText)
+            }
         }
-    }
 
     private fun configureHasSession(returnValue: Boolean) {
         whenever(mockIntent.hasExtra(CustomTabsIntent.EXTRA_SESSION)).thenReturn(returnValue)
     }
 
     private fun configureIsEmailProtectionLink(returnValue: Boolean) {
-        whenever(emailProtectionLinkVerifier.shouldDelegateToInContextView(anyOrNull(), any())).thenReturn(returnValue)
+        whenever(
+            emailProtectionLinkVerifier.shouldDelegateToInContextView(
+                anyOrNull(),
+                any()
+            )
+        ).thenReturn(returnValue)
     }
 
     private companion object {

@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.autofill.impl.ui.credential.selecting
 
 import android.os.Bundle
@@ -37,7 +21,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class ResultHandlerCredentialSelectionTest {
@@ -73,28 +61,31 @@ class ResultHandlerCredentialSelectionTest {
     }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndSuccessfullyAuthenticatedThenCorrectCallbackInvoked() = runTest {
-        configureSuccessfulAuth()
-        val bundle = bundleForUserAcceptingToAutofill("example.com")
-        testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
-        verify(callback).onShareCredentialsForAutofill("example.com", aLogin())
-    }
+    fun whenUserAcceptedToUseCredentialsAndSuccessfullyAuthenticatedThenCorrectCallbackInvoked() =
+        runTest {
+            configureSuccessfulAuth()
+            val bundle = bundleForUserAcceptingToAutofill("example.com")
+            testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
+            verify(callback).onShareCredentialsForAutofill("example.com", aLogin())
+        }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndCancelsAuthenticationThenCorrectCallbackInvoked() = runTest {
-        configureCancelledAuth()
-        val bundle = bundleForUserAcceptingToAutofill("example.com")
-        testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
-        verify(callback).onNoCredentialsChosenForAutofill("example.com")
-    }
+    fun whenUserAcceptedToUseCredentialsAndCancelsAuthenticationThenCorrectCallbackInvoked() =
+        runTest {
+            configureCancelledAuth()
+            val bundle = bundleForUserAcceptingToAutofill("example.com")
+            testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
+            verify(callback).onNoCredentialsChosenForAutofill("example.com")
+        }
 
     @Test
-    fun whenUserAcceptedToUseCredentialsAndAuthenticationFailsThenCorrectCallbackInvoked() = runTest {
-        configureFailedAuth()
-        val bundle = bundleForUserAcceptingToAutofill("example.com")
-        testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
-        verify(callback).onNoCredentialsChosenForAutofill("example.com")
-    }
+    fun whenUserAcceptedToUseCredentialsAndAuthenticationFailsThenCorrectCallbackInvoked() =
+        runTest {
+            configureFailedAuth()
+            val bundle = bundleForUserAcceptingToAutofill("example.com")
+            testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
+            verify(callback).onNoCredentialsChosenForAutofill("example.com")
+        }
 
     @Test
     fun whenUserAcceptedToUseCredentialsButMissingInBundleThenNoCallbackInvoked() = runTest {

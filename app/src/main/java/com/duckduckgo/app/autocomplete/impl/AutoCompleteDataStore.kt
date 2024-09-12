@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.autocomplete.impl
 
 import android.content.Context
@@ -43,7 +27,12 @@ class SharedPreferencesAutoCompleteDataStore @Inject constructor(
         const val KEY_HISTORY_AUTOCOMPLETE_DISMISSED = "KEY_HISTORY_AUTOCOMPLETE_DISMISSED"
     }
 
-    private val preferences: SharedPreferences by lazy { context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE) }
+    private val preferences: SharedPreferences by lazy {
+        context.getSharedPreferences(
+            FILENAME,
+            Context.MODE_PRIVATE
+        )
+    }
 
     override suspend fun countHistoryInAutoCompleteIAMShown(): Int {
         return preferences.getInt(KEY_HISTORY_AUTOCOMPLETE_SHOW_COUNT, 0)
@@ -52,6 +41,7 @@ class SharedPreferencesAutoCompleteDataStore @Inject constructor(
     override suspend fun incrementCountHistoryInAutoCompleteIAMShown() {
         updateValue(KEY_HISTORY_AUTOCOMPLETE_SHOW_COUNT, countHistoryInAutoCompleteIAMShown() + 1)
     }
+
     override suspend fun setHistoryInAutoCompleteIAMDismissed() {
         updateValue(KEY_HISTORY_AUTOCOMPLETE_DISMISSED, true)
     }

@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.subscriptions.impl.feedback
 
 import android.os.Bundle
@@ -42,7 +26,8 @@ import com.duckduckgo.subscriptions.impl.feedback.pixels.PrivacyProUnifiedFeedba
 import javax.inject.Inject
 
 @InjectWith(FragmentScope::class)
-class SubscriptionFeedbackSubmitFragment : SubscriptionFeedbackFragment(R.layout.content_feedback_submit) {
+class SubscriptionFeedbackSubmitFragment :
+    SubscriptionFeedbackFragment(R.layout.content_feedback_submit) {
 
     private val binding: ContentFeedbackSubmitBinding by viewBinding()
 
@@ -58,7 +43,8 @@ class SubscriptionFeedbackSubmitFragment : SubscriptionFeedbackFragment(R.layout
     ) {
         super.onViewCreated(view, savedInstanceState)
         val listener = activity as Listener
-        val reportType = requireArguments().getSerializable(EXTRA_REPORT_TYPE) as SubscriptionFeedbackReportType
+        val reportType =
+            requireArguments().getSerializable(EXTRA_REPORT_TYPE) as SubscriptionFeedbackReportType
 
         if (reportType == REPORT_PROBLEM) {
             binding.feedbackSubmitHeader.show()
@@ -69,17 +55,23 @@ class SubscriptionFeedbackSubmitFragment : SubscriptionFeedbackFragment(R.layout
             ) {
                 listener.onFaqsOpened()
             }
-            binding.feedbackSubmitDescriptionHeader.primaryText = getString(R.string.feedbackSubmitVpnDescriptionHeader).uppercase()
-            binding.feedbackSubmitDescription.hint = getString(R.string.feedbackSubmitVpnDescriptionHint)
+            binding.feedbackSubmitDescriptionHeader.primaryText =
+                getString(R.string.feedbackSubmitVpnDescriptionHeader).uppercase()
+            binding.feedbackSubmitDescription.hint =
+                getString(R.string.feedbackSubmitVpnDescriptionHint)
         } else {
             binding.feedbackSubmitHeader.gone()
             binding.feedbackSubmitByLine.gone()
             if (reportType == GENERAL_FEEDBACK) {
-                binding.feedbackSubmitDescriptionHeader.primaryText = getString(R.string.feedbackActionGeneralFeedback).uppercase()
-                binding.feedbackSubmitDescription.hint = getString(R.string.feedbackSubmitGeneralDescriptionHint)
+                binding.feedbackSubmitDescriptionHeader.primaryText =
+                    getString(R.string.feedbackActionGeneralFeedback).uppercase()
+                binding.feedbackSubmitDescription.hint =
+                    getString(R.string.feedbackSubmitGeneralDescriptionHint)
             } else {
-                binding.feedbackSubmitDescriptionHeader.primaryText = getString(R.string.feedbackActionFeatureRequest).uppercase()
-                binding.feedbackSubmitDescription.hint = getString(R.string.feedbackSubmitFeatureRequestDescriptionHint)
+                binding.feedbackSubmitDescriptionHeader.primaryText =
+                    getString(R.string.feedbackActionFeatureRequest).uppercase()
+                binding.feedbackSubmitDescription.hint =
+                    getString(R.string.feedbackSubmitFeatureRequestDescriptionHint)
             }
         }
 
@@ -95,7 +87,8 @@ class SubscriptionFeedbackSubmitFragment : SubscriptionFeedbackFragment(R.layout
         spannableFullText: SpannableString,
         onClick: () -> Unit,
     ) {
-        val annotations = spannableFullText.getSpans(0, spannableFullText.length, Annotation::class.java)
+        val annotations =
+            spannableFullText.getSpans(0, spannableFullText.length, Annotation::class.java)
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 onClick()
@@ -118,7 +111,10 @@ class SubscriptionFeedbackSubmitFragment : SubscriptionFeedbackFragment(R.layout
                 )
                 setSpan(
                     ForegroundColorSpan(
-                        ContextCompat.getColor(context, com.duckduckgo.mobile.android.R.color.cornflowerBlue),
+                        ContextCompat.getColor(
+                            context,
+                            com.duckduckgo.mobile.android.R.color.cornflowerBlue
+                        ),
                     ),
                     spannableFullText.getSpanStart(it),
                     spannableFullText.getSpanEnd(it),

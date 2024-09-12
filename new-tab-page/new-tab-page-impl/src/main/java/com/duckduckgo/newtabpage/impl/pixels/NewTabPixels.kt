@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl.pixels
 
 import com.duckduckgo.app.di.AppCoroutineScope
@@ -82,16 +66,23 @@ class RealNewTabPixels @Inject constructor(
         appCoroutineScope.launch(dispatcherProvider.io()) {
             val paramsMap = mutableMapOf<String, String>().apply {
                 val allSections = sections.getPlugins()
-                val favoriteSection = getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.FAVOURITES.name })
+                val favoriteSection =
+                    getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.FAVOURITES.name })
                 put(NewTabPixelParameters.FAVORITES, favoriteSection)
-                val shortcutsSection = getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.SHORTCUTS.name })
+                val shortcutsSection =
+                    getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.SHORTCUTS.name })
                 put(NewTabPixelParameters.SHORTCUTS, shortcutsSection)
-                val appTPSection = getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.APP_TRACKING_PROTECTION.name })
+                val appTPSection =
+                    getSectionParameterValue(allSections.firstOrNull { it.name == NewTabPageSection.APP_TRACKING_PROTECTION.name })
                 put(NewTabPixelParameters.APP_TRACKING_PROTECTION, appTPSection)
                 put(NewTabPixelParameters.FAVORITES_COUNT, getFavoritesParameterValue())
             }
             pixel.fire(NewTabPixelNames.NEW_TAB_DISPLAYED)
-            pixel.fire(pixel = NewTabPixelNames.NEW_TAB_DISPLAYED_UNIQUE, type = DAILY, parameters = paramsMap)
+            pixel.fire(
+                pixel = NewTabPixelNames.NEW_TAB_DISPLAYED_UNIQUE,
+                type = DAILY,
+                parameters = paramsMap
+            )
         }
     }
 

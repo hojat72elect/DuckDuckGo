@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.onboarding.ui.page
 
 import android.Manifest
@@ -84,14 +68,15 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
     private var typingAnimation: ViewPropertyAnimatorCompat? = null
     private var welcomeAnimationFinished = false
 
-    private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { permissionGranted ->
-        if (permissionGranted) {
-            viewModel.notificationRuntimePermissionGranted()
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { permissionGranted ->
+            if (permissionGranted) {
+                viewModel.notificationRuntimePermissionGranted()
+            }
+            if (view?.windowVisibility == View.VISIBLE) {
+                scheduleWelcomeAnimation(ANIMATION_DELAY_AFTER_NOTIFICATIONS_PERMISSIONS_HANDLED)
+            }
         }
-        if (view?.windowVisibility == View.VISIBLE) {
-            scheduleWelcomeAnimation(ANIMATION_DELAY_AFTER_NOTIFICATIONS_PERMISSIONS_HANDLED)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -172,15 +157,24 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
                     binding.daxDialogCta.daxDialogContentImage.gone()
 
                     scheduleTypingAnimation {
-                        binding.daxDialogCta.primaryCta.text = it.getString(R.string.preOnboardingDaxDialog1Button)
-                        binding.daxDialogCta.primaryCta.setOnClickListener { viewModel.onPrimaryCtaClicked(INITIAL) }
-                        ViewCompat.animate(binding.daxDialogCta.primaryCta).alpha(MAX_ALPHA).duration = ANIMATION_DURATION
+                        binding.daxDialogCta.primaryCta.text =
+                            it.getString(R.string.preOnboardingDaxDialog1Button)
+                        binding.daxDialogCta.primaryCta.setOnClickListener {
+                            viewModel.onPrimaryCtaClicked(
+                                INITIAL
+                            )
+                        }
+                        ViewCompat.animate(binding.daxDialogCta.primaryCta)
+                            .alpha(MAX_ALPHA).duration = ANIMATION_DURATION
                     }
                 }
 
                 COMPARISON_CHART -> {
                     binding.daxDialogCta.dialogTextCta.text = ""
-                    TransitionManager.beginDelayedTransition(binding.daxDialogCta.cardView, AutoTransition())
+                    TransitionManager.beginDelayedTransition(
+                        binding.daxDialogCta.cardView,
+                        AutoTransition()
+                    )
                     ctaText = it.getString(R.string.preOnboardingDaxDialog2Title)
                     binding.daxDialogCta.hiddenTextCta.text = ctaText.html(it)
                     binding.daxDialogCta.dialogTextCta.textInDialog = ctaText.html(it)
@@ -189,10 +183,17 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
                     binding.daxDialogCta.comparisonChart.root.alpha = MIN_ALPHA
 
                     scheduleTypingAnimation {
-                        binding.daxDialogCta.primaryCta.text = it.getString(R.string.preOnboardingDaxDialog2Button)
-                        binding.daxDialogCta.primaryCta.setOnClickListener { viewModel.onPrimaryCtaClicked(COMPARISON_CHART) }
-                        ViewCompat.animate(binding.daxDialogCta.primaryCta).alpha(MAX_ALPHA).duration = ANIMATION_DURATION
-                        ViewCompat.animate(binding.daxDialogCta.comparisonChart.root).alpha(MAX_ALPHA).duration = ANIMATION_DURATION
+                        binding.daxDialogCta.primaryCta.text =
+                            it.getString(R.string.preOnboardingDaxDialog2Button)
+                        binding.daxDialogCta.primaryCta.setOnClickListener {
+                            viewModel.onPrimaryCtaClicked(
+                                COMPARISON_CHART
+                            )
+                        }
+                        ViewCompat.animate(binding.daxDialogCta.primaryCta)
+                            .alpha(MAX_ALPHA).duration = ANIMATION_DURATION
+                        ViewCompat.animate(binding.daxDialogCta.comparisonChart.root)
+                            .alpha(MAX_ALPHA).duration = ANIMATION_DURATION
                     }
                 }
 
@@ -209,10 +210,17 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
                     launchKonfetti()
 
                     scheduleTypingAnimation {
-                        ViewCompat.animate(binding.daxDialogCta.daxDialogContentImage).alpha(MAX_ALPHA).duration = ANIMATION_DURATION
-                        binding.daxDialogCta.primaryCta.text = it.getString(R.string.preOnboardingDaxDialog3Button)
-                        binding.daxDialogCta.primaryCta.setOnClickListener { viewModel.onPrimaryCtaClicked(CELEBRATION) }
-                        ViewCompat.animate(binding.daxDialogCta.primaryCta).alpha(MAX_ALPHA).duration = ANIMATION_DURATION
+                        ViewCompat.animate(binding.daxDialogCta.daxDialogContentImage)
+                            .alpha(MAX_ALPHA).duration = ANIMATION_DURATION
+                        binding.daxDialogCta.primaryCta.text =
+                            it.getString(R.string.preOnboardingDaxDialog3Button)
+                        binding.daxDialogCta.primaryCta.setOnClickListener {
+                            viewModel.onPrimaryCtaClicked(
+                                CELEBRATION
+                            )
+                        }
+                        ViewCompat.animate(binding.daxDialogCta.primaryCta)
+                            .alpha(MAX_ALPHA).duration = ANIMATION_DURATION
                     }
                 }
             }
@@ -251,7 +259,10 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
             .setDuration(ANIMATION_DURATION)
             .withEndAction {
                 welcomeAnimationFinished = true
-                binding.daxDialogCta.dialogTextCta.startTypingAnimation(ctaText, afterAnimation = afterAnimation)
+                binding.daxDialogCta.dialogTextCta.startTypingAnimation(
+                    ctaText,
+                    afterAnimation = afterAnimation
+                )
             }
     }
 
@@ -265,11 +276,16 @@ class WelcomePage : OnboardingPageFragment(R.layout.content_onboarding_welcome_p
     }
 
     private fun launchKonfetti() {
-        val magenta = ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.magenta, null)
-        val blue = ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.blue30, null)
-        val purple = ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.purple, null)
-        val green = ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.green, null)
-        val yellow = ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.yellow, null)
+        val magenta =
+            ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.magenta, null)
+        val blue =
+            ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.blue30, null)
+        val purple =
+            ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.purple, null)
+        val green =
+            ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.green, null)
+        val yellow =
+            ResourcesCompat.getColor(resources, com.duckduckgo.mobile.android.R.color.yellow, null)
 
         val displayWidth = resources.displayMetrics.widthPixels
 

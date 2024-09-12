@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.networkprotection.impl.reddit
 
 import androidx.lifecycle.LifecycleOwner
@@ -31,13 +15,18 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class RedditBlockWorkaroundTest {
-    @get:Rule var coroutineRule = CoroutineTestRule()
+    @get:Rule
+    var coroutineRule = CoroutineTestRule()
     private val networkProtectionState: NetworkProtectionState = mock()
     private val lifecycleOwner: LifecycleOwner = TestLifecycleOwner()
 
     private val cookieManager = FakeCookieManagerWrapper()
 
-    private val redditBlockWorkaround = RedditBlockWorkaround(networkProtectionState, coroutineRule.testDispatcherProvider, cookieManager)
+    private val redditBlockWorkaround = RedditBlockWorkaround(
+        networkProtectionState,
+        coroutineRule.testDispatcherProvider,
+        cookieManager
+    )
 
     @Test
     fun `on resume with netp disabled removes the reddit_session dummy`() = runTest {
@@ -48,7 +37,10 @@ class RedditBlockWorkaroundTest {
         redditBlockWorkaround.onResume(lifecycleOwner)
 
         redditBlockWorkaround.onResume(lifecycleOwner)
-        assertEquals("reddit_session=; Expires=Wed, 21 Oct 2015 07:28:00 GMT", cookieManager.getCookie(".reddit.com"))
+        assertEquals(
+            "reddit_session=; Expires=Wed, 21 Oct 2015 07:28:00 GMT",
+            cookieManager.getCookie(".reddit.com")
+        )
     }
 
     @Test
@@ -90,7 +82,10 @@ class RedditBlockWorkaroundTest {
         whenever(networkProtectionState.isEnabled()).thenReturn(false)
         cookieManager.setCookie(".reddit.com", "reddit_session=;")
         redditBlockWorkaround.onPause(lifecycleOwner)
-        assertEquals("reddit_session=; Expires=Wed, 21 Oct 2015 07:28:00 GMT", cookieManager.getCookie(".reddit.com"))
+        assertEquals(
+            "reddit_session=; Expires=Wed, 21 Oct 2015 07:28:00 GMT",
+            cookieManager.getCookie(".reddit.com")
+        )
     }
 
     @Test
@@ -116,11 +111,13 @@ class FakeCookieManagerWrapper() : CookieManagerWrapper {
     // Function to set cookies for a specific URL or domain
     override fun setCookie(url: String, cookieString: String) {
         val uri = URI(url)
-        val domain = runCatching { if (uri.host.startsWith(".")) uri.host.substring(1) else uri.host }.getOrElse { url }
+        val domain =
+            runCatching { if (uri.host.startsWith(".")) uri.host.substring(1) else uri.host }.getOrElse { url }
         val cookie = Cookie.fromString(cookieString)
 
         // Add cookie to the specific domain
-        val cookies = cookieStore.computeIfAbsent(domain) { mutableListOf() }.filter { it.name != cookie.name }.toMutableList().apply {
+        val cookies = cookieStore.computeIfAbsent(domain) { mutableListOf() }
+            .filter { it.name != cookie.name }.toMutableList().apply {
             add(cookie)
         }
 

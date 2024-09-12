@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.autofill.impl.ui.credential.updating
 
 import android.os.Bundle
@@ -33,7 +17,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 
 @RunWith(AndroidJUnit4::class)
 class ResultHandlerUpdateLoginCredentialsTest {
@@ -76,7 +64,8 @@ class ResultHandlerUpdateLoginCredentialsTest {
 
     @Test
     fun whenUpdateBundleWellFormedThenCredentialsAreUpdated() = runTest {
-        val loginCredentials = LoginCredentials(domain = "example.com", username = "foo", password = "bar")
+        val loginCredentials =
+            LoginCredentials(domain = "example.com", username = "foo", password = "bar")
         val bundle = bundleForUpdateDialog("example.com", loginCredentials, Password)
         testee.processResult(bundle, context, "tab-id-123", Fragment(), callback)
         verify(autofillStore).updateCredentials(
@@ -95,7 +84,8 @@ class ResultHandlerUpdateLoginCredentialsTest {
         verify(autofillStore, never()).updateCredentials(any(), any(), any())
     }
 
-    private fun someLoginCredentials() = LoginCredentials(domain = "example.com", username = "foo", password = "bar")
+    private fun someLoginCredentials() =
+        LoginCredentials(domain = "example.com", username = "foo", password = "bar")
 
     private fun bundleForUpdateDialog(
         url: String?,
@@ -104,8 +94,14 @@ class ResultHandlerUpdateLoginCredentialsTest {
     ): Bundle {
         return Bundle().also {
             if (url != null) it.putString(CredentialUpdateExistingCredentialsDialog.KEY_URL, url)
-            if (credentials != null) it.putParcelable(CredentialUpdateExistingCredentialsDialog.KEY_CREDENTIALS, credentials)
-            it.putParcelable(CredentialUpdateExistingCredentialsDialog.KEY_CREDENTIAL_UPDATE_TYPE, updateType)
+            if (credentials != null) it.putParcelable(
+                CredentialUpdateExistingCredentialsDialog.KEY_CREDENTIALS,
+                credentials
+            )
+            it.putParcelable(
+                CredentialUpdateExistingCredentialsDialog.KEY_CREDENTIAL_UPDATE_TYPE,
+                updateType
+            )
         }
     }
 }

@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.webview
 
 import android.content.Context
@@ -75,7 +59,9 @@ class SslWarningLayout @JvmOverloads constructor(
 
     private fun configureCopy(errorResponse: SslErrorResponse) {
         with(binding) {
-            sslErrorHeadline.text = context.getString(R.string.sslErrorHeadline, errorResponse.error.url).applyBoldSpanTo(errorResponse.error.url)
+            sslErrorHeadline.text =
+                context.getString(R.string.sslErrorHeadline, errorResponse.error.url)
+                    .applyBoldSpanTo(errorResponse.error.url)
             sslErrorAcceptCta.text = context.getString(R.string.sslErrorExpandedCTA).html(context)
             formatSecondaryCopy(errorResponse)
         }
@@ -89,16 +75,21 @@ class SslWarningLayout @JvmOverloads constructor(
                     val domain = url.extractDomain()
                     val text = if (domain != null) {
                         val urlDomain = "*.$domain"
-                        context.getString(errorResponse.errorType.errorId, url, domain).applyBoldSpanTo(listOf(url, urlDomain))
+                        context.getString(errorResponse.errorType.errorId, url, domain)
+                            .applyBoldSpanTo(listOf(url, urlDomain))
                     } else {
-                        context.getString(errorResponse.errorType.errorId, url, url).applyBoldSpanTo(url)
+                        context.getString(errorResponse.errorType.errorId, url, url)
+                            .applyBoldSpanTo(url)
                     }
                     sslErrorExpandedMessage.text = text
                 }
+
                 else -> {
-                    sslErrorExpandedMessage.text = context.getString(errorResponse.errorType.errorId, errorResponse.error.url).applyBoldSpanTo(
-                        errorResponse.error.url,
-                    )
+                    sslErrorExpandedMessage.text =
+                        context.getString(errorResponse.errorType.errorId, errorResponse.error.url)
+                            .applyBoldSpanTo(
+                                errorResponse.error.url,
+                            )
                 }
             }
         }

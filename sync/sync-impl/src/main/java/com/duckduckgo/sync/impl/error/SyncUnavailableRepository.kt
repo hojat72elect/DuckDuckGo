@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.sync.impl.error
 
 import android.content.Context
@@ -88,7 +72,7 @@ class RealSyncUnavailableRepository @Inject constructor(
 
         Timber.d(
             "Sync-Engine: server unavailable count: ${syncUnavailableStore.syncErrorCount} " +
-                "pausedAt: ${syncUnavailableStore.syncUnavailableSince} lastNotifiedAt: ${syncUnavailableStore.userNotifiedAt}",
+                    "pausedAt: ${syncUnavailableStore.syncUnavailableSince} lastNotifiedAt: ${syncUnavailableStore.userNotifiedAt}",
         )
         if (syncUnavailableStore.syncErrorCount >= ERROR_THRESHOLD_NOTIFICATION_COUNT) {
             Timber.d("Sync-Engine: Sync error count reached threshold")
@@ -105,9 +89,10 @@ class RealSyncUnavailableRepository @Inject constructor(
 
     override fun triggerNotification() {
         val today = LocalDateTime.now().toLocalDate()
-        val lastNotification = syncUnavailableStore.userNotifiedAt.takeUnless { it.isEmpty() }?.let {
-            LocalDateTime.parse(it, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toLocalDate()
-        } ?: ""
+        val lastNotification =
+            syncUnavailableStore.userNotifiedAt.takeUnless { it.isEmpty() }?.let {
+                LocalDateTime.parse(it, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toLocalDate()
+            } ?: ""
         val userNotifiedToday = today == lastNotification
         Timber.d("Sync-Engine: was user notified today? $userNotifiedToday")
         if (!userNotifiedToday) {
@@ -127,7 +112,8 @@ class RealSyncUnavailableRepository @Inject constructor(
     }
 
     private fun getUtcIsoLocalDate(): String {
-        return Instant.now().atOffset(java.time.ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        return Instant.now().atOffset(java.time.ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     }
 
     private fun scheduleNotification(

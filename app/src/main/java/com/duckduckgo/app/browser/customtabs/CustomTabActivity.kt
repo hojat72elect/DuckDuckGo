@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.customtabs
 
 import android.content.Context
@@ -75,7 +59,8 @@ class CustomTabActivity : DuckDuckGoActivity() {
         isExternal: Boolean,
     ) {
         val tabId = "${CustomTabViewModel.CUSTOM_TAB_NAME_PREFIX}${UUID.randomUUID()}"
-        val newFragment = BrowserTabFragment.newInstanceForCustomTab(tabId, null, true, toolbarColor, isExternal)
+        val newFragment =
+            BrowserTabFragment.newInstanceForCustomTab(tabId, null, true, toolbarColor, isExternal)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.hide(currentFragment)
         transaction.add(R.id.fragmentTabContainer, newFragment, tabId)
@@ -108,7 +93,13 @@ class CustomTabActivity : DuckDuckGoActivity() {
     }
 
     companion object {
-        fun intent(context: Context, flags: Int, text: String?, toolbarColor: Int, isExternal: Boolean): Intent {
+        fun intent(
+            context: Context,
+            flags: Int,
+            text: String?,
+            toolbarColor: Int,
+            isExternal: Boolean
+        ): Intent {
             return Intent(context, CustomTabActivity::class.java).apply {
                 addFlags(flags)
                 putExtra(CustomTabsIntent.EXTRA_TOOLBAR_COLOR, toolbarColor)
@@ -116,6 +107,7 @@ class CustomTabActivity : DuckDuckGoActivity() {
                 putExtra(LAUNCH_FROM_EXTERNAL_EXTRA, isExternal)
             }
         }
+
         private const val LAUNCH_FROM_EXTERNAL_EXTRA = "LAUNCH_FROM_EXTERNAL_EXTRA"
     }
 
@@ -124,7 +116,8 @@ class CustomTabActivity : DuckDuckGoActivity() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentTabContainer) as? BrowserTabFragment
+                    val currentFragment =
+                        supportFragmentManager.findFragmentById(R.id.fragmentTabContainer) as? BrowserTabFragment
                     if (currentFragment != null && currentFragment.onBackPressed(isCustomTab = true)) {
                         return
                     }

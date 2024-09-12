@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.browser.commands
 
 import android.graphics.Bitmap
@@ -69,13 +53,21 @@ sealed class Command {
         val requestUserConfirmation: Boolean,
     ) : Command()
 
-    class ShowSavedSiteAddedConfirmation(val savedSiteChangedViewState: SavedSiteChangedViewState) : Command()
-    class ShowEditSavedSiteDialog(val savedSiteChangedViewState: SavedSiteChangedViewState) : Command()
+    class ShowSavedSiteAddedConfirmation(val savedSiteChangedViewState: SavedSiteChangedViewState) :
+        Command()
+
+    class ShowEditSavedSiteDialog(val savedSiteChangedViewState: SavedSiteChangedViewState) :
+        Command()
+
     class DeleteSavedSiteConfirmation(val savedSite: SavedSite) : Command()
     class DeleteFavoriteConfirmation(val savedSite: SavedSite) : Command()
 
-    class ShowFireproofWebSiteConfirmation(val fireproofWebsiteEntity: FireproofWebsiteEntity) : Command()
-    class DeleteFireproofConfirmation(val fireproofWebsiteEntity: FireproofWebsiteEntity) : Command()
+    class ShowFireproofWebSiteConfirmation(val fireproofWebsiteEntity: FireproofWebsiteEntity) :
+        Command()
+
+    class DeleteFireproofConfirmation(val fireproofWebsiteEntity: FireproofWebsiteEntity) :
+        Command()
+
     class ShowPrivacyProtectionEnabledConfirmation(val domain: String) : Command()
     class ShowPrivacyProtectionDisabledConfirmation(val domain: String) : Command()
     object AskToDisableLoginDetection : Command()
@@ -110,14 +102,17 @@ sealed class Command {
         val fileChooserParams: FileChooserRequestedParams,
         val inputAction: String,
     ) : Command()
+
     class ShowImageCamera(
         val filePathCallback: ValueCallback<Array<Uri>>,
         val fileChooserParams: FileChooserRequestedParams,
     ) : Command()
+
     class ShowVideoCamera(
         val filePathCallback: ValueCallback<Array<Uri>>,
         val fileChooserParams: FileChooserRequestedParams,
     ) : Command()
+
     class ShowSoundRecorder(
         val filePathCallback: ValueCallback<Array<Uri>>,
         val fileChooserParams: FileChooserRequestedParams,
@@ -157,6 +152,7 @@ sealed class Command {
         val title: String,
         val url: String?,
     ) : Command()
+
     class CheckSystemLocationPermission(
         val domain: String,
         val deniedForever: Boolean,
@@ -230,6 +226,7 @@ sealed class Command {
         val screen: String,
         val payload: String,
     ) : Command()
+
     data class HideOnboardingDaxDialog(val onboardingCta: OnboardingDaxDialogCta) : Command()
     data class ShowRemoveSearchSuggestionDialog(val suggestion: AutoCompleteSuggestion) : Command()
     data object AutocompleteItemRemoved : Command()
