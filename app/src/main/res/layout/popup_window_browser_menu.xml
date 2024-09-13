@@ -1,24 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2020 DuckDuckGo
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/popup_menu_bg"
     android:orientation="vertical">
 
@@ -38,30 +24,30 @@
             style="@style/Widget.DuckDuckGo.NavigationalIcon"
             android:layout_marginStart="@dimen/keyline_4"
             android:contentDescription="@string/back"
-            app:srcCompat="@drawable/ic_arrow_left_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_left_24" />
 
         <ImageButton
             android:id="@+id/forwardMenuItem"
             style="@style/Widget.DuckDuckGo.NavigationalIcon"
             android:contentDescription="@string/forward"
-            app:srcCompat="@drawable/ic_arrow_right_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/refreshMenuItem"
             app:layout_constraintStart_toEndOf="@+id/backMenuItem"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_right_24" />
 
         <ImageButton
             android:id="@+id/refreshMenuItem"
             style="@style/Widget.DuckDuckGo.NavigationalIcon"
             android:layout_marginEnd="@dimen/keyline_4"
             android:contentDescription="@string/refresh"
-            app:srcCompat="@drawable/ic_reload_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reload_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,9 +150,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:visibility="visible"
                 app:iconDrawable="@drawable/ic_open_in_app_android_alt_16"
-                app:primaryText="@string/appLinkMenuItemTitle" />
+                app:primaryText="@string/appLinkMenuItemTitle"
+                tools:visibility="visible" />
 
             <com.duckduckgo.common.ui.view.MenuItemView
                 android:id="@+id/addToHomeMenuItem"
@@ -217,29 +203,29 @@
                 app:primaryText="@string/settingsMenuItemTitle" />
 
             <com.duckduckgo.common.ui.view.MenuItemView
-                android:visibility="gone"
                 android:id="@+id/openInDdgBrowserMenuItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:iconDrawable="@drawable/ic_open_in_16"
                 app:primaryText="@string/openInDdgMenuItemTitle" />
 
             <com.duckduckgo.common.ui.view.divider.HorizontalDivider
-                android:visibility="gone"
                 android:id="@+id/customTabsMenuDivider"
                 style="@style/Widget.DuckDuckGo.PopupMenuHorizontalDivider"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
             <com.duckduckgo.common.ui.view.MenuItemView
-                android:visibility="gone"
                 android:id="@+id/runningInDdgBrowserMenuItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:textType="secondary"
-                app:typography="body2"
+                android:visibility="gone"
                 app:iconDrawable="@drawable/ic_dax_icon"
-                app:primaryText="@string/runningInDdgMenuItemTitle" />
+                app:primaryText="@string/runningInDdgMenuItemTitle"
+                app:textType="secondary"
+                app:typography="body2" />
 
         </LinearLayout>
 
