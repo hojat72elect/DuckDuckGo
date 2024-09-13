@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.networkprotection.impl.subscription
 
 import com.duckduckgo.common.utils.DispatcherProvider
@@ -49,17 +33,18 @@ class NetworkProtectionAccessStateImpl @Inject constructor(
         }
     }
 
-    override suspend fun getStateFlow(): Flow<NetPAccessState> = withContext(dispatcherProvider.io()) {
-        netpSubscriptionManager.vpnStatus().map { status ->
-            if (!status.isActive()) {
-                // if entitlement check succeeded and no entitlement, reset state and hide access.
-                handleRevokedVPNState()
-                Locked
-            } else {
-                UnLocked
+    override suspend fun getStateFlow(): Flow<NetPAccessState> =
+        withContext(dispatcherProvider.io()) {
+            netpSubscriptionManager.vpnStatus().map { status ->
+                if (!status.isActive()) {
+                    // if entitlement check succeeded and no entitlement, reset state and hide access.
+                    handleRevokedVPNState()
+                    Locked
+                } else {
+                    UnLocked
+                }
             }
         }
-    }
 
     private suspend fun handleRevokedVPNState() {
         if (networkProtectionState.isEnabled()) {

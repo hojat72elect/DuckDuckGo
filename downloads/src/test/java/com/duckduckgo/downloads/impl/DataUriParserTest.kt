@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.downloads.impl
 
 import android.webkit.MimeTypeMap
@@ -103,7 +87,8 @@ class DataUriParserTest {
 
     @Test
     fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsSvgThenSuffixIsSvg() {
-        val parsed = testee.generate("data:text/plain;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy") as ParsedDataUri
+        val parsed =
+            testee.generate("data:text/plain;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy") as ParsedDataUri
         assertEquals("svg", parsed.filename.fileType)
     }
 
@@ -115,13 +100,15 @@ class DataUriParserTest {
 
     @Test
     fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsPdfThenSuffixIsPdf() {
-        val parsed = testee.generate("data:text/plain;base64,JVBERi0xLjEKMSAwIG9iag") as ParsedDataUri
+        val parsed =
+            testee.generate("data:text/plain;base64,JVBERi0xLjEKMSAwIG9iag") as ParsedDataUri
         assertEquals("pdf", parsed.filename.fileType)
     }
 
     @Test
     fun whenMimeTypeIsTextPlainAndDataIsBase64AndIsWebpThenSuffixIsWebp() {
-        val parsed = testee.generate("data:text/plain;base64,UklGRs4IAABXRUJQVlA4WAo") as ParsedDataUri
+        val parsed =
+            testee.generate("data:text/plain;base64,UklGRs4IAABXRUJQVlA4WAo") as ParsedDataUri
         assertEquals("webp", parsed.filename.fileType)
     }
 
@@ -145,7 +132,8 @@ class DataUriParserTest {
 
     @Test
     fun whenMimeTypeIsApplicationOctetStreamAndDataIsBase64AndIsPdfThenSuffixIsPdf() {
-        val parsed = testee.generate("data:application/octet-stream;base64,JVBERi0xLjMKJeL") as ParsedDataUri
+        val parsed =
+            testee.generate("data:application/octet-stream;base64,JVBERi0xLjMKJeL") as ParsedDataUri
         assertEquals("pdf", parsed.filename.fileType)
     }
 }

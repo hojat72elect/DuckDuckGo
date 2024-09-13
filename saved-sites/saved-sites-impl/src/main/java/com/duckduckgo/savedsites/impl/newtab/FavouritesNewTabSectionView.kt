@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.newtab
 
 import android.animation.ValueAnimator
@@ -24,7 +8,6 @@ import android.text.Spanned
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup.LayoutParams
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.text.HtmlCompat
@@ -112,7 +95,10 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val viewModel: FavouritesNewTabSectionViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[FavouritesNewTabSectionViewModel::class.java]
+        ViewModelProvider(
+            findViewTreeViewModelStoreOwner()!!,
+            viewModelFactory
+        )[FavouritesNewTabSectionViewModel::class.java]
     }
 
     private val expandAnimator: ValueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
@@ -178,12 +164,16 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
         val popupContent = ViewNewTabFavouritesTooltipBinding.inflate(LayoutInflater.from(context))
         popupContent.cardView.cardElevation = PopupMenu.POPUP_DEFAULT_ELEVATION_DP.toPx()
 
-        val cornerRadius = resources.getDimension(com.duckduckgo.mobile.android.R.dimen.mediumShapeCornerRadius)
+        val cornerRadius =
+            resources.getDimension(com.duckduckgo.mobile.android.R.dimen.mediumShapeCornerRadius)
         popupContent.cardView.shapeAppearanceModel = ShapeAppearanceModel.builder()
             .setAllCornerSizes(cornerRadius)
             .build()
 
-        popupContent.cardContent.text = HtmlCompat.fromHtml(context.getString(R.string.newTabPageFavoritesTooltip), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        popupContent.cardContent.text = HtmlCompat.fromHtml(
+            context.getString(R.string.newTabPageFavoritesTooltip),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
 
         PopupWindow(
             popupContent.root,
@@ -206,7 +196,10 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
     private fun restorePlaceholders() {
         if (viewModel.viewState.value.favourites.isEmpty()) {
             val gridColumnCalculator = GridColumnCalculator(context)
-            val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(QUICK_ACCESS_ITEM_MAX_SIZE_DP, QUICK_ACCESS_GRID_MAX_COLUMNS)
+            val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(
+                QUICK_ACCESS_ITEM_MAX_SIZE_DP,
+                QUICK_ACCESS_GRID_MAX_COLUMNS
+            )
             if (numOfColumns == QUICK_ACCESS_GRID_MAX_COLUMNS) {
                 adapter.submitList(FavouritesNewTabSectionsAdapter.LANDSCAPE_PLACEHOLDERS)
             } else {
@@ -217,7 +210,10 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
 
     private fun configureQuickAccessGridLayout(recyclerView: RecyclerView) {
         val gridColumnCalculator = GridColumnCalculator(context)
-        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(QUICK_ACCESS_ITEM_MAX_SIZE_DP, QUICK_ACCESS_GRID_MAX_COLUMNS)
+        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(
+            QUICK_ACCESS_ITEM_MAX_SIZE_DP,
+            QUICK_ACCESS_GRID_MAX_COLUMNS
+        )
         val layoutManager = GridLayoutManager(context, numOfColumns)
         recyclerView.layoutManager = layoutManager
     }
@@ -231,7 +227,8 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
                 apapter,
                 object : QuickAccessDragTouchItemListener.DragDropListener {
                     override fun onListChanged(listElements: List<FavouriteNewTabSectionsItem>) {
-                        val favouriteItems = listElements.filterIsInstance<FavouriteNewTabSectionsItem.FavouriteItemFavourite>()
+                        val favouriteItems =
+                            listElements.filterIsInstance<FavouriteNewTabSectionsItem.FavouriteItemFavourite>()
                         viewModel.onQuickAccessListChanged(favouriteItems.map { it.favorite })
                         recyclerView.disableAnimation()
                     }
@@ -265,7 +262,10 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
 
     private fun render(viewState: ViewState) {
         val gridColumnCalculator = GridColumnCalculator(context)
-        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(QUICK_ACCESS_ITEM_MAX_SIZE_DP, QUICK_ACCESS_GRID_MAX_COLUMNS)
+        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(
+            QUICK_ACCESS_ITEM_MAX_SIZE_DP,
+            QUICK_ACCESS_GRID_MAX_COLUMNS
+        )
 
         if (viewState.favourites.isEmpty()) {
             binding.newTabFavoritesToggleLayout.gone()
@@ -288,7 +288,9 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
                 val showCollapsed = !adapter.expanded
 
                 if (showCollapsed) {
-                    adapter.submitList(viewState.favourites.take(numOfCollapsedItems).map { FavouriteItemFavourite(it) })
+                    adapter.submitList(
+                        viewState.favourites.take(numOfCollapsedItems)
+                            .map { FavouriteItemFavourite(it) })
                 } else {
                     adapter.submitList(viewState.favourites.map { FavouriteItemFavourite(it) })
                 }
@@ -298,7 +300,9 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
                     binding.newTabFavoritesToggleLayout.setOnClickListener {
                         if (adapter.expanded) {
                             expandAnimator.reverse()
-                            adapter.submitList(viewState.favourites.take(numOfCollapsedItems).map { FavouriteItemFavourite(it) })
+                            adapter.submitList(
+                                viewState.favourites.take(numOfCollapsedItems)
+                                    .map { FavouriteItemFavourite(it) })
                             adapter.expanded = false
                             viewModel.onListCollapsed()
                         } else {
@@ -330,7 +334,10 @@ class FavouritesNewTabSectionView @JvmOverloads constructor(
 
             is DeleteSavedSiteConfirmation -> confirmDeleteSavedSite(
                 command.savedSite,
-                context.getString(R.string.bookmarkDeleteConfirmationMessage, command.savedSite.title).html(context),
+                context.getString(
+                    R.string.bookmarkDeleteConfirmationMessage,
+                    command.savedSite.title
+                ).html(context),
             ) {
                 viewModel.onDeleteSavedSiteSnackbarDismissed(it)
             }

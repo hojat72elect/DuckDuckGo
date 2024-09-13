@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2023 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.subscriptions.impl.ui
 
 import android.Manifest
@@ -50,14 +34,6 @@ import com.duckduckgo.common.ui.view.show
 import com.duckduckgo.common.ui.viewbinding.viewBinding
 import com.duckduckgo.common.utils.ConflatedJob
 import com.duckduckgo.di.scopes.ActivityScope
-import com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_DELAY
-import com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_LENGTH
-import com.duckduckgo.downloads.api.DownloadCommand
-import com.duckduckgo.downloads.api.DownloadConfirmation
-import com.duckduckgo.downloads.api.DownloadConfirmationDialogListener
-import com.duckduckgo.downloads.api.DownloadStateListener
-import com.duckduckgo.downloads.api.DownloadsFileActions
-import com.duckduckgo.downloads.api.FileDownloader
 import com.duckduckgo.downloads.api.FileDownloader.PendingFileDownload
 import com.duckduckgo.js.messaging.api.JsCallbackData
 import com.duckduckgo.js.messaging.api.JsMessageCallback
@@ -264,7 +240,8 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
             .onEach { processCommand(it) }
             .launchIn(lifecycleScope)
 
-        viewModel.currentPurchaseViewState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).distinctUntilChanged().onEach {
+        viewModel.currentPurchaseViewState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .distinctUntilChanged().onEach {
             renderPurchaseState(it.purchaseState)
         }.launchIn(lifecycleScope)
 
@@ -291,22 +268,35 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
 
     private fun processFileDownloadedCommand(command: com.duckduckgo.downloads.api.DownloadCommand) {
         when (command) {
-            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadStartedMessage -> downloadStarted(command)
-            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadFailedMessage -> downloadFailed(command)
-            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadSuccessMessage -> downloadSucceeded(command)
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadStartedMessage -> downloadStarted(
+                command
+            )
+
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadFailedMessage -> downloadFailed(
+                command
+            )
+
+            is com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadSuccessMessage -> downloadSucceeded(
+                command
+            )
         }
     }
 
     @SuppressLint("WrongConstant")
     private fun downloadStarted(command: com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadStartedMessage) {
-        binding.root.makeSnackbarWithNoBottomInset(getString(command.messageId, command.fileName),
+        binding.root.makeSnackbarWithNoBottomInset(
+            getString(command.messageId, command.fileName),
             com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_LENGTH
         )?.show()
     }
 
     private fun downloadFailed(command: com.duckduckgo.downloads.api.DownloadCommand.ShowDownloadFailedMessage) {
-        val downloadFailedSnackbar = binding.root.makeSnackbarWithNoBottomInset(getString(command.messageId), Snackbar.LENGTH_LONG)
-        binding.root.postDelayed({ downloadFailedSnackbar?.show() },
+        val downloadFailedSnackbar = binding.root.makeSnackbarWithNoBottomInset(
+            getString(command.messageId),
+            Snackbar.LENGTH_LONG
+        )
+        binding.root.postDelayed(
+            { downloadFailedSnackbar?.show() },
             com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_DELAY
         )
     }
@@ -320,11 +310,15 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
                 this.setAction(string.downloadsDownloadFinishedActionName) {
                     val result = downloadsFileActions.openFile(context, File(command.filePath))
                     if (!result) {
-                        view.makeSnackbarWithNoBottomInset(getString(string.downloadsCannotOpenFileErrorMessage), Snackbar.LENGTH_LONG).show()
+                        view.makeSnackbarWithNoBottomInset(
+                            getString(string.downloadsCannotOpenFileErrorMessage),
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
-        binding.root.postDelayed({ downloadSucceededSnackbar.show() },
+        binding.root.postDelayed(
+            { downloadSucceededSnackbar.show() },
             com.duckduckgo.downloads.api.DOWNLOAD_SNACKBAR_DELAY
         )
     }
@@ -389,11 +383,17 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
     @Suppress("NewApi") // we use appBuildConfig
     private fun hasWriteStoragePermission(): Boolean {
         return minSdk30() ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestWriteStoragePermission() {
-        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE)
+        requestPermissions(
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE
+        )
     }
 
     private fun setupInternalToolbar(toolbar: Toolbar) {
@@ -418,6 +418,7 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
                 binding.includeToolbar.titleToolbar.hide()
                 title = config.title
             }
+
             DaxPrivacyPro -> {
                 supportActionBar?.setDisplayShowTitleEnabled(false)
                 binding.includeToolbar.logoToolbar.show()
@@ -431,7 +432,8 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
     private fun onUrlChanged(url: String?) {
         val addEmailPath = SubscriptionSettingsActivity.ADD_EMAIL_URL.toUri().path ?: return
 
-        val shouldOverrideTitleForAddEmailFlow = url?.toUri()?.path?.startsWith(addEmailPath) ?: false
+        val shouldOverrideTitleForAddEmailFlow =
+            url?.toUri()?.path?.startsWith(addEmailPath) ?: false
 
         updateToolbarTitle(
             if (shouldOverrideTitleForAddEmailFlow) {
@@ -482,16 +484,20 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
             is PurchaseStateView.InProgress, PurchaseStateView.Inactive -> {
                 // NO OP
             }
+
             is PurchaseStateView.Waiting -> {
                 onPurchaseSuccess(null)
             }
+
             is PurchaseStateView.Success -> {
                 pixelSender.reportPurchaseSuccessOrigin(params.origin)
                 onPurchaseSuccess(purchaseState.subscriptionEventData)
             }
+
             is PurchaseStateView.Recovered -> {
                 onPurchaseRecovered()
             }
+
             is PurchaseStateView.Failure -> {
                 onPurchaseFailure()
             }
@@ -562,14 +568,20 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
         finish()
     }
 
-    private val startForResultRestore = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == RESULT_OK) {
-            viewModel.onSubscriptionRestored()
+    private val startForResultRestore =
+        registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == RESULT_OK) {
+                viewModel.onSubscriptionRestored()
+            }
         }
-    }
 
     private fun restoreSubscription() {
-        startForResultRestore.launch(globalActivityStarter.startIntent(this, RestoreSubscriptionScreenWithParams(isOriginWeb = true)))
+        startForResultRestore.launch(
+            globalActivityStarter.startIntent(
+                this,
+                RestoreSubscriptionScreenWithParams(isOriginWeb = true)
+            )
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -599,6 +611,7 @@ class SubscriptionsWebViewActivity : DuckDuckGoActivity(),
         downloadMessagesJob.cancel()
         super.onDestroy()
     }
+
     companion object {
         private const val DOWNLOAD_CONFIRMATION_TAG = "DOWNLOAD_CONFIRMATION_TAG"
         private const val PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 200

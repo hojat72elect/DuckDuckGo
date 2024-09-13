@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.bookmarks
 
 import android.content.Context
@@ -65,8 +49,10 @@ sealed class BookmarkScreenViewHolders(itemView: View) : RecyclerView.ViewHolder
         }
 
         private fun updateText(query: String) {
-            binding.savedSiteEmptyHint.text = binding.root.context.getString(R.string.noResultsFor, query)
+            binding.savedSiteEmptyHint.text =
+                binding.root.context.getString(R.string.noResultsFor, query)
         }
+
         fun bind() {
             viewModel.viewState.value?.let { updateText(it.searchQuery) }
         }
@@ -141,7 +127,8 @@ sealed class BookmarkScreenViewHolders(itemView: View) : RecyclerView.ViewHolder
             anchor: View,
             bookmark: SavedSite.Bookmark,
         ) {
-            val popupMenu = PopupMenu(layoutInflater, R.layout.popup_window_edit_favorite_delete_menu)
+            val popupMenu =
+                PopupMenu(layoutInflater, R.layout.popup_window_edit_favorite_delete_menu)
             val view = popupMenu.contentView
             popupMenu.apply {
                 onMenuItemClicked(view.findViewById(R.id.edit)) { editBookmark(bookmark) }
@@ -151,9 +138,11 @@ sealed class BookmarkScreenViewHolders(itemView: View) : RecyclerView.ViewHolder
                 }
             }
             if (isFavorite) {
-                view.findViewById<PopupMenuItemView>(R.id.addRemoveFavorite).setPrimaryText(context.getString(R.string.removeFromFavorites))
+                view.findViewById<PopupMenuItemView>(R.id.addRemoveFavorite)
+                    .setPrimaryText(context.getString(R.string.removeFromFavorites))
             } else {
-                view.findViewById<PopupMenuItemView>(R.id.addRemoveFavorite).setPrimaryText(context.getString(R.string.addToFavoritesMenu))
+                view.findViewById<PopupMenuItemView>(R.id.addRemoveFavorite)
+                    .setPrimaryText(context.getString(R.string.addToFavoritesMenu))
             }
             popupMenu.show(binding.root, anchor)
         }
@@ -206,7 +195,13 @@ sealed class BookmarkScreenViewHolders(itemView: View) : RecyclerView.ViewHolder
             if (totalItems == 0) {
                 listItem.setSecondaryText(context.getString(R.string.bookmarkFolderEmpty))
             } else {
-                listItem.setSecondaryText(context.resources.getQuantityString(R.plurals.bookmarkFolderItems, totalItems, totalItems))
+                listItem.setSecondaryText(
+                    context.resources.getQuantityString(
+                        R.plurals.bookmarkFolderItems,
+                        totalItems,
+                        totalItems
+                    )
+                )
             }
             listItem.setLeadingIconResource(R.drawable.ic_folder_24)
 
@@ -227,7 +222,11 @@ sealed class BookmarkScreenViewHolders(itemView: View) : RecyclerView.ViewHolder
             val view = popupMenu.contentView
             popupMenu.apply {
                 onMenuItemClicked(view.findViewById(R.id.edit)) { editBookmarkFolder(bookmarkFolder) }
-                onMenuItemClicked(view.findViewById(R.id.delete)) { deleteBookmarkFolder(bookmarkFolder) }
+                onMenuItemClicked(view.findViewById(R.id.delete)) {
+                    deleteBookmarkFolder(
+                        bookmarkFolder
+                    )
+                }
             }
             popupMenu.show(binding.root, anchor)
         }

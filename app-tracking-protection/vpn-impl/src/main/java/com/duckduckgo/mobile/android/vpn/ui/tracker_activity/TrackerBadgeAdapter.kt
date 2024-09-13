@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2021 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.tracker_activity
 
 import android.content.Context
@@ -30,7 +14,7 @@ import com.duckduckgo.common.ui.view.show
 import com.duckduckgo.mobile.android.vpn.R
 import com.duckduckgo.mobile.android.vpn.ui.tracker_activity.model.TrackerCompanyBadge
 import com.duckduckgo.mobile.android.vpn.ui.util.TextDrawable
-import java.util.*
+import java.util.Locale
 
 class TrackerBadgeAdapter : RecyclerView.Adapter<TrackerBadgeAdapter.TrackerBadgeViewHolder>() {
 
@@ -65,12 +49,17 @@ class TrackerBadgeAdapter : RecyclerView.Adapter<TrackerBadgeAdapter.TrackerBadg
 
         private var iconBadge: ImageView = view.findViewById(R.id.tracker_company_badge_icon)
         private var textBadge: TextView = view.findViewById(R.id.tracker_company_badge_text)
-        private var largeTextBadge: TextView = view.findViewById(R.id.tracker_company_large_badge_text)
+        private var largeTextBadge: TextView =
+            view.findViewById(R.id.tracker_company_large_badge_text)
 
         companion object {
             fun create(parent: ViewGroup): TrackerBadgeViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_tracker_badge, parent, false)
+                val view = inflater.inflate(
+                    R.layout.view_device_shield_activity_tracker_badge,
+                    parent,
+                    false
+                )
                 return TrackerBadgeViewHolder(view)
             }
         }
@@ -84,7 +73,8 @@ class TrackerBadgeAdapter : RecyclerView.Adapter<TrackerBadgeAdapter.TrackerBadg
 
         private fun displayTrackerCompany(trackerInfo: TrackerCompanyBadge.Company) {
             val badge = badgeIcon(iconBadge.context, trackerInfo.companyName)
-            val textColor = iconBadge.context.getColorFromAttr(com.duckduckgo.mobile.android.R.attr.daxColorPrimaryText)
+            val textColor =
+                iconBadge.context.getColorFromAttr(com.duckduckgo.mobile.android.R.attr.daxColorPrimaryText)
             if (badge == null) {
                 iconBadge.setImageDrawable(
                     TextDrawable.builder()
@@ -111,7 +101,8 @@ class TrackerBadgeAdapter : RecyclerView.Adapter<TrackerBadgeAdapter.TrackerBadg
                 .replace(".", "")
                 .replace(",", "")
                 .lowercase(Locale.ROOT)
-            val resource = context.resources.getIdentifier(drawable, "drawable", context.packageName)
+            val resource =
+                context.resources.getIdentifier(drawable, "drawable", context.packageName)
             return if (resource != 0) resource else null
         }
 
@@ -129,7 +120,10 @@ class TrackerBadgeAdapter : RecyclerView.Adapter<TrackerBadgeAdapter.TrackerBadg
         }
     }
 
-    private class DiffCallback(private val oldList: List<TrackerCompanyBadge>, private val newList: List<TrackerCompanyBadge>) : DiffUtil.Callback() {
+    private class DiffCallback(
+        private val oldList: List<TrackerCompanyBadge>,
+        private val newList: List<TrackerCompanyBadge>
+    ) : DiffUtil.Callback() {
         override fun getOldListSize() = oldList.size
 
         override fun getNewListSize() = newList.size

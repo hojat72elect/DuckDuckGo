@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.networkprotection.impl.exclusion.systemapps
 
 import android.content.SharedPreferences
@@ -21,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.core.content.edit
 import com.duckduckgo.common.utils.DispatcherProvider
-import com.duckduckgo.data.store.api.SharedPreferencesProvider
 import com.duckduckgo.di.scopes.AppScope
 import com.duckduckgo.feature.toggles.api.Toggle.State
 import com.duckduckgo.mobile.android.vpn.exclusion.SystemAppOverridesProvider
@@ -77,32 +60,35 @@ class RealSystemAppsExclusionRepository @Inject constructor(
         )
     }
 
-    override suspend fun excludeCategory(category: SystemAppCategory) = withContext(dispatcherProvider.io()) {
-        when (category) {
-            is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
-            is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
-            is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
-            is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
-        }.setEnabled(State(true))
-    }
+    override suspend fun excludeCategory(category: SystemAppCategory) =
+        withContext(dispatcherProvider.io()) {
+            when (category) {
+                is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
+                is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
+                is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
+                is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
+            }.setEnabled(State(true))
+        }
 
-    override suspend fun includeCategory(category: SystemAppCategory) = withContext(dispatcherProvider.io()) {
-        when (category) {
-            is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
-            is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
-            is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
-            is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
-        }.setEnabled(State(false))
-    }
+    override suspend fun includeCategory(category: SystemAppCategory) =
+        withContext(dispatcherProvider.io()) {
+            when (category) {
+                is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
+                is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
+                is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
+                is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
+            }.setEnabled(State(false))
+        }
 
-    override suspend fun isCategoryExcluded(category: SystemAppCategory): Boolean = withContext(dispatcherProvider.io()) {
-        return@withContext when (category) {
-            is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
-            is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
-            is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
-            is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
-        }.isEnabled()
-    }
+    override suspend fun isCategoryExcluded(category: SystemAppCategory): Boolean =
+        withContext(dispatcherProvider.io()) {
+            return@withContext when (category) {
+                is Communication -> netPSettingsLocalConfig.excludeSystemAppsCommunication()
+                is Networking -> netPSettingsLocalConfig.excludeSystemAppsNetworking()
+                is Media -> netPSettingsLocalConfig.excludeSystemAppsMedia()
+                is Others -> netPSettingsLocalConfig.excludeSystemAppsOthers()
+            }.isEnabled()
+        }
 
     override suspend fun hasShownWarning(): Boolean = withContext(dispatcherProvider.io()) {
         return@withContext preferences.getBoolean(KEY_WARNING_SHOWN, false)
@@ -114,14 +100,15 @@ class RealSystemAppsExclusionRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAvailableCategories(): Set<SystemAppCategory> = withContext(dispatcherProvider.io()) {
-        return@withContext setOf(
-            Communication,
-            Networking,
-            Media,
-            Others,
-        )
-    }
+    override suspend fun getAvailableCategories(): Set<SystemAppCategory> =
+        withContext(dispatcherProvider.io()) {
+            return@withContext setOf(
+                Communication,
+                Networking,
+                Media,
+                Others,
+            )
+        }
 
     override suspend fun getExcludedCategories(): Set<SystemAppCategory> {
         return buildSet {
@@ -131,14 +118,15 @@ class RealSystemAppsExclusionRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAllExcludedSystemApps(): Set<String> = withContext(dispatcherProvider.io()) {
-        return@withContext buildSet {
-            if (isCategoryExcluded(Communication)) addAll(getCommunicationSystemApps())
-            if (isCategoryExcluded(Networking)) addAll(getNetworkingSystemApps())
-            if (isCategoryExcluded(Media)) addAll(getMediaSystemApps())
-            if (isCategoryExcluded(Others)) addAll(getOtherSystemApps())
+    override suspend fun getAllExcludedSystemApps(): Set<String> =
+        withContext(dispatcherProvider.io()) {
+            return@withContext buildSet {
+                if (isCategoryExcluded(Communication)) addAll(getCommunicationSystemApps())
+                if (isCategoryExcluded(Networking)) addAll(getNetworkingSystemApps())
+                if (isCategoryExcluded(Media)) addAll(getMediaSystemApps())
+                if (isCategoryExcluded(Others)) addAll(getOtherSystemApps())
+            }
         }
-    }
 
     override suspend fun restoreDefaults() {
         includeCategory(Communication)
@@ -189,12 +177,13 @@ class RealSystemAppsExclusionRepository @Inject constructor(
             .toSet()
     }
 
-    private fun ApplicationInfo.isSystemAppOveridden() = systemAppOverridesProvider.getSystemAppOverridesList().contains(packageName)
+    private fun ApplicationInfo.isSystemAppOveridden() =
+        systemAppOverridesProvider.getSystemAppOverridesList().contains(packageName)
 
     private fun ApplicationInfo.isCategorized(): Boolean {
         return getCommunicationSystemApps().contains(packageName) ||
-            getNetworkingSystemApps().contains(packageName) ||
-            getMediaSystemApps().contains(packageName)
+                getNetworkingSystemApps().contains(packageName) ||
+                getMediaSystemApps().contains(packageName)
     }
 
     companion object {

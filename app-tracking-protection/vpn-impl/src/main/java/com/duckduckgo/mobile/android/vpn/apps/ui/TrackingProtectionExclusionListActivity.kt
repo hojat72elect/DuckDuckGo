@@ -1,21 +1,6 @@
-/*
- * Copyright (c) 2021 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.apps.ui
 
+import com.duckduckgo.mobile.android.R as commonR
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -30,7 +15,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.duckduckgo.anvil.annotations.InjectWith
 import com.duckduckgo.app.di.AppCoroutineScope
-import com.duckduckgo.app.global.*
 import com.duckduckgo.browser.api.ui.BrowserScreens.WebViewActivityWithParams
 import com.duckduckgo.common.ui.DuckDuckGoActivity
 import com.duckduckgo.common.ui.menu.PopupMenu
@@ -39,7 +23,6 @@ import com.duckduckgo.common.ui.view.gone
 import com.duckduckgo.common.ui.viewbinding.viewBinding
 import com.duckduckgo.common.utils.DispatcherProvider
 import com.duckduckgo.di.scopes.ActivityScope
-import com.duckduckgo.mobile.android.R as commonR
 import com.duckduckgo.mobile.android.vpn.AppTpVpnFeature
 import com.duckduckgo.mobile.android.vpn.AppTpVpnFeature.APPTP_VPN
 import com.duckduckgo.mobile.android.vpn.R
@@ -82,12 +65,14 @@ class TrackingProtectionExclusionListActivity :
     @Inject
     lateinit var vpnFeaturesRegistry: VpnFeaturesRegistry
 
-    @Inject lateinit var reportBreakageContract: Provider<ReportBreakageContract>
+    @Inject
+    lateinit var reportBreakageContract: Provider<ReportBreakageContract>
 
     @Inject
     lateinit var globalActivityStarter: GlobalActivityStarter
 
-    @Inject lateinit var dispatcherProvider: DispatcherProvider
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
 
     private val binding: ActivityTrackingProtectionExclusionListBinding by viewBinding()
 
@@ -137,9 +122,15 @@ class TrackingProtectionExclusionListActivity :
         // onPrepareOptionsMenu is called when overflow menu is being displayed, that's why this can be an imperative call
         restoreDefault?.isEnabled = viewModel.canRestoreDefaults()
 
-        val textColorAttr = if (viewModel.canRestoreDefaults()) commonR.attr.daxColorPrimaryText else commonR.attr.daxColorTextDisabled
+        val textColorAttr =
+            if (viewModel.canRestoreDefaults()) commonR.attr.daxColorPrimaryText else commonR.attr.daxColorTextDisabled
         val spannable = SpannableString(restoreDefault.title)
-        spannable.setSpan(ForegroundColorSpan(binding.root.context.getColorFromAttr(textColorAttr)), 0, spannable.length, 0)
+        spannable.setSpan(
+            ForegroundColorSpan(binding.root.context.getColorFromAttr(textColorAttr)),
+            0,
+            spannable.length,
+            0
+        )
         restoreDefault.title = spannable
 
         return super.onPrepareOptionsMenu(menu)
@@ -149,7 +140,10 @@ class TrackingProtectionExclusionListActivity :
         return when (item.itemId) {
             R.id.restoreDefaults -> {
                 val dialog = RestoreDefaultProtectionDialog.instance()
-                dialog.show(supportFragmentManager, RestoreDefaultProtectionDialog.TAG_RESTORE_DEFAULT_PROTECTION)
+                dialog.show(
+                    supportFragmentManager,
+                    RestoreDefaultProtectionDialog.TAG_RESTORE_DEFAULT_PROTECTION
+                )
                 true
             }
 
@@ -259,7 +253,8 @@ class TrackingProtectionExclusionListActivity :
     }
 
     private fun showFilterPopupMenu(anchor: View) {
-        val popupMenu = PopupMenu(layoutInflater, R.layout.popup_window_exclusion_list_filter_item_menu)
+        val popupMenu =
+            PopupMenu(layoutInflater, R.layout.popup_window_exclusion_list_filter_item_menu)
         val view = popupMenu.contentView
         val allItemView = view.findViewById<View>(R.id.allApps)
         val protectedItemView = view.findViewById<View>(R.id.protectedApps)
@@ -296,7 +291,11 @@ class TrackingProtectionExclusionListActivity :
         packageName: String,
         report: Boolean,
     ) {
-        viewModel.onAppProtectionDisabled(appName = appName, packageName = packageName, report = report)
+        viewModel.onAppProtectionDisabled(
+            appName = appName,
+            packageName = packageName,
+            report = report
+        )
     }
 
     private fun launchFeedback() {
@@ -321,7 +320,8 @@ class TrackingProtectionExclusionListActivity :
         const val REPORT_ISSUES_ANNOTATION = "report_issues_link"
         const val LEARN_WHY_ANNOTATION = "learn_why_link"
         private const val KEY_FILTER_LIST = "KEY_FILTER_LIST"
-        private const val FAQ_WEBSITE = "https://help.duckduckgo.com/duckduckgo-help-pages/p-app-tracking-protection/what-is-app-tracking-protection/"
+        private const val FAQ_WEBSITE =
+            "https://help.duckduckgo.com/duckduckgo-help-pages/p-app-tracking-protection/what-is-app-tracking-protection/"
 
         enum class AppsFilter {
             ALL,
@@ -341,7 +341,11 @@ class TrackingProtectionExclusionListActivity :
 
     override fun onDefaultProtectionRestored() {
         viewModel.restoreProtectedApps()
-        Snackbar.make(shimmerLayout, getString(R.string.atp_ExcludeAppsRestoreDefaultSnackbar), Snackbar.LENGTH_LONG)
+        Snackbar.make(
+            shimmerLayout,
+            getString(R.string.atp_ExcludeAppsRestoreDefaultSnackbar),
+            Snackbar.LENGTH_LONG
+        )
             .show()
     }
 }

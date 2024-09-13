@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2020 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.notification
 
 import android.app.Notification
@@ -36,9 +20,12 @@ class VpnEnabledNotificationBuilder {
 
     companion object {
 
-        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID = "com.duckduckgo.mobile.android.vpn.notification.ongoing.v2"
-        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_NAME = "App Tracking Protection Status"
-        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_DESCRIPTION = "Ongoing state of App Tracking Protection"
+        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID =
+            "com.duckduckgo.mobile.android.vpn.notification.ongoing.v2"
+        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_NAME =
+            "App Tracking Protection Status"
+        private const val VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_DESCRIPTION =
+            "Ongoing state of App Tracking Protection"
 
         private fun registerOngoingNotificationChannel(context: Context) {
             val channel =
@@ -63,10 +50,15 @@ class VpnEnabledNotificationBuilder {
         ): Notification {
             registerOngoingNotificationChannel(context)
 
-            return NotificationCompat.Builder(context, VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID)
+            return NotificationCompat.Builder(
+                context,
+                VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID
+            )
                 .setSmallIcon(com.duckduckgo.mobile.android.R.drawable.notification_logo)
                 .setContentTitle(context.getString(R.string.atp_name))
-                .setStyle(NotificationCompat.BigTextStyle().bigText(vpnEnabledNotificationContent.title))
+                .setStyle(
+                    NotificationCompat.BigTextStyle().bigText(vpnEnabledNotificationContent.title)
+                )
                 .setContentIntent(vpnEnabledNotificationContent.onNotificationPressIntent)
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -81,7 +73,10 @@ class VpnEnabledNotificationBuilder {
         ): Notification {
             registerOngoingNotificationChannel(context)
 
-            return NotificationCompat.Builder(context, VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID)
+            return NotificationCompat.Builder(
+                context,
+                VPN_FOREGROUND_SERVICE_NOTIFICATION_CHANNEL_ID
+            )
                 .setSmallIcon(com.duckduckgo.mobile.android.R.drawable.notification_logo)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(vpnNotification.text))
                 .setContentTitle(vpnNotification.title)

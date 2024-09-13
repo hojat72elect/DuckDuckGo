@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2020 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.notification
 
 import android.app.Notification
@@ -64,7 +48,11 @@ class AndroidDeviceShieldAlertNotificationBuilder : DeviceShieldAlertNotificatio
     private fun registerAlertChannel(context: Context) {
         val notificationManager = NotificationManagerCompat.from(context)
         if (notificationManager.getNotificationChannel(VPN_ALERTS_CHANNEL_ID) == null) {
-            val channel = NotificationChannel(VPN_ALERTS_CHANNEL_ID, VPN_ALERTS_CHANNEL_NAME, IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(
+                VPN_ALERTS_CHANNEL_ID,
+                VPN_ALERTS_CHANNEL_NAME,
+                IMPORTANCE_DEFAULT
+            )
             channel.description = VPN_ALERTS_CHANNEL_DESCRIPTION
             notificationManager.createNotificationChannel(channel)
         }
@@ -77,9 +65,17 @@ class AndroidDeviceShieldAlertNotificationBuilder : DeviceShieldAlertNotificatio
     ): Notification {
         registerAlertChannel(context)
 
-        val vpnControllerIntent = DeviceShieldTrackerActivity.intent(context = context, onLaunchCallback = onNotificationPressedCallback)
+        val vpnControllerIntent = DeviceShieldTrackerActivity.intent(
+            context = context,
+            onLaunchCallback = onNotificationPressedCallback
+        )
 
-        return buildNotification(context, deviceShieldNotification, addReportIssueAction = true, contentNextIntent = vpnControllerIntent)
+        return buildNotification(
+            context,
+            deviceShieldNotification,
+            addReportIssueAction = true,
+            contentNextIntent = vpnControllerIntent
+        )
     }
 
     override fun buildAlwaysOnLockdownNotification(
@@ -89,7 +85,12 @@ class AndroidDeviceShieldAlertNotificationBuilder : DeviceShieldAlertNotificatio
     ): Notification {
         registerAlertChannel(context)
 
-        return buildNotification(context, deviceShieldNotification, addReportIssueAction = false, contentNextIntent = contentNextIntent)
+        return buildNotification(
+            context,
+            deviceShieldNotification,
+            addReportIssueAction = false,
+            contentNextIntent = contentNextIntent
+        )
     }
 
     private fun buildNotification(

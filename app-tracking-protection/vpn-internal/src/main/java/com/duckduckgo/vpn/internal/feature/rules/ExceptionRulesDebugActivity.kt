@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2021 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.vpn.internal.feature.rules
 
 import android.content.Context
@@ -37,7 +21,14 @@ import com.duckduckgo.vpn.internal.databinding.ActivityExceptionRulesDebugBindin
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import logcat.logcat
@@ -86,14 +77,16 @@ class ExceptionRulesDebugActivity : DuckDuckGoActivity(), RuleTrackerView.RuleTr
                 // re-build the screen
                 appTrackers.forEach { installAppTracker ->
                     val appView = RuleAppView(this).apply {
-                        appIcon = packageManager.safeGetApplicationIcon(installAppTracker.packageName)
+                        appIcon =
+                            packageManager.safeGetApplicationIcon(installAppTracker.packageName)
                         appName = installAppTracker.name.orEmpty()
                     }
                     binding.appRule.addView(appView)
                     installAppTracker.blockedDomains.forEach { domain ->
                         val domainView = RuleTrackerView(this).apply {
                             this.domain = domain
-                            this.isChecked = rules.containsRule(installAppTracker.packageName, domain)
+                            this.isChecked =
+                                rules.containsRule(installAppTracker.packageName, domain)
                             this.ruleTrackerListener = this@ExceptionRulesDebugActivity
                             tag = "${installAppTracker.packageName}_$domain"
                         }

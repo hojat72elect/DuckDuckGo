@@ -1,23 +1,11 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.voice.impl.remoteconfig
 
 import com.duckduckgo.common.test.CoroutineTestRule
-import com.duckduckgo.voice.store.*
+import com.duckduckgo.voice.store.LocaleEntity
+import com.duckduckgo.voice.store.ManufacturerEntity
+import com.duckduckgo.voice.store.MinVersionEntity
+import com.duckduckgo.voice.store.VoiceSearchDao
+import com.duckduckgo.voice.store.VoiceSearchDatabase
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -49,7 +37,12 @@ class RealVoiceSearchFeatureRepositoryTest {
     fun whenRepositoryIsCreatedThenExceptionsLoadedIntoMemory() = runTest {
         givenDaoContainsExceptions()
 
-        repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
+        repository = RealVoiceSearchFeatureRepository(
+            mockDatabase,
+            TestScope(),
+            coroutineRule.testDispatcherProvider,
+            isMainProcess = true
+        )
 
         assertEquals(1, repository.manufacturerExceptions.size)
         assertEquals("manufacturer", repository.manufacturerExceptions.first().name)
@@ -62,7 +55,12 @@ class RealVoiceSearchFeatureRepositoryTest {
 
     @Test
     fun whenUpdateAllExceptionsIsCalledThenDatabaseIsUpdated() = runTest {
-        repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
+        repository = RealVoiceSearchFeatureRepository(
+            mockDatabase,
+            TestScope(),
+            coroutineRule.testDispatcherProvider,
+            isMainProcess = true
+        )
 
         val manufacturerExceptions = listOf(Manufacturer("manufacturer"))
         val localeExceptions = listOf(Locale("locale"))
@@ -80,7 +78,12 @@ class RealVoiceSearchFeatureRepositoryTest {
     @Test
     fun whenUpdateAllThenPreviousExceptionsAreCleared() = runTest {
         givenDaoContainsExceptions()
-        repository = RealVoiceSearchFeatureRepository(mockDatabase, TestScope(), coroutineRule.testDispatcherProvider, isMainProcess = true)
+        repository = RealVoiceSearchFeatureRepository(
+            mockDatabase,
+            TestScope(),
+            coroutineRule.testDispatcherProvider,
+            isMainProcess = true
+        )
 
         assertEquals(1, repository.manufacturerExceptions.size)
         assertEquals(1, repository.localeExceptions.size)

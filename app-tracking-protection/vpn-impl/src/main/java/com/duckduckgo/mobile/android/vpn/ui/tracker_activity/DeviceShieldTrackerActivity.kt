@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2021 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.tracker_activity
 
 import android.annotation.SuppressLint
@@ -76,10 +60,12 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import logcat.logcat
 import nl.dionsegijn.konfetti.models.Shape
@@ -100,9 +86,11 @@ class DeviceShieldTrackerActivity :
     @Inject
     lateinit var vpnFeaturesRegistry: VpnFeaturesRegistry
 
-    @Inject lateinit var reportBreakageContract: Provider<ReportBreakageContract>
+    @Inject
+    lateinit var reportBreakageContract: Provider<ReportBreakageContract>
 
-    @Inject lateinit var dispatcherProvider: DispatcherProvider
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
 
     @Inject
     @AppTpBreakageCategories
@@ -138,7 +126,8 @@ class DeviceShieldTrackerActivity :
 
         reportBreakage = registerForActivityResult(reportBreakageContract.get()) {
             if (!it.isEmpty()) {
-                Snackbar.make(binding.root, R.string.atp_ReportBreakageSent, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, R.string.atp_ReportBreakageSent, Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
 
@@ -215,7 +204,11 @@ class DeviceShieldTrackerActivity :
                     DeviceShieldTrackerActivityViewModel.TrackerCountInfo(trackers, apps)
                 }
                 .combine(viewModel.getRunningState()) { trackerCountInfo, runningState ->
-                    DeviceShieldTrackerActivityViewModel.TrackerActivityViewState(trackerCountInfo, runningState, viewModel.bannerState())
+                    DeviceShieldTrackerActivityViewModel.TrackerActivityViewState(
+                        trackerCountInfo,
+                        runningState,
+                        viewModel.bannerState()
+                    )
                 }
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                 .collect { renderViewState(it) }
@@ -263,7 +256,10 @@ class DeviceShieldTrackerActivity :
             is DeviceShieldTrackerActivityViewModel.Command.StopVPN -> stopDeviceShield()
             is DeviceShieldTrackerActivityViewModel.Command.LaunchVPN -> startVPN()
             is DeviceShieldTrackerActivityViewModel.Command.CheckVPNPermission -> checkVPNPermission()
-            is DeviceShieldTrackerActivityViewModel.Command.RequestVPNPermission -> obtainVpnRequestPermission(it.vpnIntent)
+            is DeviceShieldTrackerActivityViewModel.Command.RequestVPNPermission -> obtainVpnRequestPermission(
+                it.vpnIntent
+            )
+
             is DeviceShieldTrackerActivityViewModel.Command.LaunchAppTrackersFAQ -> launchAppTrackersFAQ()
             is DeviceShieldTrackerActivityViewModel.Command.LaunchDeviceShieldFAQ -> launchDeviceShieldFAQ()
             is DeviceShieldTrackerActivityViewModel.Command.LaunchManageAppsProtection -> launchManageAppsProtection()
@@ -273,7 +269,10 @@ class DeviceShieldTrackerActivity :
             is DeviceShieldTrackerActivityViewModel.Command.ShowVpnAlwaysOnConflictDialog -> showAlwaysOnConflictDialog()
             is DeviceShieldTrackerActivityViewModel.Command.ShowAlwaysOnPromotionDialog -> launchAlwaysOnPromotionDialog()
             is DeviceShieldTrackerActivityViewModel.Command.ShowAlwaysOnLockdownWarningDialog -> launchAlwaysOnLockdownEnabledDialog()
-            is DeviceShieldTrackerActivityViewModel.Command.VPNPermissionNotGranted -> quietlyToggleAppTpSwitch(false)
+            is DeviceShieldTrackerActivityViewModel.Command.VPNPermissionNotGranted -> quietlyToggleAppTpSwitch(
+                false
+            )
+
             is DeviceShieldTrackerActivityViewModel.Command.ShowRemoveFeatureConfirmationDialog -> launchRemoveFeatureConfirmationDialog()
             is DeviceShieldTrackerActivityViewModel.Command.CloseScreen -> finish()
             is DeviceShieldTrackerActivityViewModel.Command.OpenVpnSettings -> openVPNSettings()
@@ -387,7 +386,8 @@ class DeviceShieldTrackerActivity :
     }
 
     private fun launchAlwaysOnPromotionDialog() {
-        val dialog = supportFragmentManager.findFragmentByTag(TAG_APPTP_PROMOTE_ALWAYS_ON_DIALOG) as? AlwaysOnAlertDialogFragment
+        val dialog =
+            supportFragmentManager.findFragmentByTag(TAG_APPTP_PROMOTE_ALWAYS_ON_DIALOG) as? AlwaysOnAlertDialogFragment
         dialog?.dismiss()
 
         AlwaysOnAlertDialogFragment.newAlwaysOnDialog(
@@ -404,7 +404,8 @@ class DeviceShieldTrackerActivity :
     }
 
     private fun launchAlwaysOnLockdownEnabledDialog() {
-        val dialog = supportFragmentManager.findFragmentByTag(TAG_APPTP_PROMOTE_ALWAYS_ON_DIALOG) as? AlwaysOnAlertDialogFragment
+        val dialog =
+            supportFragmentManager.findFragmentByTag(TAG_APPTP_PROMOTE_ALWAYS_ON_DIALOG) as? AlwaysOnAlertDialogFragment
         dialog?.dismiss()
 
         AlwaysOnAlertDialogFragment.newAlwaysOnLockdownDialog(
@@ -521,11 +522,17 @@ class DeviceShieldTrackerActivity :
     private fun updateCounts(trackerCountInfo: DeviceShieldTrackerActivityViewModel.TrackerCountInfo) {
         binding.trackersBlockedCount.count = trackerCountInfo.stringTrackerCount()
         binding.trackersBlockedCount.footer =
-            resources.getQuantityString(R.plurals.atp_ActivityPastWeekTrackerCount, trackerCountInfo.trackers.value)
+            resources.getQuantityString(
+                R.plurals.atp_ActivityPastWeekTrackerCount,
+                trackerCountInfo.trackers.value
+            )
 
         binding.trackingAppsCount.count = trackerCountInfo.stringAppsCount()
         binding.trackingAppsCount.footer =
-            resources.getQuantityString(R.plurals.atp_ActivityPastWeekAppCount, trackerCountInfo.apps.value)
+            resources.getQuantityString(
+                R.plurals.atp_ActivityPastWeekAppCount,
+                trackerCountInfo.apps.value
+            )
     }
 
     private fun updateRunningState(
@@ -604,7 +611,10 @@ class DeviceShieldTrackerActivity :
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         vpnCachedState?.let { vpnState ->
-            deviceShieldSwitch.quietlySetIsChecked(vpnState.state == VpnRunningState.ENABLED, enableAppTPSwitchListener)
+            deviceShieldSwitch.quietlySetIsChecked(
+                vpnState.state == VpnRunningState.ENABLED,
+                enableAppTPSwitchListener
+            )
         }
 
         return super.onPrepareOptionsMenu(menu)
@@ -666,11 +676,31 @@ class DeviceShieldTrackerActivity :
     }
 
     private fun launchKonfetti() {
-        val magenta = ResourcesCompat.getColor(getResources(), com.duckduckgo.mobile.android.R.color.magenta, null)
-        val blue = ResourcesCompat.getColor(getResources(), com.duckduckgo.mobile.android.R.color.blue30, null)
-        val purple = ResourcesCompat.getColor(getResources(), com.duckduckgo.mobile.android.R.color.purple, null)
-        val green = ResourcesCompat.getColor(getResources(), com.duckduckgo.mobile.android.R.color.green, null)
-        val yellow = ResourcesCompat.getColor(getResources(), com.duckduckgo.mobile.android.R.color.yellow, null)
+        val magenta = ResourcesCompat.getColor(
+            getResources(),
+            com.duckduckgo.mobile.android.R.color.magenta,
+            null
+        )
+        val blue = ResourcesCompat.getColor(
+            getResources(),
+            com.duckduckgo.mobile.android.R.color.blue30,
+            null
+        )
+        val purple = ResourcesCompat.getColor(
+            getResources(),
+            com.duckduckgo.mobile.android.R.color.purple,
+            null
+        )
+        val green = ResourcesCompat.getColor(
+            getResources(),
+            com.duckduckgo.mobile.android.R.color.green,
+            null
+        )
+        val yellow = ResourcesCompat.getColor(
+            getResources(),
+            com.duckduckgo.mobile.android.R.color.yellow,
+            null
+        )
 
         val displayWidth = resources.displayMetrics.widthPixels
 
@@ -694,7 +724,8 @@ class DeviceShieldTrackerActivity :
         private const val MIN_ROWS_FOR_ALL_ACTIVITY = 5
         private const val TAG_APPTP_PROMOTE_ALWAYS_ON_DIALOG = "AppTPPromoteAlwaysOnDialog"
         private const val TAG_APPTP_ENABLED_CTA_DIALOG = "AppTpEnabledCta"
-        private const val FAQ_WEBSITE = "https://help.duckduckgo.com/duckduckgo-help-pages/p-app-tracking-protection/what-is-app-tracking-protection/"
+        private const val FAQ_WEBSITE =
+            "https://help.duckduckgo.com/duckduckgo-help-pages/p-app-tracking-protection/what-is-app-tracking-protection/"
 
         private const val REQUEST_ASK_VPN_PERMISSION = 101
 

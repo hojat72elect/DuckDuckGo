@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.app.statistics.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -54,7 +38,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class RxPixelSenderTest {
@@ -88,7 +79,10 @@ class RxPixelSenderTest {
 
     @Before
     fun before() {
-        db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().targetContext, TestAppDatabase::class.java)
+        db = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            TestAppDatabase::class.java
+        )
             .allowMainThreadQueries()
             .build()
         pendingPixelDao = db.pixelDao()
@@ -155,7 +149,8 @@ class RxPixelSenderTest {
         givenAppVersion("1.0.0")
 
         val params = mapOf("param1" to "value1", "param2" to "value2")
-        val expectedParams = mapOf("param1" to "value1", "param2" to "value2", "appVersion" to "1.0.0")
+        val expectedParams =
+            mapOf("param1" to "value1", "param2" to "value2", "appVersion" to "1.0.0")
         testee.sendPixel(TEST.pixelName, params, emptyMap(), COUNT)
             .test().assertValue(PIXEL_SENT)
 
@@ -393,7 +388,16 @@ class RxPixelSenderTest {
     }
 
     private fun givenApiSendPixelSucceeds() {
-        whenever(api.fire(any(), any(), any(), any(), any(), any())).thenReturn(Completable.complete())
+        whenever(
+            api.fire(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        ).thenReturn(Completable.complete())
     }
 
     private fun givenVariant(variantKey: String) {
@@ -409,11 +413,29 @@ class RxPixelSenderTest {
     }
 
     private fun givenPixelApiSucceeds() {
-        whenever(api.fire(any(), any(), any(), anyOrNull(), any(), any())).thenReturn(Completable.complete())
+        whenever(
+            api.fire(
+                any(),
+                any(),
+                any(),
+                anyOrNull(),
+                any(),
+                any()
+            )
+        ).thenReturn(Completable.complete())
     }
 
     private fun givenPixelApiFails() {
-        whenever(api.fire(any(), any(), any(), anyOrNull(), any(), any())).thenReturn(Completable.error(TimeoutException()))
+        whenever(
+            api.fire(
+                any(),
+                any(),
+                any(),
+                anyOrNull(),
+                any(),
+                any()
+            )
+        ).thenReturn(Completable.error(TimeoutException()))
     }
 
     private fun PendingPixelDao.insert(
@@ -425,7 +447,8 @@ class RxPixelSenderTest {
         }
     }
 
-    enum class TestPixels(override val pixelName: String, val enqueue: Boolean = false) : Pixel.PixelName {
+    enum class TestPixels(override val pixelName: String, val enqueue: Boolean = false) :
+        Pixel.PixelName {
         TEST("test"),
     }
 }

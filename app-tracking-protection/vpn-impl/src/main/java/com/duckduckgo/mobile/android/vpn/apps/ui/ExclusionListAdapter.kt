@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.apps.ui
 
 import android.content.Context
@@ -102,7 +86,11 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
 
             is FilterViewHolder -> {
                 val filterInfo = exclusionListItems[position] as FilterType
-                holder.bind(filterInfo.filterResId, exclusionListItems.size - HEADER_ITEMS, listener)
+                holder.bind(
+                    filterInfo.filterResId,
+                    exclusionListItems.size - HEADER_ITEMS,
+                    listener
+                )
             }
 
             is AppViewHolder -> {
@@ -148,10 +136,15 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
         fun onFilterClick(anchorView: View)
     }
 
-    private class InfoPanelViewHolder(val binding: RowExclusionListInfoPanelBinding) : RecyclerView.ViewHolder(binding.root) {
+    private class InfoPanelViewHolder(val binding: RowExclusionListInfoPanelBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         companion object {
             fun create(parent: ViewGroup): InfoPanelViewHolder {
-                val binding = RowExclusionListInfoPanelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = RowExclusionListInfoPanelBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return InfoPanelViewHolder(binding)
             }
         }
@@ -195,10 +188,15 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
         }
     }
 
-    private class FilterViewHolder(val binding: RowExclusionListFilterBinding) : RecyclerView.ViewHolder(binding.root) {
+    private class FilterViewHolder(val binding: RowExclusionListFilterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         companion object {
             fun create(parent: ViewGroup): FilterViewHolder {
-                val binding = RowExclusionListFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = RowExclusionListFilterBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return FilterViewHolder(binding)
             }
         }
@@ -210,17 +208,23 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
             appsFiltered: Int,
             listener: ExclusionListListener,
         ) {
-            binding.excludedAppsFilterText.text = context.resources.getString(filterResId, appsFiltered)
+            binding.excludedAppsFilterText.text =
+                context.resources.getString(filterResId, appsFiltered)
             binding.excludedAppsFilterText.setOnClickListener {
                 listener.onFilterClick(it)
             }
         }
     }
 
-    private class AppViewHolder(val binding: RowExclusionListAppBinding) : RecyclerView.ViewHolder(binding.root) {
+    private class AppViewHolder(val binding: RowExclusionListAppBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         companion object {
             fun create(parent: ViewGroup): AppViewHolder {
-                val binding = RowExclusionListAppBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = RowExclusionListAppBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return AppViewHolder(binding)
             }
         }
@@ -232,7 +236,8 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
             position: Int,
             listener: ExclusionListListener,
         ) {
-            val appIcon = itemView.context.packageManager.safeGetApplicationIcon(excludedAppInfo.packageName)
+            val appIcon =
+                itemView.context.packageManager.safeGetApplicationIcon(excludedAppInfo.packageName)
             binding.deviceShieldAppEntryIcon.setImageDrawable(appIcon)
             binding.deviceShieldAppEntryName.text = excludedAppInfo.name
             binding.handleToggleState(excludedAppInfo.knownProblem)
@@ -250,7 +255,8 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
                     )
                     binding.deviceShieldAppEntryWarningIcon.show()
                 } else {
-                    binding.deviceShieldAppExclusionReason.text = itemView.context.getString(R.string.atp_ExcludedReasonManuallyEnabled)
+                    binding.deviceShieldAppExclusionReason.text =
+                        itemView.context.getString(R.string.atp_ExcludedReasonManuallyEnabled)
                     binding.deviceShieldAppExclusionReason.show()
                     binding.deviceShieldAppEntryWarningIcon.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -262,7 +268,8 @@ class ExclusionListAdapter(val listener: ExclusionListListener) :
                 }
             } else {
                 if (excludedAppInfo.isExcluded) {
-                    binding.deviceShieldAppExclusionReason.text = itemView.context.getString(R.string.atp_ExcludedReasonManuallyDisabled)
+                    binding.deviceShieldAppExclusionReason.text =
+                        itemView.context.getString(R.string.atp_ExcludedReasonManuallyDisabled)
                     binding.deviceShieldAppExclusionReason.show()
                     binding.deviceShieldAppEntryWarningIcon.setImageDrawable(
                         ContextCompat.getDrawable(

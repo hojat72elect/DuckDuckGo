@@ -1,20 +1,3 @@
-<!--
-  ~ Copyright (c) 2020 DuckDuckGo
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-<!-- smartling.entity_escaping = false -->
-<!-- smartling.instruction_attributes = instruction -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="atp_name">App Tracking Protection</string>
     <string name="refresh">Refresh</string>
@@ -45,8 +28,8 @@
     <string name="atp_OnInitialNotification">"App Tracking Protection is enabled and blocking tracking attempts across your apps"</string>
     <string name="atp_OnNoTrackersNotificationHeader">"Scanning for tracking activity… beep… boop"</string>
     <plurals name="atp_OnNotification">
-        <item quantity="one" instruction="Placeholder is a number"><![CDATA[ Tracking attempts blocked <b>in %1$d app</b> (past hour).]]></item>
-        <item quantity="other" instruction="Placeholder is a number"><![CDATA[ Tracking attempts blocked <b>across %1$d apps</b> (past hour).]]></item>
+        <item instruction="Placeholder is a number" quantity="one"><![CDATA[ Tracking attempts blocked <b>in %1$d app</b> (past hour).]]></item>
+        <item instruction="Placeholder is a number" quantity="other"><![CDATA[ Tracking attempts blocked <b>across %1$d apps</b> (past hour).]]></item>
     </plurals>
     <string name="atp_DisabledNotification">App Tracking Protection disabled. Tap to continue blocking tracking attempts.</string>
     <string name="atp_RevokedNotification">A VPN app on your device disabled App Tracking Protection. Tap to re-enable.</string>
@@ -58,13 +41,13 @@
     <string name="atp_DailyTrackersNotificationOtherTrackingOtherApps" instruction="%1$d is the number of tracking attempts, %2$d is the number of apps where the tracking took place, %3$s is the name of one of the apps where it happened"><![CDATA[ App Tracking Protection blocked <b>%1$d tracking attempts across %2$d apps, including %3$s</b> (past day).]]></string>
 
     <plurals name="atp_DailyTopCompanyNotification">
-        <item quantity="one" instruction="%1$s is the name of a company, %2$d is the number of apps the company tried to track the user"><![CDATA[%1$s tried to track you <b>in %2$d app</b> (past day). <b>See More</b>]]></item>
-        <item quantity="other" instruction="%1$s is the name of a company, %2$d is the number of apps the company tried to track the user"><![CDATA[%1$s tried to track you <b>across %2$d apps</b> (past day). <b>See More</b>]]></item>
+        <item instruction="%1$s is the name of a company, %2$d is the number of apps the company tried to track the user" quantity="one"><![CDATA[%1$s tried to track you <b>in %2$d app</b> (past day). <b>See More</b>]]></item>
+        <item instruction="%1$s is the name of a company, %2$d is the number of apps the company tried to track the user" quantity="other"><![CDATA[%1$s tried to track you <b>across %2$d apps</b> (past day). <b>See More</b>]]></item>
     </plurals>
 
     <plurals name="atp_DailyCompanyBlockedNotification">
-        <item quantity="one" instruction="Placeholder is the name of an app"><![CDATA[App Tracking Protection blocked the most tracking attempts in <b>%1$s</b> (past day).]]></item>
-        <item quantity="other" instruction="Both placeholders are the name of an app"><![CDATA[App Tracking Protection blocked the most tracking attempts in <b>%1$s</b> and <b>%2$s</b> (past day).]]></item>
+        <item instruction="Placeholder is the name of an app" quantity="one"><![CDATA[App Tracking Protection blocked the most tracking attempts in <b>%1$s</b> (past day).]]></item>
+        <item instruction="Both placeholders are the name of an app" quantity="other"><![CDATA[App Tracking Protection blocked the most tracking attempts in <b>%1$s</b> and <b>%2$s</b> (past day).]]></item>
     </plurals>
 
     <string name="atp_DailyLastCompanyBlockedNotificationOneTimeZeroOtherApps" instruction="%1$s is name of the tracking company, i.e. Facebook. %2$d is the number of times we blocked their tracking attempts. %3$s is the name of the app where it happened"><![CDATA[App Tracking Protection blocked <b>%1$s %2$d time in %3$s</b> (past day).]]></string>
@@ -84,8 +67,8 @@
     <string name="atp_WeeklyCompanyTrackersBlockedNotificationOtherTimesMoreOtherApps" instruction="%1$d is the number of the tracking attempts, %2$s is the name of the app where it happened, %3$d is the number of other apps where this also happened"><![CDATA[App Tracking Protection blocked <b>%1$d tracking attempts in %2$s</b> and %3$d other apps (past week).]]></string>
 
     <plurals name="atp_WeeklyCompanyTeaserNotification">
-        <item quantity="one" instruction="%1$s is name of the tracking company, i.e. Facebook. %2$d is the number of apps where blocked their tracking attempts. %3$s is the name of the app where it happened"><![CDATA[App Tracking Protection blocked <b>%1$s in %2$d app, %3$s</b> (past week).]]></item>
-        <item quantity="other" instruction="%1$s is name of the tracking company, i.e. Facebook. %2$d is the number of apps where blocked their tracking attempts. %3$s is the name of one of the apps where it happened"><![CDATA[App Tracking Protection blocked <b>%1$s across %2$d apps, including %3$s</b> (past week).]]></item>
+        <item instruction="%1$s is name of the tracking company, i.e. Facebook. %2$d is the number of apps where blocked their tracking attempts. %3$s is the name of the app where it happened" quantity="one"><![CDATA[App Tracking Protection blocked <b>%1$s in %2$d app, %3$s</b> (past week).]]></item>
+        <item instruction="%1$s is name of the tracking company, i.e. Facebook. %2$d is the number of apps where blocked their tracking attempts. %3$s is the name of one of the apps where it happened" quantity="other"><![CDATA[App Tracking Protection blocked <b>%1$s across %2$d apps, including %3$s</b> (past week).]]></item>
     </plurals>
 
     <string name="atp_EnableCTA">Enable App Tracking Protection</string>
@@ -194,20 +177,16 @@
     <string name="atp_ActivityManageProtection">Having Issues?</string>
     <string name="atp_RecentAppActivity">Recent App Activity</string>
 
-    <string name="atp_ActivityTrackersCompanyBlockedOnetimeOneCompany"
-        instruction="Placeholder %1$s is the name of the app doing the tracking. Example: 1 tracking attempt blocked from 1 company in Venmo app.">
+    <string name="atp_ActivityTrackersCompanyBlockedOnetimeOneCompany" instruction="Placeholder %1$s is the name of the app doing the tracking. Example: 1 tracking attempt blocked from 1 company in Venmo app.">
         <![CDATA[1 tracking attempt blocked from 1 company in <b>%1$s</b> app]]>
     </string>
-    <string name="atp_ActivityTrackersCompanyBlockedOnetimeOtherCompanies"
-        instruction="Placeholder %1$d is the number of companies doing the tracking. Placeholder %2$s is the name of the app doing the tracking. Example: 1 tracking attempt blocked from 5 companies in Venmo app.">
+    <string name="atp_ActivityTrackersCompanyBlockedOnetimeOtherCompanies" instruction="Placeholder %1$d is the number of companies doing the tracking. Placeholder %2$s is the name of the app doing the tracking. Example: 1 tracking attempt blocked from 5 companies in Venmo app.">
         <![CDATA[1 tracking attempt blocked from %1$d companies in <b>%2$s</b> app]]>
     </string>
-    <string name="atp_ActivityTrackersCompanyBlockedOtherTimesOneCompany"
-        instruction="Placeholder %1$d is the number of tracking attempts blocked. Placeholder %2$s is the name of the app doing the tracking. Example: 5 tracking attempts blocked from 1 company in Venmo app.">
+    <string name="atp_ActivityTrackersCompanyBlockedOtherTimesOneCompany" instruction="Placeholder %1$d is the number of tracking attempts blocked. Placeholder %2$s is the name of the app doing the tracking. Example: 5 tracking attempts blocked from 1 company in Venmo app.">
         <![CDATA[%1$d tracking attempts blocked from 1 company in <b>%2$s</b> app]]>
     </string>
-    <string name="atp_ActivityTrackersCompanyBlockedOtherTimesOtherCompanies"
-        instruction="Placeholder %1$d is the number of tracking attempts blocked. Placeholder %2$d is the number of companies doing the tracking. Placeholder %3$s is the name of the app doing the tracking. Example: 10 tracking attempts blocked from 5 companies in Venmo app.">
+    <string name="atp_ActivityTrackersCompanyBlockedOtherTimesOtherCompanies" instruction="Placeholder %1$d is the number of tracking attempts blocked. Placeholder %2$d is the number of companies doing the tracking. Placeholder %3$s is the name of the app doing the tracking. Example: 10 tracking attempts blocked from 5 companies in Venmo app.">
         <![CDATA[%1$d tracking attempts blocked from %2$d companies in <b>%3$s</b> app]]>
     </string>
 
@@ -272,12 +251,12 @@
 
     <!--  App Tracking Company Details -->
     <plurals name="atp_CompanyDetailsTrackingAttempts">
-        <item quantity="one" instruction="Placeholder is a number">"%1$d attempt. Known to collect:"</item>
-        <item quantity="other" instruction="Placeholder is a number">%1$d attempts. Known to collect:"</item>
+        <item instruction="Placeholder is a number" quantity="one">"%1$d attempt. Known to collect:"</item>
+        <item instruction="Placeholder is a number" quantity="other">%1$d attempts. Known to collect:"</item>
     </plurals>
     <plurals name="atp_CompanyDetailsTrackingAttemptsTitle">
-        <item quantity="one" instruction="Placeholder is a number">"DuckDuckGo Blocked %1$d Tracking Attempt"</item>
-        <item quantity="other" instruction="Placeholder is a number">"DuckDuckGo Blocked %1$d Tracking Attempts"</item>
+        <item instruction="Placeholder is a number" quantity="one">"DuckDuckGo Blocked %1$d Tracking Attempt"</item>
+        <item instruction="Placeholder is a number" quantity="other">"DuckDuckGo Blocked %1$d Tracking Attempts"</item>
     </plurals>
     <string name="atp_CompanyDetailsTrackingMenuReport">Report an Issue With This App</string>
     <string name="atp_CompanyDetailsTrackingShowMore" instruction="Placeholder is a number">Show %1$d more</string>

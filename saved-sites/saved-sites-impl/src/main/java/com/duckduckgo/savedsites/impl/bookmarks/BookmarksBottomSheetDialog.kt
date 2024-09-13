@@ -1,21 +1,6 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.bookmarks
 
+import com.duckduckgo.mobile.android.R as CommonR
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
@@ -26,7 +11,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.duckduckgo.common.ui.view.show
-import com.duckduckgo.mobile.android.R as CommonR
 import com.duckduckgo.saved.sites.impl.databinding.BottomSheetAddBookmarkBinding
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -54,7 +38,8 @@ class BookmarksBottomSheetDialog(builder: Builder) : BottomSheetDialog(builder.c
 
     internal class DefaultEventListener : EventListener()
 
-    private val binding: BottomSheetAddBookmarkBinding = BottomSheetAddBookmarkBinding.inflate(LayoutInflater.from(context))
+    private val binding: BottomSheetAddBookmarkBinding =
+        BottomSheetAddBookmarkBinding.inflate(LayoutInflater.from(context))
 
     init {
         setContentView(binding.root)
@@ -80,15 +65,33 @@ class BookmarksBottomSheetDialog(builder: Builder) : BottomSheetDialog(builder.c
 
         binding.bookmarksBottomSheetDialogPrimaryItem.setPrimaryText(builder.primaryItemText)
         builder.primaryItemIcon?.let {
-            binding.bookmarksBottomSheetDialogPrimaryItem.setLeadingIconDrawable(ContextCompat.getDrawable(context, it)!!)
+            binding.bookmarksBottomSheetDialogPrimaryItem.setLeadingIconDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    it
+                )!!
+            )
         }
-        builder.primaryItemTextColor?.let { binding.bookmarksBottomSheetDialogPrimaryItem.setPrimaryTextColor(it) }
+        builder.primaryItemTextColor?.let {
+            binding.bookmarksBottomSheetDialogPrimaryItem.setPrimaryTextColor(
+                it
+            )
+        }
 
         binding.bookmarksBottomSheetDialogSecondaryItem.setPrimaryText(builder.secondaryItemText)
         builder.secondaryItemIcon?.let {
-            binding.bookmarksBottomSheetDialogSecondaryItem.setLeadingIconDrawable(ContextCompat.getDrawable(context, it)!!)
+            binding.bookmarksBottomSheetDialogSecondaryItem.setLeadingIconDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    it
+                )!!
+            )
         }
-        builder.secondaryItemTextColor?.let { binding.bookmarksBottomSheetDialogSecondaryItem.setPrimaryTextColor(it) }
+        builder.secondaryItemTextColor?.let {
+            binding.bookmarksBottomSheetDialogSecondaryItem.setPrimaryTextColor(
+                it
+            )
+        }
 
         binding.bookmarksBottomSheetSwitch.setOnClickListener {
             builder.listener.onPrimaryItemClicked()
@@ -182,11 +185,18 @@ class BookmarksBottomSheetDialog(builder: Builder) : BottomSheetDialog(builder.c
         private fun roundCornersAlways(dialog: BottomSheetDialog) {
             dialog.setOnShowListener { dialogInterface ->
                 val bottomSheetDialog = dialogInterface as BottomSheetDialog
-                val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(R.id.design_bottom_sheet)
+                val bottomSheet =
+                    bottomSheetDialog.findViewById<FrameLayout>(R.id.design_bottom_sheet)
                 bottomSheet?.background = MaterialShapeDrawable(
                     ShapeAppearanceModel.builder().apply {
-                        setTopLeftCorner(CornerFamily.ROUNDED, context.resources.getDimension(CommonR.dimen.dialogBorderRadius))
-                        setTopRightCorner(CornerFamily.ROUNDED, context.resources.getDimension(CommonR.dimen.dialogBorderRadius))
+                        setTopLeftCorner(
+                            CornerFamily.ROUNDED,
+                            context.resources.getDimension(CommonR.dimen.dialogBorderRadius)
+                        )
+                        setTopRightCorner(
+                            CornerFamily.ROUNDED,
+                            context.resources.getDimension(CommonR.dimen.dialogBorderRadius)
+                        )
                     }.build(),
                 )
             }

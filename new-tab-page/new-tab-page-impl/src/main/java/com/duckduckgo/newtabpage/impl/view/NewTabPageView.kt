@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl.view
 
 import android.annotation.SuppressLint
@@ -66,7 +50,10 @@ class NewTabPageView @JvmOverloads constructor(
     private val binding: ViewNewTabPageBinding by viewBinding()
 
     private val viewModel: NewTabPageViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[NewTabPageViewModel::class.java]
+        ViewModelProvider(
+            findViewTreeViewModelStoreOwner()!!,
+            viewModelFactory
+        )[NewTabPageViewModel::class.java]
     }
 
     override fun onAttachedToWindow() {
@@ -125,14 +112,19 @@ class NewTabPageView @JvmOverloads constructor(
                 )
 
                 // we only want to make changes if the sections have changed
-                val existingSections = binding.newTabSectionsContent.children.map { it.tag }.toMutableList()
+                val existingSections =
+                    binding.newTabSectionsContent.children.map { it.tag }.toMutableList()
                 val newSections = viewState.sections.map { it.name }
                 if (existingSections != newSections) {
                     // RMF is a special case, we don't want to remove it.
                     // We can only show that message once, so removing the view and adding it again won't work
-                    val rmfView = binding.newTabSectionsContent.findViewWithTag<View>(NewTabPageSection.REMOTE_MESSAGING_FRAMEWORK.name)
+                    val rmfView =
+                        binding.newTabSectionsContent.findViewWithTag<View>(NewTabPageSection.REMOTE_MESSAGING_FRAMEWORK.name)
                     if (rmfView != null) {
-                        binding.newTabSectionsContent.removeViews(1, binding.newTabSectionsContent.childCount - 1)
+                        binding.newTabSectionsContent.removeViews(
+                            1,
+                            binding.newTabSectionsContent.childCount - 1
+                        )
                     } else {
                         binding.newTabSectionsContent.removeAllViews()
                     }
@@ -140,7 +132,8 @@ class NewTabPageView @JvmOverloads constructor(
 
                 // we will only add sections that haven't been added yet
                 viewState.sections.onEach { section ->
-                    val sectionView = binding.newTabSectionsContent.findViewWithTag<View>(section.name)
+                    val sectionView =
+                        binding.newTabSectionsContent.findViewWithTag<View>(section.name)
                     if (sectionView == null) {
                         binding.newTabSectionsContent.addView(
                             section.getView(context).also { it?.tag = section.name },
@@ -184,7 +177,10 @@ class NewTabPageView @JvmOverloads constructor(
                 binding.newTabEditAnchor.hide()
             } else {
                 // If the scrollView can scroll, hide the button
-                if (binding.newTabContentScroll.canScrollVertically(1) || binding.newTabContentScroll.canScrollVertically(-1)) {
+                if (binding.newTabContentScroll.canScrollVertically(1) || binding.newTabContentScroll.canScrollVertically(
+                        -1
+                    )
+                ) {
                     binding.newTabEditAnchor.hide()
                     binding.newTabEditScroll.show()
                 } else {

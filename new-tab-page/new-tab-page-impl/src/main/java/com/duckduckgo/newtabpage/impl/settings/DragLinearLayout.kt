@@ -1,22 +1,10 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl.settings
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.LayoutTransition
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.annotation.SuppressLint
 import android.content.Context
@@ -76,7 +64,8 @@ class DragLinearLayout @JvmOverloads constructor(
         val vc = ViewConfiguration.get(this.context)
         mSlop = vc.scaledTouchSlop
         val resources = resources
-        mNominalDistanceScaled = (NOMINAL_DISTANCE * resources.displayMetrics.density + 0.5f).roundToInt().toFloat()
+        mNominalDistanceScaled =
+            (NOMINAL_DISTANCE * resources.displayMetrics.density + 0.5f).roundToInt().toFloat()
     }
 
     fun addDragView(
@@ -196,9 +185,9 @@ class DragLinearLayout @JvmOverloads constructor(
             val belowView = getChildAt(belowPosition)
             val aboveView = getChildAt(abovePosition)
             val isBelow = belowView != null &&
-                currentTop + mDragItem.mHeight > belowView.top + belowView.height / 2
+                    currentTop + mDragItem.mHeight > belowView.top + belowView.height / 2
             val isAbove = aboveView != null &&
-                currentTop < aboveView.top + aboveView.height / 2
+                    currentTop < aboveView.top + aboveView.height / 2
             if (isBelow || isAbove) {
                 val switchView = if (isBelow) belowView else aboveView
                 val originalPosition = mDragItem.mPosition
@@ -206,7 +195,12 @@ class DragLinearLayout @JvmOverloads constructor(
                 mDraggableChildren[switchPosition].cancelExistingAnimation()
                 val switchViewStartY = switchView!!.y
 
-                swapListener?.onSwap(mDragItem.mView, mDragItem.mPosition, switchView, switchPosition)
+                swapListener?.onSwap(
+                    mDragItem.mView,
+                    mDragItem.mPosition,
+                    switchView,
+                    switchPosition
+                )
 
                 if (isBelow) {
                     removeViewAt(originalPosition)
@@ -236,7 +230,8 @@ class DragLinearLayout @JvmOverloads constructor(
                             switchAnimator.addListener(
                                 object : AnimatorListenerAdapter() {
                                     override fun onAnimationStart(animation: Animator) {
-                                        mDraggableChildren[originalPosition].mValueAnimator = switchAnimator
+                                        mDraggableChildren[originalPosition].mValueAnimator =
+                                            switchAnimator
                                     }
 
                                     override fun onAnimationEnd(animation: Animator) {
@@ -275,9 +270,9 @@ class DragLinearLayout @JvmOverloads constructor(
             val nextView = getChildAt(nextPosition)
             val preView = getChildAt(prePosition)
             val isToNext = nextView != null &&
-                currentLeft + mDragItem.mWidth > nextView.left + nextView.width / 2
+                    currentLeft + mDragItem.mWidth > nextView.left + nextView.width / 2
             val isToPre = preView != null &&
-                currentLeft < preView.left + preView.width / 2
+                    currentLeft < preView.left + preView.width / 2
             if (isToNext || isToPre) {
                 val switchView = if (isToNext) nextView else preView
                 val originalPosition = mDragItem.mPosition
@@ -285,7 +280,12 @@ class DragLinearLayout @JvmOverloads constructor(
                 mDraggableChildren[switchPosition].cancelExistingAnimation()
                 val switchViewStartX = switchView!!.x
 
-                swapListener?.onSwap(mDragItem.mView, mDragItem.mPosition, switchView, switchPosition)
+                swapListener?.onSwap(
+                    mDragItem.mView,
+                    mDragItem.mPosition,
+                    switchView,
+                    switchPosition
+                )
 
                 if (isToNext) {
                     removeViewAt(originalPosition)
@@ -315,7 +315,8 @@ class DragLinearLayout @JvmOverloads constructor(
                             switchAnimator.addListener(
                                 object : AnimatorListenerAdapter() {
                                     override fun onAnimationStart(animation: Animator) {
-                                        mDraggableChildren[originalPosition].mValueAnimator = switchAnimator
+                                        mDraggableChildren[originalPosition].mValueAnimator =
+                                            switchAnimator
                                     }
 
                                     override fun onAnimationEnd(animation: Animator) {

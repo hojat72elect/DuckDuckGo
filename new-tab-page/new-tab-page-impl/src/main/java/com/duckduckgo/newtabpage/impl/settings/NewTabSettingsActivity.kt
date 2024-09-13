@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl.settings
 
 import android.os.Bundle
@@ -81,7 +65,10 @@ class NewTabSettingsActivity : DuckDuckGoActivity() {
 
     private fun configureGrid() {
         val gridColumnCalculator = GridColumnCalculator(this)
-        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(SHORTCUT_ITEM_MAX_SIZE_DP, SHORTCUT_GRID_MAX_COLUMNS)
+        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(
+            SHORTCUT_ITEM_MAX_SIZE_DP,
+            SHORTCUT_GRID_MAX_COLUMNS
+        )
         val layoutManager = GridLayoutManager(this, numOfColumns)
         binding.shortcutsList.layoutManager = layoutManager
         adapter = ManageShortcutsAdapter {
@@ -92,7 +79,8 @@ class NewTabSettingsActivity : DuckDuckGoActivity() {
 
     private fun render(viewState: ViewState) {
         // we only want to make changes if the sections have changed
-        val existingSections = binding.newTabSettingSectionsLayout.children.map { it.tag }.toMutableList()
+        val existingSections =
+            binding.newTabSettingSectionsLayout.children.map { it.tag }.toMutableList()
         val newSections = viewState.sections.map { it.name }
         if (existingSections != newSections) {
             binding.newTabSettingSectionsLayout.removeAllViews()
@@ -100,7 +88,8 @@ class NewTabSettingsActivity : DuckDuckGoActivity() {
 
         // we will only add shortcuts that haven't been added yet
         viewState.sections.forEach { section ->
-            val sectionView = binding.newTabSettingSectionsLayout.findViewWithTag<View>(section.name)
+            val sectionView =
+                binding.newTabSettingSectionsLayout.findViewWithTag<View>(section.name)
             if (sectionView == null) {
                 val newSection = section.getView(this).also { it?.tag = section.name }
                 binding.newTabSettingSectionsLayout.addDragView(newSection, newSection)

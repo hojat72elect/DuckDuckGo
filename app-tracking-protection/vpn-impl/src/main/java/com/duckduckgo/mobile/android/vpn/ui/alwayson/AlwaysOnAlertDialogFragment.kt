@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.alwayson
 
 import android.content.Context
@@ -43,20 +27,27 @@ private enum class FragmentType {
 @InjectWith(FragmentScope::class)
 class AlwaysOnAlertDialogFragment private constructor() : BottomSheetDialogFragment() {
 
-    @Inject lateinit var appBuildConfig: AppBuildConfig
+    @Inject
+    lateinit var appBuildConfig: AppBuildConfig
 
-    @Inject lateinit var appTheme: AppTheme
+    @Inject
+    lateinit var appTheme: AppTheme
     private lateinit var listener: Listener
     private lateinit var fragmentType: FragmentType
 
-    override fun getTheme(): Int = com.duckduckgo.mobile.android.R.style.Widget_DuckDuckGo_BottomSheetDialogCollapsed
+    override fun getTheme(): Int =
+        com.duckduckgo.mobile.android.R.style.Widget_DuckDuckGo_BottomSheetDialogCollapsed
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return ContentVpnAlwaysOnAlertBinding.inflate(inflater, container, false).apply {
             configureViews(this)
         }.root
@@ -118,11 +109,15 @@ class AlwaysOnAlertDialogFragment private constructor() : BottomSheetDialogFragm
 
         fun bindViewElements() {
             if (fragmentType == FragmentType.ALWAYS_ON) {
-                binding.alwaysOnModalHeading.text = HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnModalHeading), 0)
-                binding.alwaysOnModalDescription.text = HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnModalBody), 0)
+                binding.alwaysOnModalHeading.text =
+                    HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnModalHeading), 0)
+                binding.alwaysOnModalDescription.text =
+                    HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnModalBody), 0)
             } else {
-                binding.alwaysOnModalHeading.text = HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnLockdownModalHeading), 0)
-                binding.alwaysOnModalDescription.text = HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnLockdownModalBody), 0)
+                binding.alwaysOnModalHeading.text =
+                    HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnLockdownModalHeading), 0)
+                binding.alwaysOnModalDescription.text =
+                    HtmlCompat.fromHtml(getString(R.string.atp_AlwaysOnLockdownModalBody), 0)
             }
         }
 
@@ -149,6 +144,7 @@ class AlwaysOnAlertDialogFragment private constructor() : BottomSheetDialogFragm
                 this.fragmentType = FragmentType.ALWAYS_ON
             }
         }
+
         fun newAlwaysOnLockdownDialog(listener: Listener): AlwaysOnAlertDialogFragment {
             return AlwaysOnAlertDialogFragment().apply {
                 this.listener = listener

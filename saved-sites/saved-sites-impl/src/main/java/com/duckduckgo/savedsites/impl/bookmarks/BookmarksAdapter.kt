@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.bookmarks
 
 import android.view.LayoutInflater
@@ -101,6 +85,7 @@ class BookmarksAdapter(
                     faviconManager,
                 )
             }
+
             BOOKMARK_FOLDER_TYPE -> {
                 val binding = RowTwoLineItemBinding.inflate(inflater, parent, false)
                 return BookmarkFoldersViewHolder(
@@ -109,14 +94,17 @@ class BookmarksAdapter(
                     viewModel,
                 )
             }
+
             EMPTY_STATE_TYPE -> {
                 val binding = ViewSavedSiteEmptyHintBinding.inflate(inflater, parent, false)
                 EmptyHint(binding, viewModel)
             }
+
             EMPTY_SEARCH_STATE_TYPE -> {
                 val binding = ViewSavedSiteEmptySearchHintBinding.inflate(inflater, parent, false)
                 EmptySearchHint(binding, viewModel, lifecycleOwner)
             }
+
             else -> throw IllegalArgumentException("viewType not found")
         }
     }
@@ -131,14 +119,18 @@ class BookmarksAdapter(
                 holder.update(bookmark)
                 holder.showDragHandle(isReorderingModeEnabled, bookmark)
             }
+
             is BookmarkFoldersViewHolder -> {
-                val bookmarkFolder = (this.bookmarkItems[position] as BookmarkFolderItem).bookmarkFolder
+                val bookmarkFolder =
+                    (this.bookmarkItems[position] as BookmarkFolderItem).bookmarkFolder
                 holder.update(bookmarkFolder)
                 holder.showDragHandle(isReorderingModeEnabled, bookmarkFolder)
             }
+
             is BookmarkScreenViewHolders.EmptyHint -> {
                 holder.bind()
             }
+
             is BookmarkScreenViewHolders.EmptySearchHint -> {
                 holder.bind()
             }
@@ -171,10 +163,12 @@ class BookmarksAdapter(
                     parentId = item.bookmark.parentId
                     item.bookmark.id
                 }
+
                 is BookmarkFolderItem -> {
                     parentId = item.bookmarkFolder.parentId
                     item.bookmarkFolder.id
                 }
+
                 else -> ""
             }
         }

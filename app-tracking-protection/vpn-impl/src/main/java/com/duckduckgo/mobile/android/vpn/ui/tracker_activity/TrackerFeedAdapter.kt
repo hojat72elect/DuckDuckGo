@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2021 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.mobile.android.vpn.ui.tracker_activity
 
 import android.content.Context
@@ -58,11 +42,18 @@ class TrackerFeedAdapter @Inject constructor(
     ) {
         when (holder) {
             is TrackerFeedViewHolder ->
-                holder.bind(trackerFeedItems[position] as TrackerFeedItem.TrackerFeedData, onAppClick)
+                holder.bind(
+                    trackerFeedItems[position] as TrackerFeedItem.TrackerFeedData,
+                    onAppClick
+                )
+
             is TrackerSkeletonViewHolder -> holder.bind()
             is TrackerFeedHeaderViewHolder -> holder.bind(trackerFeedItems[position] as TrackerFeedItem.TrackerFeedItemHeader)
             is TrackerAppsProtectionStateViewHolder ->
-                holder.bind(trackerFeedItems[position] as TrackerFeedItem.TrackerTrackerAppsProtection, onAppClick)
+                holder.bind(
+                    trackerFeedItems[position] as TrackerFeedItem.TrackerTrackerAppsProtection,
+                    onAppClick
+                )
         }
     }
 
@@ -115,7 +106,11 @@ class TrackerFeedAdapter @Inject constructor(
         companion object {
             fun create(parent: ViewGroup): TrackerSkeletonViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_skeleton_entry, parent, false)
+                val view = inflater.inflate(
+                    R.layout.view_device_shield_activity_skeleton_entry,
+                    parent,
+                    false
+                )
                 return TrackerSkeletonViewHolder(view)
             }
         }
@@ -136,7 +131,11 @@ class TrackerFeedAdapter @Inject constructor(
                 parent: ViewGroup,
             ): TrackerFeedHeaderViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_entry_header, parent, false)
+                val view = inflater.inflate(
+                    R.layout.view_device_shield_activity_entry_header,
+                    parent,
+                    false
+                )
                 return TrackerFeedHeaderViewHolder(view as SectionHeaderListItem)
             }
         }
@@ -147,9 +146,13 @@ class TrackerFeedAdapter @Inject constructor(
 
         fun bind(item: TrackerFeedItem.TrackerFeedItemHeader) {
             if (item.timestamp == today || item.timestamp == yesterday) {
-                view.primaryText = context.getString(R.string.atp_ActivityBlockedByHeaderText, item.timestamp)
+                view.primaryText =
+                    context.getString(R.string.atp_ActivityBlockedByHeaderText, item.timestamp)
             } else {
-                view.primaryText = context.getString(R.string.atp_ActivityBlockedByOnDateHeaderText, item.timestamp)
+                view.primaryText = context.getString(
+                    R.string.atp_ActivityBlockedByOnDateHeaderText,
+                    item.timestamp
+                )
             }
         }
     }
@@ -158,7 +161,8 @@ class TrackerFeedAdapter @Inject constructor(
         companion object {
             fun create(parent: ViewGroup): TrackerFeedViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_entry, parent, false)
+                val view =
+                    inflater.inflate(R.layout.view_device_shield_activity_entry, parent, false)
                 return TrackerFeedViewHolder(view)
             }
         }
@@ -167,9 +171,10 @@ class TrackerFeedAdapter @Inject constructor(
         var activityMessage: TextView = view.findViewById(R.id.activity_message)
         var timeSinceTrackerBlocked: TextView = view.findViewById(R.id.activity_time_since)
         var trackingAppIcon: ImageView = view.findViewById(R.id.tracking_app_icon)
-        var trackerBadgesView: RecyclerView = view.findViewById<RecyclerView>(R.id.tracker_badges).apply {
-            adapter = TrackerBadgeAdapter()
-        }
+        var trackerBadgesView: RecyclerView =
+            view.findViewById<RecyclerView>(R.id.tracker_badges).apply {
+                adapter = TrackerBadgeAdapter()
+            }
 
         var packageManager: PackageManager = view.context.packageManager
 
@@ -261,7 +266,11 @@ class TrackerFeedAdapter @Inject constructor(
         companion object {
             fun create(parent: ViewGroup): TrackerDescriptionViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_description, parent, false)
+                val view = inflater.inflate(
+                    R.layout.view_device_shield_activity_description,
+                    parent,
+                    false
+                )
                 return TrackerDescriptionViewHolder(view)
             }
         }
@@ -271,15 +280,22 @@ class TrackerFeedAdapter @Inject constructor(
         companion object {
             fun create(parent: ViewGroup): TrackerAppsProtectionStateViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.view_device_shield_activity_apps_protection, parent, false)
+                val view = inflater.inflate(
+                    R.layout.view_device_shield_activity_apps_protection,
+                    parent,
+                    false
+                )
                 return TrackerAppsProtectionStateViewHolder(view)
             }
         }
 
         var protectedAppsState: AppsProtectionStateView = view.findViewById(R.id.protectedAppsState)
-        var protectedAppsDivider: HorizontalDivider = view.findViewById(R.id.protectedAppsBottomDivider)
-        var unProtectedAppsState: AppsProtectionStateView = view.findViewById(R.id.unProtectedAppsState)
-        var unProtectedAppsDivider: HorizontalDivider = view.findViewById(R.id.unProtectedAppsBottomDivider)
+        var protectedAppsDivider: HorizontalDivider =
+            view.findViewById(R.id.protectedAppsBottomDivider)
+        var unProtectedAppsState: AppsProtectionStateView =
+            view.findViewById(R.id.unProtectedAppsState)
+        var unProtectedAppsDivider: HorizontalDivider =
+            view.findViewById(R.id.unProtectedAppsBottomDivider)
 
         fun bind(
             tracker: TrackerFeedItem.TrackerTrackerAppsProtection,

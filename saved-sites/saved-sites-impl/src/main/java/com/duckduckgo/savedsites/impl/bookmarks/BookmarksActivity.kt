@@ -1,21 +1,6 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.bookmarks
 
+import com.duckduckgo.mobile.android.R as commonR
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -43,7 +28,6 @@ import com.duckduckgo.common.ui.view.show
 import com.duckduckgo.common.ui.viewbinding.viewBinding
 import com.duckduckgo.common.utils.extensions.html
 import com.duckduckgo.di.scopes.ActivityScope
-import com.duckduckgo.mobile.android.R as commonR
 import com.duckduckgo.saved.sites.impl.R
 import com.duckduckgo.saved.sites.impl.databinding.ActivityBookmarksBinding
 import com.duckduckgo.saved.sites.impl.databinding.ContentBookmarksBinding
@@ -70,7 +54,9 @@ import com.duckduckgo.savedsites.impl.folders.BookmarkFoldersActivity.Companion.
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 
 @InjectWith(ActivityScope::class)
@@ -170,7 +156,8 @@ class BookmarksActivity : DuckDuckGoActivity() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(contentBookmarksBinding.recycler)
 
-        (contentBookmarksBinding.recycler.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+        (contentBookmarksBinding.recycler.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations =
+            false
     }
 
     private fun observeViewModel() {
@@ -310,7 +297,13 @@ class BookmarksActivity : DuckDuckGoActivity() {
         if (viewModel.viewState.value?.bookmarkItems?.isEmpty() == true) {
             val textColorAttr = commonR.attr.daxColorTextDisabled
             val spannable = SpannableString(getString(R.string.exportBookmarksMenu))
-            spannable.setSpan(ForegroundColorSpan(binding.root.context.getColorFromAttr(textColorAttr)), 0, spannable.length, 0)
+            spannable.setSpan(
+                ForegroundColorSpan(
+                    binding.root.context.getColorFromAttr(
+                        textColorAttr
+                    )
+                ), 0, spannable.length, 0
+            )
             exportMenuItem?.title = spannable
             exportMenuItem?.isEnabled = false
         }
@@ -359,11 +352,16 @@ class BookmarksActivity : DuckDuckGoActivity() {
     }
 
     private fun setSearchMenuItemVisibility() {
-        searchMenuItem?.isVisible = viewModel.viewState.value?.enableSearch == true || getParentFolderId() != SavedSitesNames.BOOKMARKS_ROOT
+        searchMenuItem?.isVisible =
+            viewModel.viewState.value?.enableSearch == true || getParentFolderId() != SavedSitesNames.BOOKMARKS_ROOT
     }
 
     private fun showEditSavedSiteDialog(savedSite: SavedSite) {
-        val dialog = EditSavedSiteDialogFragment.instance(savedSite, getParentFolderId(), getParentFolderName())
+        val dialog = EditSavedSiteDialogFragment.instance(
+            savedSite,
+            getParentFolderId(),
+            getParentFolderName()
+        )
         dialog.show(supportFragmentManager, EDIT_BOOKMARK_FRAGMENT_TAG)
         dialog.listener = viewModel
         dialog.deleteBookmarkListener = viewModel
@@ -381,7 +379,8 @@ class BookmarksActivity : DuckDuckGoActivity() {
     }
 
     private fun confirmDeleteSavedSite(savedSite: SavedSite) {
-        val message = getString(R.string.bookmarkDeleteConfirmationMessage, savedSite.title).html(this)
+        val message =
+            getString(R.string.bookmarkDeleteConfirmationMessage, savedSite.title).html(this)
         Snackbar.make(
             binding.root,
             message,
@@ -408,7 +407,8 @@ class BookmarksActivity : DuckDuckGoActivity() {
     private fun confirmDeleteBookmarkFolder(
         bookmarkFolder: BookmarkFolder,
     ) {
-        val message = getString(R.string.bookmarkDeleteConfirmationMessage, bookmarkFolder.name).html(this)
+        val message =
+            getString(R.string.bookmarkDeleteConfirmationMessage, bookmarkFolder.name).html(this)
         Snackbar.make(
             binding.root,
             message,
@@ -437,7 +437,8 @@ class BookmarksActivity : DuckDuckGoActivity() {
     private fun editBookmarkFolder(bookmarkFolder: BookmarkFolder) {
         val parentId = getParentFolderId()
         val parentFolderName = getParentFolderName()
-        val dialog = EditBookmarkFolderDialogFragment.instance(parentId, parentFolderName, bookmarkFolder)
+        val dialog =
+            EditBookmarkFolderDialogFragment.instance(parentId, parentFolderName, bookmarkFolder)
         dialog.show(supportFragmentManager, EDIT_BOOKMARK_FOLDER_FRAGMENT_TAG)
         dialog.listener = viewModel
     }

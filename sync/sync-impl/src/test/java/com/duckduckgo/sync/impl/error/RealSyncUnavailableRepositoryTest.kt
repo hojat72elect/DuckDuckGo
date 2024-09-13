@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.sync.impl.error
 
 import android.content.Context
@@ -40,7 +24,11 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,8 +37,10 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class RealSyncUnavailableRepositoryTest {
 
-    @JvmField @Rule
-    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
+    @JvmField
+    @Rule
+    val grantPermissionRule: GrantPermissionRule =
+        GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
 
     @get:Rule
     var coroutineRule = CoroutineTestRule()
@@ -126,7 +116,8 @@ class RealSyncUnavailableRepositoryTest {
 
     @Test
     fun whenErrorCounterReachesThresholdThenTriggerNotification() {
-        syncUnavailableStore.syncErrorCount = RealSyncUnavailableRepository.ERROR_THRESHOLD_NOTIFICATION_COUNT
+        syncUnavailableStore.syncErrorCount =
+            RealSyncUnavailableRepository.ERROR_THRESHOLD_NOTIFICATION_COUNT
         testee.onServerUnavailable()
         notificationManager.activeNotifications
             .find { it.id == SYNC_ERROR_NOTIFICATION_ID } ?: fail("Notification not found")
@@ -134,20 +125,25 @@ class RealSyncUnavailableRepositoryTest {
 
     @Test
     fun whenUserNotifiedTodayThenDoNotTriggerNotification() {
-        syncUnavailableStore.userNotifiedAt = OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        syncUnavailableStore.userNotifiedAt =
+            OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         testee.triggerNotification()
         assertNull(notificationManager.activeNotifications.find { it.id == SYNC_ERROR_NOTIFICATION_ID })
     }
 
     @Test
     fun whenUserNotifiedYesterdayThenTriggerNotificationAndUpdateNotificationTimestamp() {
-        syncUnavailableStore.userNotifiedAt = OffsetDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        syncUnavailableStore.userNotifiedAt =
+            OffsetDateTime.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         testee.triggerNotification()
         notificationManager.activeNotifications
             .find { it.id == SYNC_ERROR_NOTIFICATION_ID } ?: fail("Notification not found")
 
         val today = LocalDateTime.now().toLocalDate()
-        val lastNotification = LocalDateTime.parse(syncUnavailableStore.userNotifiedAt, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toLocalDate()
+        val lastNotification = LocalDateTime.parse(
+            syncUnavailableStore.userNotifiedAt,
+            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        ).toLocalDate()
         assertEquals(today, lastNotification)
     }
 
@@ -157,13 +153,15 @@ class RealSyncUnavailableRepositoryTest {
         val syncErrorNotification = workManager.getWorkInfosByTag(SYNC_ERROR_NOTIFICATION_TAG).get()
         assertTrue(syncErrorNotification.first().state == State.ENQUEUED)
         testee.onServerAvailable()
-        val syncErrorNotificationAfterSuccess = workManager.getWorkInfosByTag(SYNC_ERROR_NOTIFICATION_TAG).get()
+        val syncErrorNotificationAfterSuccess =
+            workManager.getWorkInfosByTag(SYNC_ERROR_NOTIFICATION_TAG).get()
         assertTrue(syncErrorNotificationAfterSuccess.first().state == State.CANCELLED)
     }
 
     @Test
     fun whenServerAvailableThenClearNotification() {
-        syncUnavailableStore.syncErrorCount = RealSyncUnavailableRepository.ERROR_THRESHOLD_NOTIFICATION_COUNT
+        syncUnavailableStore.syncErrorCount =
+            RealSyncUnavailableRepository.ERROR_THRESHOLD_NOTIFICATION_COUNT
         testee.onServerUnavailable()
         notificationManager.activeNotifications
             .find { it.id == SYNC_ERROR_NOTIFICATION_ID } ?: fail("Notification not found")

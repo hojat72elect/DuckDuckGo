@@ -1,21 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2021 DuckDuckGo
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,7 +11,7 @@
         layout="@layout/include_default_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -42,58 +27,55 @@
             android:orientation="vertical">
 
             <com.duckduckgo.common.ui.view.listitem.SectionHeaderListItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:primaryText="@string/atp_ManageRecentAppsProtectionSectionTitle"
-                    android:layout_marginTop="@dimen/keyline_3"
-            />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_3"
+                app:primaryText="@string/atp_ManageRecentAppsProtectionSectionTitle" />
 
 
             <com.duckduckgo.common.ui.view.listitem.TwoLineListItem
-                    android:id="@+id/always_on"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:primaryText="@string/atp_ManageRecentAppsProtectionAlwaysOnTitle"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:secondaryText="@string/atp_ManageRecentAppsProtectionAlwaysOnByline"
-                    app:showSwitch="false"
-                    app:trailingIcon="@drawable/ic_open_in_24"
-            />
+                android:id="@+id/always_on"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:primaryText="@string/atp_ManageRecentAppsProtectionAlwaysOnTitle"
+                app:secondaryText="@string/atp_ManageRecentAppsProtectionAlwaysOnByline"
+                app:showSwitch="false"
+                app:trailingIcon="@drawable/ic_open_in_24" />
 
             <com.duckduckgo.common.ui.view.listitem.TwoLineListItem
-                    android:id="@+id/unrestricted_battery_usage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:primaryText="@string/atp_ManageRecentAppsProtectionAllowUnrestrictedBattTitle"
-                    app:secondaryText="@string/atp_ManageRecentAppsProtectionAllowUnrestrictedBattByline"
-                    app:showSwitch="false"
-                    app:trailingIcon="@drawable/ic_open_in_24"
-            />
+                android:id="@+id/unrestricted_battery_usage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:primaryText="@string/atp_ManageRecentAppsProtectionAllowUnrestrictedBattTitle"
+                app:secondaryText="@string/atp_ManageRecentAppsProtectionAllowUnrestrictedBattByline"
+                app:showSwitch="false"
+                app:trailingIcon="@drawable/ic_open_in_24" />
 
             <com.duckduckgo.common.ui.view.divider.HorizontalDivider
-                    app:defaultPadding="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/keyline_4"
-                    android:layout_marginBottom="@dimen/keyline_4"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_4"
+                android:layout_marginBottom="@dimen/keyline_4"
+                app:defaultPadding="false" />
 
             <com.duckduckgo.common.ui.view.listitem.SectionHeaderListItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:primaryText="@string/atp_RecentAppActivity" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:primaryText="@string/atp_RecentAppActivity" />
 
             <com.duckduckgo.common.ui.view.text.DaxTextView
-                    android:id="@+id/manageRecentAppsReportIssues"
-                    app:typography="body2"
-                    app:textType="secondary"
-                    tools:text="@string/atp_ManageRecentAppsProtectionReportIssues"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/keyline_4"
-                    android:paddingEnd="@dimen/keyline_4"
-                    android:paddingTop="@dimen/keyline_3"
-                    android:layout_marginBottom="@dimen/keyline_4"/>
+                android:id="@+id/manageRecentAppsReportIssues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/keyline_4"
+                android:paddingStart="@dimen/keyline_4"
+                android:paddingTop="@dimen/keyline_3"
+                android:paddingEnd="@dimen/keyline_4"
+                app:textType="secondary"
+                app:typography="body2"
+                tools:text="@string/atp_ManageRecentAppsProtectionReportIssues" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/manageRecentAppsSkeleton"
@@ -104,20 +86,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
 
                 <LinearLayout
-                    android:paddingTop="@dimen/keyline_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/keyline_2">
 
-                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton"/>
+                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton" />
 
-                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton"/>
+                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton" />
 
-                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton"/>
+                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton" />
 
-                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton"/>
+                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton" />
 
-                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton"/>
+                    <include layout="@layout/view_device_shield_excluded_app_entry_skeleton" />
 
                 </LinearLayout>
 
@@ -129,28 +111,28 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listItem="@layout/view_device_shield_excluded_app_entry"/>
+                tools:listItem="@layout/view_device_shield_excluded_app_entry" />
 
             <com.duckduckgo.common.ui.view.text.DaxTextView
                 android:id="@+id/manageRecentAppsEmptyView"
-                app:typography="body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/keyline_4"
                 android:drawablePadding="@dimen/keyline_4"
                 android:gravity="center_vertical"
                 android:padding="@dimen/keyline_4"
-                android:visibility="gone"
                 android:text="@string/atp_ManageRecentAppsProtectionEmpty"
-                app:drawableStartCompat="@drawable/ic_green_key"/>
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_green_key"
+                app:typography="body1" />
 
             <com.duckduckgo.common.ui.view.divider.HorizontalDivider
                 android:id="@+id/manageRecentAppsDivider"
-                android:layout_marginStart="72dp"
-                app:defaultPadding="false"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="72dp"
+                android:visibility="gone"
+                app:defaultPadding="false" />
 
             <com.duckduckgo.common.ui.view.listitem.OneLineListItem
                 android:id="@+id/manageRecentAppsShowAll"
@@ -158,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="56dp"
                 android:visibility="gone"
-                app:primaryText="@string/atp_ManageRecentAppsProtectionShowAll"/>
+                app:primaryText="@string/atp_ManageRecentAppsProtectionShowAll" />
 
         </LinearLayout>
 

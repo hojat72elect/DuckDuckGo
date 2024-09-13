@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.savedsites.impl.newtab
 
 import android.animation.ObjectAnimator
@@ -36,7 +20,7 @@ import com.duckduckgo.saved.sites.impl.databinding.RowFavouriteSectionItemBindin
 import com.duckduckgo.savedsites.api.models.SavedSite.Favorite
 import com.duckduckgo.savedsites.impl.newtab.FavouriteNewTabSectionItemView.FavouriteItemType
 import com.duckduckgo.savedsites.impl.newtab
-    .FavouriteNewTabSectionsItem.FavouriteItemFavourite
+.FavouriteNewTabSectionsItem.FavouriteItemFavourite
 import com.duckduckgo.savedsites.impl.newtab.FavouriteNewTabSectionsItem.PlaceholderItemFavourite
 import com.duckduckgo.savedsites.impl.newtab.FavouritesNewTabSectionsAdapter.FavouriteViewHolder.ItemState.Drag
 import com.duckduckgo.savedsites.impl.newtab.FavouritesNewTabSectionsAdapter.FavouriteViewHolder.ItemState.LongPress
@@ -92,11 +76,19 @@ class FavouritesNewTabSectionsAdapter(
     ): ViewHolder {
         return when (viewType) {
             PLACEHOLDER_VIEW_TYPE -> PlaceholderViewHolder(
-                RowFavouriteSectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                RowFavouriteSectionItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
             )
 
             FAVORITE_TYPE -> FavouriteViewHolder(
-                RowFavouriteSectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                RowFavouriteSectionItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
                 lifecycleOwner,
                 faviconManager,
                 onMoveListener,
@@ -107,7 +99,11 @@ class FavouritesNewTabSectionsAdapter(
             )
 
             else -> FavouriteViewHolder(
-                RowFavouriteSectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                RowFavouriteSectionItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
                 lifecycleOwner,
                 faviconManager,
                 onMoveListener,
@@ -129,7 +125,8 @@ class FavouritesNewTabSectionsAdapter(
         }
     }
 
-    private class PlaceholderViewHolder(private val binding: RowFavouriteSectionItemBinding) : ViewHolder(binding.root) {
+    private class PlaceholderViewHolder(private val binding: RowFavouriteSectionItemBinding) :
+        ViewHolder(binding.root) {
         fun bind() {
             binding.root.setItemType(FavouriteItemType.Placeholder)
         }
@@ -184,7 +181,10 @@ class FavouritesNewTabSectionsAdapter(
 
         private fun loadFavicon(url: String) {
             lifecycleOwner.lifecycleScope.launch {
-                faviconManager.loadToViewMaybeFromRemoteWithPlaceholder(url = url, view = binding.root.favicon())
+                faviconManager.loadToViewMaybeFromRemoteWithPlaceholder(
+                    url = url,
+                    view = binding.root.favicon()
+                )
             }
         }
 
@@ -214,12 +214,23 @@ class FavouritesNewTabSectionsAdapter(
             anchor: View,
             favorite: Favorite,
         ) {
-            val popupMenu = PopupMenu(LayoutInflater.from(anchor.context), R.layout.popup_window_edit_remove_favorite_delete_menu)
+            val popupMenu = PopupMenu(
+                LayoutInflater.from(anchor.context),
+                R.layout.popup_window_edit_remove_favorite_delete_menu
+            )
             val view = popupMenu.contentView
             popupMenu.apply {
                 onMenuItemClicked(view.findViewById(R.id.edit)) { onEditFavoriteSelected(favorite) }
-                onMenuItemClicked(view.findViewById(R.id.removeFromFavorites)) { onRemoveFavoriteSelected(favorite) }
-                onMenuItemClicked(view.findViewById(R.id.delete)) { onDeleteFavoriteSelected(favorite) }
+                onMenuItemClicked(view.findViewById(R.id.removeFromFavorites)) {
+                    onRemoveFavoriteSelected(
+                        favorite
+                    )
+                }
+                onMenuItemClicked(view.findViewById(R.id.delete)) {
+                    onDeleteFavoriteSelected(
+                        favorite
+                    )
+                }
             }
             popupMenu.showAnchoredToView(binding.root, anchor)
             this.popupMenu = popupMenu

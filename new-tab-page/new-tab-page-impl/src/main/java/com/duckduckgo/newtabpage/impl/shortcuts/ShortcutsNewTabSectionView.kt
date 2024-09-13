@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2024 DuckDuckGo
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.duckduckgo.newtabpage.impl.shortcuts
 
 import android.annotation.SuppressLint
@@ -73,7 +57,10 @@ class ShortcutsNewTabSectionView @JvmOverloads constructor(
     private var coroutineScope: CoroutineScope? = null
 
     private val viewModel: ShortcutsViewModel by lazy {
-        ViewModelProvider(findViewTreeViewModelStoreOwner()!!, viewModelFactory)[ShortcutsViewModel::class.java]
+        ViewModelProvider(
+            findViewTreeViewModelStoreOwner()!!,
+            viewModelFactory
+        )[ShortcutsViewModel::class.java]
     }
 
     override fun onAttachedToWindow() {
@@ -124,7 +111,10 @@ class ShortcutsNewTabSectionView @JvmOverloads constructor(
 
     private fun configureQuickAccessGridLayout(recyclerView: RecyclerView) {
         val gridColumnCalculator = GridColumnCalculator(context)
-        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(SHORTCUT_ITEM_MAX_SIZE_DP, SHORTCUT_GRID_MAX_COLUMNS)
+        val numOfColumns = gridColumnCalculator.calculateNumberOfColumns(
+            SHORTCUT_ITEM_MAX_SIZE_DP,
+            SHORTCUT_GRID_MAX_COLUMNS
+        )
         val layoutManager = GridLayoutManager(context, numOfColumns)
         recyclerView.layoutManager = layoutManager
     }
@@ -138,7 +128,9 @@ class ShortcutsNewTabSectionView @JvmOverloads constructor(
                 adapter,
                 object : QuickAccessDragTouchItemListener.DragDropListener {
                     override fun onListChanged(listElements: List<ShortcutItem>) {
-                        viewModel.onQuickAccessListChanged(listElements.map { it.plugin.getShortcut().name() })
+                        viewModel.onQuickAccessListChanged(listElements.map {
+                            it.plugin.getShortcut().name()
+                        })
                         recyclerView.disableAnimation()
                     }
                 },
