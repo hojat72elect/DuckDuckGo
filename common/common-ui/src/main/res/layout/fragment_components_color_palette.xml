@@ -1,24 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-~ Copyright (C) 2019 The Android Open Source Project
-~
-~ Licensed under the Apache License, Version 2.0 (the "License");
-~ you may not use this file except in c ompliance with the License.
-~ You may obtain a copy of the License at
-~
-~      http://www.apache.org/licenses/LICENSE-2.0
-~
-~ Unless required by applicable law or agreed to in writing, software
-~ distributed under the License is distributed on an "AS IS" BASIS,
-~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~ See the License for the specific language governing permissions and
-~ limitations under the License.
--->
+<?xml version="1.0" encoding="utf-8"?>
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                                       xmlns:app="http://schemas.android.com/apk/res-auto"
-                                       xmlns:tools="http://schemas.android.com/tools"
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,9 +15,9 @@
         android:paddingBottom="@dimen/keyline_5">
 
         <com.duckduckgo.common.ui.view.listitem.SectionHeaderListItem
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            app:primaryText="Base Palette"/>
+            android:layout_height="wrap_content"
+            app:primaryText="Base Palette" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -41,7 +27,7 @@
             android:text="Background"
             app:colorFillColor="?attr/daxColorBackground"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -51,7 +37,7 @@
             android:text="Surface"
             app:colorFillColor="?attr/daxColorSurface"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -61,7 +47,7 @@
             android:text="Container"
             app:colorFillColor="?attr/daxColorContainer"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -71,7 +57,7 @@
             android:text="Destructive"
             app:colorFillColor="?attr/daxColorDestructive"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -81,7 +67,7 @@
             android:text="Container Disabled"
             app:colorFillColor="?attr/daxColorContainerDisabled"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -91,7 +77,7 @@
             android:text="Lines"
             app:colorFillColor="?attr/daxColorLines"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -101,7 +87,7 @@
             android:text="Accent Blue"
             app:colorFillColor="?attr/daxColorAccentBlue"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -111,7 +97,7 @@
             android:text="Accent Yellow"
             app:colorFillColor="?attr/daxColorAccentYellow"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -121,7 +107,7 @@
             android:text="Primary Text"
             app:colorFillColor="?attr/daxColorPrimaryText"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -131,7 +117,7 @@
             android:text="Secondary Text"
             app:colorFillColor="?attr/daxColorSecondaryText"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -141,7 +127,7 @@
             android:text="Text Disabled"
             app:colorFillColor="?attr/daxColorTextDisabled"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
         <com.duckduckgo.common.ui.themepreview.ui.widget.ColorAttributeView
             android:layout_width="match_parent"
@@ -151,7 +137,7 @@
             android:text="Primary Icon"
             app:colorFillColor="?attr/daxColorPrimaryIcon"
             app:colorStrokeColor="?attr/daxColorBackgroundInverted"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
