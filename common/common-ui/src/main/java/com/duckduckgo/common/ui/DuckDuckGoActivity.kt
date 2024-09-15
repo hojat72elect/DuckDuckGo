@@ -1,5 +1,3 @@
-
-
 package com.duckduckgo.common.ui
 
 import android.annotation.SuppressLint
@@ -21,9 +19,11 @@ import javax.inject.Inject
 
 abstract class DuckDuckGoActivity : DaggerActivity() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.NewInstanceFactory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.NewInstanceFactory
 
-    @Inject lateinit var themingDataStore: ThemingDataStore
+    @Inject
+    lateinit var themingDataStore: ThemingDataStore
 
     private var themeChangeReceiver: BroadcastReceiver? = null
 
@@ -82,6 +82,7 @@ abstract class DuckDuckGoActivity : DaggerActivity() {
                     else -> false
                 }
             }
+
             DARK -> true
             else -> false
         }

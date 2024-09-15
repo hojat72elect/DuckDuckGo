@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.duckduckgo.privacy.dashboard">
+
+    <application>
+        <activity
+            android:name="com.duckduckgo.privacy.dashboard.impl.ui.PrivacyDashboardHybridActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:label="@string/privacyDashboardActivityTitle"
+            android:parentActivityName="com.duckduckgo.common.ui.BrowserActivity" />
+    </application>
+</manifest>

@@ -1,5 +1,3 @@
-
-
 package com.duckduckgo.app.browser.state
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -8,7 +6,10 @@ import com.duckduckgo.browser.api.BrowserLifecycleObserver
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.*
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 
 @RunWith(AndroidJUnit4::class)
 class BrowserApplicationStateInfoTest {
